@@ -12,13 +12,14 @@ import {
   whyChooseUs,
 } from "@/content/about";
 import { JsonLd, breadcrumbList } from "@/lib/jsonld";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "About",
   description:
     "A small, senior technology partner. Engineers, designers, and product specialists building software worth investing in, from strategy through production.",
-  alternates: { canonical: "/about" },
-};
+  path: "/about",
+});
 
 const breadcrumbJsonLd = breadcrumbList([
   { name: "Home", path: "/" },

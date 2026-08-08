@@ -13,13 +13,14 @@ import {
   closing,
 } from "@/content/how-we-work";
 import { JsonLd, breadcrumbList } from "@/lib/jsonld";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "How We Work",
   description:
     "Our engagement process: frame the problem, prove the risky part, build in the open, hand over cleanly. What each step actually looks like week to week.",
-  alternates: { canonical: "/how-we-work" },
-};
+  path: "/how-we-work",
+});
 
 const breadcrumbJsonLd = breadcrumbList([
   { name: "Home", path: "/" },

@@ -15,13 +15,14 @@ import {
   closing,
 } from "@/content/integrations";
 import { JsonLd, breadcrumbList } from "@/lib/jsonld";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Integrations & API Development",
   description:
     "We connect the tools your business already runs on, from Amazon and Shopify to Fishbowl, QuickBooks, and Zoho CRM. Real integrations, no duct tape.",
-  alternates: { canonical: "/integrations" },
-};
+  path: "/integrations",
+});
 
 const breadcrumbJsonLd = breadcrumbList([
   { name: "Home", path: "/" },

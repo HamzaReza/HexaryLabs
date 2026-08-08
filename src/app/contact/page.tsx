@@ -5,13 +5,14 @@ import { Reveal } from "@/components/ui/Reveal";
 import { ContactForm } from "@/components/sections/ContactForm";
 import { site } from "@/content/site";
 import { JsonLd, breadcrumbList } from "@/lib/jsonld";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Contact",
   description:
     "Tell Hexary Labs what you're building. We'll get back to you within a business day.",
-  alternates: { canonical: "/contact" },
-};
+  path: "/contact",
+});
 
 const breadcrumbJsonLd = breadcrumbList([
   { name: "Home", path: "/" },

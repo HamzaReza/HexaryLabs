@@ -12,6 +12,7 @@ import { WorkImagesGrid } from "../WorkImagesGrid";
 import { work } from "@/content/work";
 import type { CaseStudy, Metric, CaseSection } from "@/content/work";
 import { JsonLd, breadcrumbList } from "@/lib/jsonld";
+import { pageMetadata } from "@/lib/seo";
 import { heroStaggerStyle as heroStyle } from "@/lib/motion";
 
 type Params = { slug: string };
@@ -21,6 +22,8 @@ export function generateStaticParams() {
 }
 
 const SEO_DESCRIPTION: Record<string, string> = {
+  eden:
+    "A studio for autonomous creative AI, where agents make art, video, and stories with people and with each other. Built with Eden Labs from frontend to GPU pipeline.",
   keepcoming:
     "A loyalty platform for cafes, restaurants, and independent shops, with real Apple Wallet and Google Wallet integration and a public developer API.",
   "medical-records-platform":
@@ -44,11 +47,11 @@ export async function generateMetadata({
   const study = work.find((w) => w.slug === slug);
   if (!study) return {};
 
-  return {
+  return pageMetadata({
     title: study.title,
     description: SEO_DESCRIPTION[study.slug] ?? study.summary,
-    alternates: { canonical: `/work/${study.slug}` },
-  };
+    path: `/work/${study.slug}`,
+  });
 }
 
 const headingClass =

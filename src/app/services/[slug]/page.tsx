@@ -15,6 +15,7 @@ import {
   type ServiceFaq,
 } from "@/content/services";
 import { JsonLd, breadcrumbList } from "@/lib/jsonld";
+import { pageMetadata } from "@/lib/seo";
 
 type Params = { slug: string };
 
@@ -57,11 +58,11 @@ export async function generateMetadata({
 
   const seo = SEO_META[service.slug];
 
-  return {
+  return pageMetadata({
     title: seo?.title ?? service.title,
     description: seo?.description ?? service.heroSubhead,
-    alternates: { canonical: `/services/${service.slug}` },
-  };
+    path: `/services/${service.slug}`,
+  });
 }
 
 const contentHeading = "text-[1.3125rem] leading-[1.2] md:text-[1.625rem] lg:text-h3";

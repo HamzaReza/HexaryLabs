@@ -7,14 +7,15 @@ import { ClosingCta } from "@/components/sections/ClosingCta";
 import { CaseStudyCard } from "@/components/cards/CaseStudyCard";
 import { work, WORK_INTRO } from "@/content/work";
 import { JsonLd, breadcrumbList } from "@/lib/jsonld";
+import { pageMetadata } from "@/lib/seo";
 import { REVEAL_STAGGER_MS } from "@/lib/motion";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: "Case Studies",
   description:
     "Selected engagements and in-house products, from an AI-native creative studio to PHI-safe enterprise platforms and production SaaS.",
-  alternates: { canonical: "/work" },
-};
+  path: "/work",
+});
 
 const breadcrumbJsonLd = breadcrumbList([
   { name: "Home", path: "/" },
