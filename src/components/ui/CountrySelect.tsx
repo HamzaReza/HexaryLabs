@@ -149,11 +149,17 @@ export function CountrySelect({ name, defaultIso }: CountrySelectProps) {
           "border-r-[0.8px] border-grey-200 bg-base text-left text-body",
           "transition-colors duration-300 ease-in-out hover:bg-base-2",
           "focus:outline-none focus-visible:bg-base-2",
+          "[[data-tone=dark]_&]:border-grey-700 [[data-tone=dark]_&]:bg-contrast-2",
+          "[[data-tone=dark]_&]:hover:bg-surface-dark [[data-tone=dark]_&]:focus-visible:bg-surface-dark",
         )}
       >
         <span className="min-w-0 flex-1 truncate">
-          <span className="text-contrast">{selected.name}</span>{" "}
-          <span className="text-grey-600">{selected.dial}</span>
+          <span className="text-contrast [[data-tone=dark]_&]:text-white">
+            {selected.name}
+          </span>{" "}
+          <span className="text-grey-600 [[data-tone=dark]_&]:text-grey-300">
+            {selected.dial}
+          </span>
         </span>
         <ChevronDownIcon
           className={cn(

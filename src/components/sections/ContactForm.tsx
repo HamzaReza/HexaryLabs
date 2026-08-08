@@ -8,20 +8,27 @@ import { CountrySelect } from "@/components/ui/CountrySelect";
 import { cn } from "@/lib/cn";
 
 const fieldBase = cn(
-  "bg-base px-4 py-3 text-body",
+  "bg-base px-4 py-3 text-body text-contrast",
   "placeholder:text-grey-500 transition-colors duration-300 ease-in-out",
   "focus:outline-none",
+  "[[data-tone=dark]_&]:bg-contrast-2 [[data-tone=dark]_&]:text-white",
 );
 
 const fieldClass = cn(
   fieldBase,
   "w-full border-[0.8px] border-grey-200 focus:border-accent",
+  "[[data-tone=dark]_&]:border-grey-700 [[data-tone=dark]_&]:focus:border-accent-hi",
+);
+
+const labelClass = cn(
+  "mb-2 block text-small text-grey-600",
+  "[[data-tone=dark]_&]:text-grey-300",
 );
 
 function FieldError({ id, message }: { id: string; message?: string }) {
   if (!message) return null;
   return (
-    <p id={id} className="mt-2 text-small text-accent">
+    <p id={id} className="mt-2 text-small text-accent [[data-tone=dark]_&]:text-accent-hi">
       {message}
     </p>
   );
@@ -53,9 +60,9 @@ export function ContactForm() {
 
   if (state.success) {
     return (
-      <div className="border-[0.8px] border-grey-200 bg-base p-8 text-center sm:p-12">
+      <div className="border-[0.8px] border-grey-200 bg-base p-8 text-center sm:p-12 [[data-tone=dark]_&]:border-grey-700 [[data-tone=dark]_&]:bg-surface-dark">
         <p className="text-h4">Message sent.</p>
-        <p className="mt-2 text-body text-grey-600">
+        <p className="mt-2 text-body text-grey-600 [[data-tone=dark]_&]:text-grey-300">
           We&rsquo;ll get back to you within a business day.
         </p>
       </div>
@@ -63,10 +70,10 @@ export function ContactForm() {
   }
 
   return (
-    <form action={formAction} className="border-[0.8px] border-grey-200 bg-base p-6 sm:p-8">
+    <form action={formAction} className="bg-base p-6 sm:p-8 [[data-tone=dark]_&]:bg-surface-dark">
       <div className="grid gap-6 sm:grid-cols-2">
         <div>
-          <label htmlFor="firstName" className="mb-2 block text-small text-grey-600">
+          <label htmlFor="firstName" className={labelClass}>
             First Name
           </label>
           <input
@@ -83,7 +90,7 @@ export function ContactForm() {
           <FieldError id="firstName-error" message={fieldErrors.firstName} />
         </div>
         <div>
-          <label htmlFor="lastName" className="mb-2 block text-small text-grey-600">
+          <label htmlFor="lastName" className={labelClass}>
             Last Name
           </label>
           <input
@@ -103,7 +110,7 @@ export function ContactForm() {
 
       <div className="mt-6 grid gap-6 sm:grid-cols-2">
         <div>
-          <label htmlFor="companyEmail" className="mb-2 block text-small text-grey-600">
+          <label htmlFor="companyEmail" className={labelClass}>
             Company Email
           </label>
           <input
@@ -120,7 +127,7 @@ export function ContactForm() {
           <FieldError id="companyEmail-error" message={fieldErrors.companyEmail} />
         </div>
         <div>
-          <label htmlFor="companyName" className="mb-2 block text-small text-grey-600">
+          <label htmlFor="companyName" className={labelClass}>
             Company Name
           </label>
           <input
@@ -139,13 +146,15 @@ export function ContactForm() {
       </div>
 
       <div className="mt-6">
-        <label htmlFor="phone" className="mb-2 block text-small text-grey-600">
+        <label htmlFor="phone" className={labelClass}>
           Phone Number <span className="text-grey-500">(optional)</span>
         </label>
         <div
           className={cn(
             "flex border-[0.8px] border-grey-200 bg-base",
+            "[[data-tone=dark]_&]:border-grey-700 [[data-tone=dark]_&]:bg-contrast-2",
             "transition-colors duration-300 ease-in-out focus-within:border-accent",
+            "[[data-tone=dark]_&]:focus-within:border-accent-hi",
             fieldErrors.phone && "border-accent",
           )}
         >
@@ -165,7 +174,7 @@ export function ContactForm() {
       </div>
 
       <div className="mt-6">
-        <label htmlFor="message" className="mb-2 block text-small text-grey-600">
+        <label htmlFor="message" className={labelClass}>
           Tell us about your project
         </label>
         <textarea
@@ -183,7 +192,7 @@ export function ContactForm() {
       </div>
 
       {state.error && (
-        <p role="alert" className="mt-6 border-l-2 border-accent pl-3 text-body text-contrast-2">
+        <p role="alert" className="mt-6 border-l-2 border-accent pl-3 text-body text-contrast-2 [[data-tone=dark]_&]:border-accent-hi [[data-tone=dark]_&]:text-white">
           {state.error}
         </p>
       )}
