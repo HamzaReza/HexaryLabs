@@ -5,9 +5,18 @@ import { Annotation } from "@/components/ui/Annotation";
 import { ClippedPanel } from "@/components/ui/ClippedPanel";
 import { CaseCover } from "@/app/work/CaseCover";
 import { AnimatedCaseHero, hasAnimatedHero } from "@/app/work/animatedHeroes";
-import { CLIENT_TAGS } from "@/components/cards/CaseStudyCard";
 import { cn } from "@/lib/cn";
 import type { CaseStudy } from "@/content/work";
+
+export const CLIENT_TAGS: Record<string, string> = {
+  eden: "Client · Eden Labs",
+  keepcoming: "In-house product",
+  "medical-records-platform": "Client · Anonymized",
+  "social-lead-capture-automation": "Client · Anonymized",
+  truecell: "Client · TrueCell",
+  kinein: "Client · Kinein",
+  "b2b-access": "Client · B2B Access",
+};
 
 const VISUAL_ASPECT = "aspect-[4/3] sm:aspect-[1.7]";
 

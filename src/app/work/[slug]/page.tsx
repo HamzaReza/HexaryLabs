@@ -3,7 +3,10 @@ import { notFound } from "next/navigation";
 import { Section } from "@/components/ui/Section";
 import { Container } from "@/components/ui/Container";
 import { ArrowIcon } from "@/components/ui/ArrowIcon";
+import { Annotation } from "@/components/ui/Annotation";
+import { ClippedPanel } from "@/components/ui/ClippedPanel";
 import { Reveal } from "@/components/ui/Reveal";
+import { CLIENT_TAGS } from "@/components/cards/CaseStoryRow";
 import { cn } from "@/lib/cn";
 import { CtaBand } from "@/components/sections/CtaBand";
 import { CaseCover, gradients } from "../CaseCover";
@@ -66,14 +69,45 @@ function MetricGrid({ metrics }: { metrics: Metric[] }) {
         : "sm:grid-cols-2 lg:grid-cols-4";
 
   return (
-    <ul className={cn("grid gap-px border-[0.8px] border-grey-700 bg-grey-700", cols)}>
+    <ul className={cn("grid gap-4", cols)}>
       {metrics.map((m) => (
-        <li key={m.label} className="bg-contrast-2 p-8">
+        <ClippedPanel key={m.label} clip="md" bordered className="h-full bg-surface-dark p-8" as="li">
           <p className="font-display text-h3 font-medium text-white">{m.value}</p>
           <p className="mt-2 text-body text-grey-300">{m.label}</p>
-        </li>
+        </ClippedPanel>
       ))}
     </ul>
+  );
+}
+
+function TechArchStrip({ study }: { study: CaseStudy }) {
+  if (study.stack.length === 0 && !study.scope?.length) return null;
+
+  return (
+    <section className="border-b-[0.8px] border-grey-100 bg-base-2">
+      <Container>
+        <div className="flex flex-col gap-4 py-6 lg:flex-row lg:gap-10">
+          <p className="shrink-0 pt-1">
+            <Annotation>Stack &amp; architecture</Annotation>
+          </p>
+          <div className="flex flex-col gap-3">
+            <ul className="flex flex-wrap gap-2">
+              {study.stack.map((tool) => (
+                <li
+                  key={tool}
+                  className="border-[0.8px] border-grey-200 bg-base px-3 py-1 font-mono text-small text-grey-600"
+                >
+                  {tool}
+                </li>
+              ))}
+            </ul>
+            {study.scope && study.scope.length > 0 && (
+              <p className="text-body text-grey-600">{study.scope.join(" · ")}</p>
+            )}
+          </div>
+        </div>
+      </Container>
+    </section>
   );
 }
 
@@ -103,23 +137,6 @@ function Prose({ section }: { section: CaseSection }) {
   );
 }
 
-function StackList({ stack }: { stack: string[] }) {
-  return (
-    <ul
-      className={cn(
-        "grid gap-px border-[0.8px] border-grey-200 bg-grey-200",
-        stack.length % 2 === 0 && "grid-cols-2",
-      )}
-    >
-      {stack.map((s) => (
-        <li key={s} className="bg-base p-5 font-display text-body text-contrast-2">
-          {s}
-        </li>
-      ))}
-    </ul>
-  );
-}
-
 function PullQuote({ study, className }: { study: CaseStudy; className?: string }) {
   if (!study.quote) return null;
 
@@ -143,11 +160,10 @@ function PullQuote({ study, className }: { study: CaseStudy; className?: string 
 function HeroText({ study }: { study: CaseStudy }) {
   return (
     <>
-      <p
-        className="hero-stagger-item text-small uppercase tracking-widest text-grey-600"
-        style={heroStyle(0)}
-      >
-        {study.client}
+      <p className="hero-stagger-item" style={heroStyle(0)}>
+        <Annotation>
+          {study.category} · {CLIENT_TAGS[study.slug] ?? study.client}
+        </Annotation>
       </p>
       <h1
         className="hero-stagger-item mt-6 max-w-[20ch] text-[2.125rem] leading-[1.2] tracking-[0.02em] md:text-[3rem] lg:text-h1"
@@ -221,11 +237,10 @@ function CaseHero({ study }: { study: CaseStudy }) {
         )}
       >
         <Container>
-          <p
-            className="hero-stagger-item text-small uppercase tracking-widest text-grey-600"
-            style={heroStyle(0)}
-          >
-            {study.client}
+          <p className="hero-stagger-item" style={heroStyle(0)}>
+            <Annotation>
+              {study.category} · {CLIENT_TAGS[study.slug] ?? study.client}
+            </Annotation>
           </p>
           <h1
             className="hero-stagger-item mt-6 max-w-[16ch] font-display text-[2.125rem] font-medium leading-[1.15] tracking-[0.01em] text-contrast-2 md:text-[3rem] lg:text-h1"
@@ -249,27 +264,27 @@ function CaseHero({ study }: { study: CaseStudy }) {
       <Container>
         <HeroText study={study} />
         <div className="hero-stagger-item mt-12" style={heroStyle(3)}>
-          {hasAnimatedHero(study.slug) ? (
-            <AnimatedCaseHero
-              slug={study.slug}
-              sizes="(min-width: 1200px) 1200px, 100vw"
-              eager
-              className="border-[0.8px] border-grey-200"
-            />
-          ) : (
-            <CaseCover
-              cover={study.cover}
-              title={study.title}
-              aspect={
-                hero === "schematic"
-                  ? "aspect-[4/3] sm:aspect-[1.8] lg:aspect-[2.4]"
-                  : "h-auto"
-              }
-              sizes="(min-width: 1200px) 1200px, 100vw"
-              eager
-              className={hero === "schematic" ? undefined : "border-[0.8px] border-grey-200"}
-            />
-          )}
+          <ClippedPanel clip="lg" bordered className="bg-base" as="figure">
+            {hasAnimatedHero(study.slug) ? (
+              <AnimatedCaseHero
+                slug={study.slug}
+                sizes="(min-width: 1200px) 1200px, 100vw"
+                eager
+              />
+            ) : (
+              <CaseCover
+                cover={study.cover}
+                title={study.title}
+                aspect={
+                  hero === "schematic"
+                    ? "aspect-[4/3] sm:aspect-[1.8] lg:aspect-[2.4]"
+                    : "h-auto"
+                }
+                sizes="(min-width: 1200px) 1200px, 100vw"
+                eager
+              />
+            )}
+          </ClippedPanel>
         </div>
       </Container>
     </section>
@@ -298,14 +313,6 @@ function SectionedBody({ study }: { study: CaseStudy }) {
               </div>
               <div>
                 <Prose section={block} />
-                {block.heading === "Solution" && study.stack.length > 0 && (
-                  <div className="mt-10">
-                    <p className="mb-4 text-small uppercase tracking-widest text-grey-600">
-                      Technology
-                    </p>
-                    <StackList stack={study.stack} />
-                  </div>
-                )}
               </div>
             </Reveal>
           </Container>
@@ -348,14 +355,6 @@ function TwoColumnBody({ study }: { study: CaseStudy }) {
               </div>
               <div>
                 <Prose section={block} />
-                {block.heading === "Solution" && study.stack.length > 0 && (
-                  <div className="mt-10">
-                    <p className="mb-4 text-small uppercase tracking-widest text-grey-600">
-                      Technology
-                    </p>
-                    <StackList stack={study.stack} />
-                  </div>
-                )}
               </div>
             </Reveal>
           </Container>
@@ -394,15 +393,6 @@ function NarrativeBody({ study }: { study: CaseStudy }) {
 
               {inline && study.metrics[i] && <InlineMetric metric={study.metrics[i]} />}
 
-              {block.heading === "Solution" && study.stack.length > 0 && (
-                <div className="mt-10">
-                  <p className="mb-4 text-small uppercase tracking-widest text-grey-600">
-                    Technology
-                  </p>
-                  <StackList stack={study.stack} />
-                </div>
-              )}
-
               {block.heading === "Approach" && (
                 <PullQuote study={study} className="mt-12" />
               )}
@@ -438,28 +428,6 @@ function SidebarBody({ study }: { study: CaseStudy }) {
               ))}
             </ul>
 
-            {study.stack.length > 0 && (
-              <>
-                <p className="mb-4 mt-10 text-small uppercase tracking-widest text-grey-600">
-                  Technology
-                </p>
-                <ul
-                  className={cn(
-                    "gap-px border-[0.8px] border-grey-200 bg-grey-200 lg:flex lg:flex-col",
-                    study.stack.length % 2 === 0 ? "grid grid-cols-2" : "grid",
-                  )}
-                >
-                  {study.stack.map((s) => (
-                    <li
-                      key={s}
-                      className="bg-base p-4 font-display text-body text-contrast-2"
-                    >
-                      {s}
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
           </aside>
 
           <div>
@@ -514,6 +482,7 @@ export default async function CaseStudyPage({
     <>
       <JsonLd data={[creativeWorkJsonLd, breadcrumbJsonLd]} />
       <CaseHero study={study} />
+      <TechArchStrip study={study} />
 
       {body === "sectioned" && <SectionedBody study={study} />}
       {body === "narrative" && <NarrativeBody study={study} />}

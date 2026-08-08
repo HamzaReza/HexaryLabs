@@ -10,7 +10,6 @@ export type HeroVariant =
 
 export type BodyVariant = "sectioned" | "narrative" | "sidebar" | "two-column";
 export type MetricVariant = "grid" | "hero" | "inline";
-export type DensityVariant = "image-heavy" | "text-heavy" | "balanced";
 export type WorkImageSize = "small" | "rectangle" | "full";
 export type WorkImage = { src: string; alt: string; size: WorkImageSize };
 
@@ -37,13 +36,13 @@ export type CaseStudy = {
   client: string;
   title: string;
   summary: string;
+  category: string;
   featured?: boolean;
   scope?: string[];
   variant: {
     hero: HeroVariant;
     body: BodyVariant;
     metrics: MetricVariant;
-    density: DensityVariant;
   };
   cover: Cover;
   heroMetric?: Metric;
@@ -57,11 +56,10 @@ export type CaseStudy = {
   links?: { label: string; href: string }[];
 };
 
-const UNSPLASH = "?auto=format&fit=crop&w=1600&q=80";
-
 export const work: CaseStudy[] = [
   {
     slug: "eden",
+    category: "AI Platform",
     featured: true,
     client: "Eden Labs",
     title: "Eden",
@@ -79,7 +77,6 @@ export const work: CaseStudy[] = [
       hero: "schematic",
       body: "sidebar",
       metrics: "inline",
-      density: "balanced",
     },
     cover: { kind: "schematic", diagram: "eden" },
     metrics: [
@@ -146,6 +143,7 @@ export const work: CaseStudy[] = [
   },
   {
     slug: "keepcoming",
+    category: "SaaS Product",
     client: "In-house Hexary product",
     title: "KeepComing",
     summary:
@@ -162,7 +160,6 @@ export const work: CaseStudy[] = [
       hero: "image-contained",
       body: "sectioned",
       metrics: "grid",
-      density: "balanced",
     },
     cover: {
       kind: "photo",
@@ -226,6 +223,7 @@ export const work: CaseStudy[] = [
   },
   {
     slug: "medical-records-platform",
+    category: "Enterprise Integration",
     featured: true,
     client: "A US-based medical records retrieval company (anonymized)",
     title: "Medical Records Integration & AI Platform",
@@ -242,7 +240,6 @@ export const work: CaseStudy[] = [
       hero: "schematic",
       body: "sidebar",
       metrics: "inline",
-      density: "balanced",
     },
     cover: { kind: "schematic", diagram: "medical-records" },
     metrics: [
@@ -299,6 +296,7 @@ export const work: CaseStudy[] = [
   },
   {
     slug: "social-lead-capture-automation",
+    category: "Automation",
     client: "Anonymized client",
     title: "Social Lead Capture Automation",
     summary:
@@ -315,7 +313,6 @@ export const work: CaseStudy[] = [
       hero: "schematic",
       body: "sectioned",
       metrics: "grid",
-      density: "text-heavy",
     },
     cover: { kind: "schematic", diagram: "social-lead-capture" },
     metrics: [
@@ -373,6 +370,7 @@ export const work: CaseStudy[] = [
   },
   {
     slug: "truecell",
+    category: "Commerce & Inventory",
     featured: true,
     client: "TrueCell",
     title: "TrueCell",
@@ -390,7 +388,6 @@ export const work: CaseStudy[] = [
       hero: "image-contained",
       body: "two-column",
       metrics: "grid",
-      density: "balanced",
     },
     cover: { kind: "photo", src: "/work/truecell.webp", alt: "The TrueCell inventory dashboard, showing marketplace sync status and inventory metrics" },
     metrics: [
@@ -442,6 +439,7 @@ export const work: CaseStudy[] = [
   },
   {
     slug: "kinein",
+    category: "B2B Commerce",
     client: "Kinein",
     title: "Kinein",
     summary:
@@ -458,7 +456,6 @@ export const work: CaseStudy[] = [
       hero: "image-contained",
       body: "two-column",
       metrics: "grid",
-      density: "balanced",
     },
     cover: { kind: "photo", src: "/work/kinein.webp", alt: "The Kinein B2B e-commerce storefront, showing bidirectional sync between the storefront and connected accounting systems" },
     metrics: [
@@ -508,6 +505,7 @@ export const work: CaseStudy[] = [
   },
   {
     slug: "b2b-access",
+    category: "B2B Marketplace",
     featured: true,
     client: "B2B Access",
     title: "B2B Access",
@@ -525,7 +523,6 @@ export const work: CaseStudy[] = [
       hero: "image-contained",
       body: "two-column",
       metrics: "grid",
-      density: "balanced",
     },
     cover: {
       kind: "photo",
