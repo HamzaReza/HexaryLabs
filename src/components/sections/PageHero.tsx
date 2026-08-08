@@ -1,5 +1,6 @@
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
+import { Annotation } from "@/components/ui/Annotation";
 import { cn } from "@/lib/cn";
 import { heroStaggerStyle } from "@/lib/motion";
 
@@ -24,17 +25,14 @@ export function PageHero({
   let index = 0;
 
   return (
-    <section className="border-b-[0.8px] border-grey-100 bg-base pb-14 pt-12 lg:pb-20 lg:pt-18">
+    <section className="texture-dots border-b-[0.8px] border-grey-100 bg-base pb-14 pt-12 lg:pb-20 lg:pt-18">
       <Container>
         {eyebrow && (
           <p
-            className={cn(
-              "mb-6 text-small uppercase tracking-widest text-grey-600",
-              staggerReveal && "hero-stagger-item",
-            )}
+            className={cn("mb-6", staggerReveal && "hero-stagger-item")}
             style={heroDelayStyle(staggerReveal, index++)}
           >
-            {eyebrow}
+            <Annotation>{eyebrow}</Annotation>
           </p>
         )}
         <h1

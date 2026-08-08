@@ -2,9 +2,10 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { useInView } from "@/lib/useInView";
+import { THRESHOLD } from "@/lib/motion";
 
 export const HERO_LOOP_EASE = "cubic-bezier(0, 0, 0.2, 1)";
-export const HERO_LOOP_THRESHOLD = 0.25;
+export const HERO_LOOP_THRESHOLD = THRESHOLD.heroLoop;
 
 export const pctOf = (cycleMs: number) => (ms: number) =>
   `${((ms / cycleMs) * 100).toFixed(3)}%`;

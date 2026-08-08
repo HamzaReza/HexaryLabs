@@ -6,39 +6,52 @@ type Variant = "primary" | "secondary" | "accent" | "block";
 type Size = "sm" | "md" | "lg";
 
 /**
- * Reference behaviour (measured): radius 0, display font @500, 16px gap to the
- * arrow, `0.3s ease-in-out`, and a *universal* hover → accent background.
- * Accent-filled buttons invert instead (→ white bg, accent text).
+ * Blueprint buttons: pentagonal silhouette (top-right corner clipped at 10px),
+ * display font @500, 16px gap to the arrow, `0.3s ease-in-out`, universal
+ * hover → accent. Accent-filled buttons invert instead. The `block` variant
+ * keeps square corners — full-width CTA rows read as structure, not objects.
  *
- * `[[data-tone=dark]_&]` re-colours the button inside dark sections, so callers
- * never pass tone manually.
+ * `secondary` is two stacked clipped layers because clip-path cuts real
+ * borders off: the outer layer is the 0.8px "border" showing through.
+ *
+ * `[[data-tone=dark]_&]` re-colours the button inside dark sections, so
+ * callers never pass tone manually.
  */
-const variants: Record<Variant, string> = {
+const filledVariants: Record<Exclude<Variant, "secondary">, string> = {
   primary: cn(
+    "clip-corner [--clip:10px]",
     "bg-contrast-2 text-white",
     "hover:bg-accent hover:text-white",
-    "[[data-tone=dark]_&]:bg-white [[data-tone=dark]_&]:text-contrast-2",
+    "[[data-tone=dark]_&]:bg-base [[data-tone=dark]_&]:text-contrast-2",
     "[[data-tone=dark]_&]:hover:bg-accent [[data-tone=dark]_&]:hover:text-white",
   ),
-  secondary: cn(
-    "border-[0.8px] border-contrast-2 text-contrast-2",
-    "hover:border-accent hover:text-accent",
-    "[[data-tone=dark]_&]:border-white [[data-tone=dark]_&]:text-white",
-    "[[data-tone=dark]_&]:hover:border-accent-hi [[data-tone=dark]_&]:hover:text-accent-hi",
-  ),
   accent: cn(
+    "clip-corner [--clip:10px]",
     "bg-accent text-white",
-    "hover:bg-white hover:text-accent",
-    "[[data-tone=dark]_&]:hover:bg-white [[data-tone=dark]_&]:hover:text-accent",
+    "hover:bg-base hover:text-accent",
+    "[[data-tone=dark]_&]:hover:bg-base [[data-tone=dark]_&]:hover:text-accent",
   ),
   block: cn(
     "w-full justify-between bg-grey-100 text-contrast-2",
     "hover:bg-accent hover:text-white",
     "[[data-tone=dark]_&]:bg-surface-dark [[data-tone=dark]_&]:text-white",
     "[[data-tone=dark]_&]:border-[0.8px] [[data-tone=dark]_&]:border-grey-700",
-    "[[data-tone=dark]_&]:hover:bg-white [[data-tone=dark]_&]:hover:text-contrast-2",
+    "[[data-tone=dark]_&]:hover:bg-base [[data-tone=dark]_&]:hover:text-contrast-2",
   ),
 };
+
+const secondaryOuter = cn(
+  "clip-corner [--clip:10px] p-hairline group/btn",
+  "bg-contrast-2 hover:bg-accent",
+  "[[data-tone=dark]_&]:bg-base [[data-tone=dark]_&]:hover:bg-accent-hi",
+);
+
+const secondaryInner = cn(
+  "clip-corner [--clip:10px]",
+  "bg-base text-contrast-2 group-hover/btn:text-accent",
+  "[[data-tone=dark]_&]:bg-contrast-2 [[data-tone=dark]_&]:text-base",
+  "[[data-tone=dark]_&]:group-hover/btn:text-accent-hi",
+);
 
 const sizes: Record<Size, string> = {
   sm: "px-3 py-1.5 text-[1rem]",
@@ -46,21 +59,20 @@ const sizes: Record<Size, string> = {
   lg: "px-3 py-4 text-body-lg",
 };
 
-const base = cn(
-  "inline-flex items-center gap-4", // 16px text→arrow gap (measured)
+const layout = cn(
+  "inline-flex items-center gap-4",
   "font-display font-medium leading-none",
   "rounded-none transition-colors duration-300 ease-in-out",
-  "cursor-pointer",
 );
 
-type Props = {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   href?: string;
   variant?: Variant;
   size?: Size;
   icon?: boolean;
   className?: string;
-} & React.ButtonHTMLAttributes<HTMLButtonElement>;
+}
 
 export function Button({
   children,
@@ -70,19 +82,43 @@ export function Button({
   icon = true,
   className,
   ...rest
-}: Props) {
-  const cls = cn(
-    base,
-    variants[variant],
-    variant === "block" ? "px-6 py-8 sm:px-8" : sizes[size],
-    className,
-  );
-
+}: ButtonProps) {
   const inner = (
     <>
       <span>{children}</span>
       {icon && <ArrowIcon />}
     </>
+  );
+
+  if (variant === "secondary") {
+    const outerCls = cn(
+      "inline-flex cursor-pointer rounded-none transition-colors duration-300 ease-in-out",
+      secondaryOuter,
+      className,
+    );
+    const innerCls = cn(layout, sizes[size], secondaryInner);
+    const content = <span className={innerCls}>{inner}</span>;
+
+    if (href) {
+      return (
+        <Link href={href} className={outerCls}>
+          {content}
+        </Link>
+      );
+    }
+    return (
+      <button className={outerCls} {...rest}>
+        {content}
+      </button>
+    );
+  }
+
+  const cls = cn(
+    layout,
+    "cursor-pointer",
+    filledVariants[variant],
+    variant === "block" ? "px-6 py-8 sm:px-8" : sizes[size],
+    className,
   );
 
   if (href) {

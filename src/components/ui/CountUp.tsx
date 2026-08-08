@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useInView } from "@/lib/useInView";
+import { THRESHOLD } from "@/lib/motion";
 
 const prefersReduced = () =>
   typeof window !== "undefined" &&
@@ -27,7 +28,7 @@ export function CountUp({
 }) {
   // Triggers as the band enters the viewport, so the first frame (≈0) lands
   // before the number is comfortably readable.
-  const { ref, inView } = useInView<HTMLSpanElement>(0.25);
+  const { ref, inView } = useInView<HTMLSpanElement>(THRESHOLD.countUp);
 
   // SSR and first paint render the real figure — so the number is in the HTML
   // for crawlers and no-JS readers. The animation's first frame takes it to 0.

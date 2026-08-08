@@ -2,9 +2,9 @@
 
 import { cn } from "@/lib/cn";
 import { useInView } from "@/lib/useInView";
-import { REVEAL_FADE_UP, REVEAL_ZOOM_IN } from "@/lib/motion";
+import { LINE_DRAW, REVEAL_FADE_UP, REVEAL_ZOOM_IN, THRESHOLD } from "@/lib/motion";
 
-type RevealVariant = "fade" | "fade-up" | "zoom-in";
+type RevealVariant = "fade" | "fade-up" | "zoom-in" | "draw";
 
 
 export function Reveal({
@@ -18,7 +18,7 @@ export function Reveal({
   variant?: RevealVariant;
   className?: string;
 }) {
-  const { ref, inView } = useInView<HTMLDivElement>(0.15);
+  const { ref, inView } = useInView<HTMLDivElement>(THRESHOLD.reveal);
 
   const style: React.CSSProperties = { "--reveal-delay": `${delay}ms` } as React.CSSProperties;
   let revealClass = "reveal";
@@ -36,6 +36,11 @@ export function Reveal({
       "--reveal-scale": REVEAL_ZOOM_IN.scale,
       "--reveal-duration": `${REVEAL_ZOOM_IN.duration}ms`,
       "--reveal-easing": REVEAL_ZOOM_IN.easing,
+    });
+  } else if (variant === "draw") {
+    revealClass = "reveal-draw";
+    Object.assign(style, {
+      "--draw-duration": `${LINE_DRAW.duration}ms`,
     });
   }
 

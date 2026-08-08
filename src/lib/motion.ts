@@ -2,6 +2,20 @@ import type { CSSProperties } from "react";
 
 const EASE_OUT = "cubic-bezier(0, 0, 0.2, 1)";
 
+export const EASE_BLUEPRINT = "cubic-bezier(0.22, 1, 0.36, 1)";
+
+/* IntersectionObserver thresholds, consolidated — one per trigger kind. */
+export const THRESHOLD = {
+  reveal: 0.15,
+  countUp: 0.25,
+  heroLoop: 0.25,
+} as const;
+
+export const LINE_DRAW = {
+  duration: 600, // ms per segment
+  stagger: 80, // ms between segments
+} as const;
+
 export const REVEAL_FADE_UP = {
   distance: 60, // px, initial translateY
   duration: 700, // ms
