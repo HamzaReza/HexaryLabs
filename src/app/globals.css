@@ -80,9 +80,6 @@
 
 /* Gradients + structural values that aren't Tailwind scales */
 :root {
-  /* --gradient-metal is consumed only by StatsBand/CtaBand, which the
-     homepage rebuild replaces — it is deleted in Phase 2, not here. */
-  --gradient-metal: linear-gradient(76deg, #8b8b89 0%, #dbdbd9 100%);
   --gradient-rule-v: linear-gradient(
     180deg,
     rgba(75, 72, 57, 0) 0%,
@@ -148,15 +145,7 @@
 }
 
 /* Declared with `@utility` (not `@layer utilities`) so variants compose —
-   e.g. `lg:group-hover:text-metal` on the service rows. */
-
-/* Gradient-clipped text — stat numerals and the mega wordmark */
-@utility text-metal {
-  background-image: var(--gradient-metal);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-}
+   e.g. `lg:group-hover:texture-dots` composition on future sections. */
 
 /* Hairline rules that fade out at both ends (reference's divider style) */
 @utility rule-fade-v {
@@ -252,6 +241,48 @@
   stroke-dashoffset: 0;
 }
 
+/* Homepage hero assembly: one-shot on load (never loops — the case-study
+   heroes are the only looping animations sitewide). Total ≤ 1.8s. */
+@keyframes hexa-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes hexa-draw {
+  from {
+    stroke-dashoffset: var(--draw-length, 200);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.hexa-cell {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: hexa-in 500ms var(--ease-blueprint) both;
+  animation-delay: var(--hexa-delay, 0ms);
+}
+
+.hexa-line {
+  stroke-dasharray: var(--draw-length, 200);
+  animation: hexa-draw 600ms linear both;
+  animation-delay: var(--hexa-delay, 0ms);
+}
+
+.hexa-note {
+  opacity: 0;
+  animation: hexa-in 500ms var(--ease-blueprint) both;
+  animation-delay: var(--hexa-delay, 0ms);
+}
+
 /* Hero load-in: fires once on mount via animation-delay, not scroll-triggered.
    Each element carries --hero-delay/--hero-duration/--hero-distance/
    --hero-easing, set inline from heroStaggerStyle() in src/lib/motion.ts. */
@@ -308,6 +339,17 @@
   .reveal-draw [data-draw] {
     stroke-dashoffset: 0;
     transition: none;
+  }
+
+  .hexa-cell,
+  .hexa-note {
+    opacity: 1;
+    animation: none;
+  }
+
+  .hexa-line {
+    stroke-dasharray: none;
+    animation: none;
   }
 
   .hero-stagger-item {

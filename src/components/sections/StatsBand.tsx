@@ -1,18 +1,14 @@
 import { Container } from "@/components/ui/Container";
 import { CountUp } from "@/components/ui/CountUp";
+import { Annotation } from "@/components/ui/Annotation";
 import { stats } from "@/content/stats";
 
-/**
- * The reference's best moment: black band, oversized numerals filled with a
- * metal gradient (`background-clip:text`), count-up on scroll, and columns
- * separated by rules that fade out at both ends.
- *
- * Dividers are `::before`-free — a real element per gap, hidden on mobile
- * where the layout stacks and horizontal rules take over.
- */
 export function StatsBand() {
   return (
-    <section data-tone="dark" className="bg-contrast-2 py-10 md:py-14 lg:py-20">
+    <section
+      data-tone="dark"
+      className="texture-grid bg-contrast-2 py-10 md:py-14 lg:py-20"
+    >
       <Container>
         <ul className="grid sm:grid-cols-3">
           {stats.map((stat, i) => (
@@ -24,7 +20,6 @@ export function StatsBand() {
                   : "relative py-10 text-center sm:py-0"
               }
             >
-              {/* Fading vertical rule between columns (desktop only) */}
               {i > 0 && (
                 <span
                   aria-hidden="true"
@@ -32,15 +27,17 @@ export function StatsBand() {
                 />
               )}
 
-              <p className="text-metal text-stat font-display font-medium">
+              <p className="text-stat font-display font-medium text-white">
                 <CountUp
                   value={stat.value}
                   prefix={stat.prefix}
                   suffix={stat.suffix}
                 />
               </p>
-              <p className="mt-2 text-body-lg font-medium capitalize text-grey-500">
-                {stat.label}
+              <p className="mt-3">
+                <Annotation index={String(i + 1).padStart(2, "0")}>
+                  {stat.label}
+                </Annotation>
               </p>
             </li>
           ))}

@@ -1,15 +1,10 @@
+import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
+import { ArrowIcon } from "@/components/ui/ArrowIcon";
 
-/**
- * A parameterized closing band for pages that need page-specific closing
- * copy instead of the sitewide CtaBand's fixed "Let's Talk" wordmark (too
- * long a heading here for the mega gradient treatment). Same dark-band
- * structure and classes as CtaBand, just with heading/button as props.
- *
- * `body` and `secondaryCta` are optional — omitting them renders the
- * original heading + single-button layout unchanged.
- */
+/* Page-specific closing band on the CtaBand pattern: the heading itself is
+   the primary link (5.6), with the CTA label as its caption. */
 export function ClosingCta({
   heading,
   body,
@@ -28,26 +23,25 @@ export function ClosingCta({
     >
       <Container>
         <div className="flex flex-col items-center gap-10 text-center">
-          <div>
-            <h2 className="text-h2 max-md:text-[1.625rem] md:text-[2.25rem] lg:text-h2">
+          <Link href={cta.href} className="group flex flex-col items-center gap-6">
+            <span className="text-h2 font-display font-medium max-md:text-[1.625rem] md:text-[2.25rem] lg:text-h2 transition-colors duration-300 group-hover:text-accent-hi">
               {heading}
-            </h2>
+            </span>
             {body && (
-              <p className="mx-auto mt-6 max-w-[60ch] text-body-lg text-grey-300">
+              <span className="mx-auto max-w-[60ch] text-body-lg font-normal text-grey-300">
                 {body}
-              </p>
+              </span>
             )}
-          </div>
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <Button href={cta.href} variant="accent" size="lg">
+            <span className="inline-flex items-center gap-4 border-[0.8px] border-grey-700 px-6 py-3 font-display text-body-lg font-medium leading-none text-grey-300 transition-colors duration-300 group-hover:border-accent-hi group-hover:text-accent-hi">
               {cta.label}
+              <ArrowIcon />
+            </span>
+          </Link>
+          {secondaryCta && (
+            <Button href={secondaryCta.href} variant="secondary" size="lg">
+              {secondaryCta.label}
             </Button>
-            {secondaryCta && (
-              <Button href={secondaryCta.href} variant="secondary" size="lg">
-                {secondaryCta.label}
-              </Button>
-            )}
-          </div>
+          )}
         </div>
       </Container>
     </section>

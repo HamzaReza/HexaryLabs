@@ -2,7 +2,7 @@
  * Service offerings.
  *
  * Structure (4 services) is final — it drives the nav dropdown, the homepage
- * Services section (via ServiceRow + `summary`), and the /services/[slug]
+ * Services section (via ServicesExplorer + `summary`), and the /services/[slug]
  * routes. `title` and `summary` are also consumed by the homepage, so their
  * values are left as-is here; everything else below is specific to the
  * /services pages themselves.
@@ -20,12 +20,18 @@ export type ComparisonRow = {
 export type Service = {
   slug: string;
   title: string;
-  /** Short teaser — nav dropdown, footer, and the homepage ServiceRow. */
+  /** Short teaser — nav dropdown, footer, and the homepage services rows. */
   summary: string;
 
   /** /services overview page teaser card. */
   teaserQuote: string;
   teaserBestFor: string;
+
+  /** Homepage services expansion (5.3): related evidence + mini diagram. */
+  explore: {
+    caseStudySlug: string;
+    diagram: [string, string, string];
+  };
 
   /** /services/[slug] hero. */
   heroEyebrow: string;
@@ -57,6 +63,7 @@ export type Service = {
 export const services: Service[] = [
   {
     slug: "product-strategy",
+    explore: { caseStudySlug: "keepcoming", diagram: ["Idea", "Risks", "Roadmap"] },
     title: "Product Strategy",
     summary: "Know what to build before you spend a cent building it.",
 
@@ -140,6 +147,7 @@ export const services: Service[] = [
   },
   {
     slug: "product-design",
+    explore: { caseStudySlug: "eden", diagram: ["Research", "Flows", "UI"] },
     title: "Product Design",
     summary: "Design that holds up once real users touch it.",
 
@@ -226,6 +234,7 @@ export const services: Service[] = [
   },
   {
     slug: "software-engineering",
+    explore: { caseStudySlug: "truecell", diagram: ["API", "Data", "Deploy"] },
     title: "Software Engineering",
     summary: "Software that's still easy to change a year from now.",
 
@@ -342,6 +351,7 @@ export const services: Service[] = [
   },
   {
     slug: "ai-engineering",
+    explore: { caseStudySlug: "medical-records-platform", diagram: ["Data", "Model", "Evals"] },
     title: "AI Engineering",
     summary: "AI that works in production, not just in the demo.",
 

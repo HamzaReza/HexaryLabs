@@ -1,12 +1,14 @@
 import { Container } from "@/components/ui/Container";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Section } from "@/components/ui/Section";
+import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
-import { CaseStudyCard } from "@/components/cards/CaseStudyCard";
+import { CaseStoryRow } from "@/components/cards/CaseStoryRow";
 import { work } from "@/content/work";
-import { REVEAL_STAGGER_MS } from "@/lib/motion";
 
 export function WorkSection() {
+  const featured = work.filter((study) => study.featured);
+
   return (
     <Section tone="light">
       <Container>
@@ -14,20 +16,19 @@ export function WorkSection() {
           title="Our Work"
           action={{ label: "See all Work", href: "/work" }}
         />
-        <div className="grid gap-8 lg:grid-cols-2">
-          {work.slice(0, 2).map((study, i) => (
-            <Reveal
-              key={study.slug}
-              variant="fade-up"
-              delay={i * REVEAL_STAGGER_MS}
-              className="h-full"
-            >
-              <CaseStudyCard
-                study={study}
-                sizes="(min-width: 1024px) 620px, 100vw"
-              />
+
+        <div className="flex flex-col gap-16 lg:gap-24">
+          {featured.map((study, i) => (
+            <Reveal key={study.slug} variant="fade-up">
+              <CaseStoryRow study={study} index={i} flip={i % 2 === 1} />
             </Reveal>
           ))}
+        </div>
+
+        <div className="mt-16 lg:mt-24">
+          <Button href="/work" variant="block">
+            See All Work
+          </Button>
         </div>
       </Container>
     </Section>

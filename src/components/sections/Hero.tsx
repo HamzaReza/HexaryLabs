@@ -1,6 +1,7 @@
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
-import { HexLattice } from "@/components/visuals/HexLattice";
+import { Annotation } from "@/components/ui/Annotation";
+import { HexAssembly } from "@/components/visuals/HexAssembly";
 
 export function Hero() {
   return (
@@ -12,8 +13,8 @@ export function Hero() {
             end<span className="text-accent">.</span>
           </h1>
 
-          <div className="lg:col-start-2 lg:row-span-3 lg:row-start-1">
-            <HexLattice />
+          <div className="lg:col-start-2 lg:row-span-4 lg:row-start-1">
+            <HexAssembly />
           </div>
 
           <p className="text-body-lg text-grey-600 lg:col-start-1 lg:row-start-2">
@@ -31,6 +32,12 @@ export function Hero() {
               See Our Work
             </Button>
           </div>
+
+          <p className="border-t-[0.8px] border-grey-100 pt-4 lg:col-start-1 lg:row-start-4">
+            <Annotation>
+              The team behind TrueCell, Kinein, and B2B Access
+            </Annotation>
+          </p>
         </div>
       </Container>
     </section>

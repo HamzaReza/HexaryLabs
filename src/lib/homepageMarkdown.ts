@@ -5,15 +5,15 @@ import { services } from "@/content/services";
 import { tech, techIntro } from "@/content/tech";
 import { process } from "@/content/process";
 
-const disciplines = [
-  "Product Strategy",
-  "UX Research",
-  "Design Systems",
-  "Web Platforms",
-  "Mobile Apps",
-  "AI Engineering",
-  "Cloud Infrastructure",
-  "Developer Tooling",
+import { groups } from "@/content/integrations";
+
+const capabilities = [
+  "Software development",
+  "AI automation",
+  "SaaS platforms",
+  "API integrations",
+  "CRM systems",
+  "Internal business tools",
 ];
 
 /**
@@ -34,7 +34,7 @@ export function buildHomepageMarkdown(): string {
     "",
     "[Tell Us What You're Building](/contact)",
     "",
-    `Disciplines: ${disciplines.join(", ")}`,
+    `Capabilities: ${capabilities.join(", ")}`,
     "",
   );
 
@@ -48,10 +48,12 @@ export function buildHomepageMarkdown(): string {
   lines.push(
     "## Our Work",
     "",
-    ...work.slice(0, 2).map((w) => {
-      const client = w.client ? `${w.client}: ` : "";
-      return `- **[${w.title}](/work/${w.slug})** — ${client}${w.summary}`;
-    }),
+    ...work
+      .filter((w) => w.featured)
+      .map((w) => {
+        const client = w.client ? `${w.client}: ` : "";
+        return `- **[${w.title}](/work/${w.slug})** — ${client}${w.summary}`;
+      }),
     "",
     "[See all work](/work)",
     "",
@@ -72,6 +74,17 @@ export function buildHomepageMarkdown(): string {
     techIntro,
     "",
     ...tech.map((group) => `- **${group.heading}**: ${group.items.join(", ")}`),
+    "",
+  );
+
+  lines.push(
+    "## What We Cover",
+    "",
+    `Capabilities: ${capabilities.join(", ")}.`,
+    "",
+    `Platforms we've integrated: ${groups
+      .flatMap((g) => g.platforms.map((p) => p.name))
+      .join(", ")} — [details](/integrations)`,
     "",
   );
 

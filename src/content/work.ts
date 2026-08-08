@@ -37,6 +37,7 @@ export type CaseStudy = {
   client: string;
   title: string;
   summary: string;
+  featured?: boolean;
   scope?: string[];
   variant: {
     hero: HeroVariant;
@@ -61,6 +62,7 @@ const UNSPLASH = "?auto=format&fit=crop&w=1600&q=80";
 export const work: CaseStudy[] = [
   {
     slug: "eden",
+    featured: true,
     client: "Eden Labs",
     title: "Eden",
     summary:
@@ -224,6 +226,7 @@ export const work: CaseStudy[] = [
   },
   {
     slug: "medical-records-platform",
+    featured: true,
     client: "A US-based medical records retrieval company (anonymized)",
     title: "Medical Records Integration & AI Platform",
     summary:
@@ -370,6 +373,7 @@ export const work: CaseStudy[] = [
   },
   {
     slug: "truecell",
+    featured: true,
     client: "TrueCell",
     title: "TrueCell",
     summary:
@@ -504,6 +508,7 @@ export const work: CaseStudy[] = [
   },
   {
     slug: "b2b-access",
+    featured: true,
     client: "B2B Access",
     title: "B2B Access",
     summary:
