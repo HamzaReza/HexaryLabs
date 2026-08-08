@@ -191,6 +191,8 @@ export function KineinStoryHero({
       ref={ref}
       onMouseEnter={onMouseEnter}
       onAnimationEnd={onAnimationEnd}
+      role="img"
+      aria-label="Three-scene story of the Kinein platform: a wholesale storefront order becomes a sales order in the ERP, then inventory and pricing sync back the other way"
       className={cn(
         "kin-loop relative overflow-hidden bg-base-2",
         aspect,

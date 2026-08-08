@@ -14,6 +14,7 @@ import { AnimatedCaseHero, hasAnimatedHero } from "../animatedHeroes";
 import { WorkImagesGrid } from "../WorkImagesGrid";
 import { work } from "@/content/work";
 import type { CaseStudy, Metric, CaseSection } from "@/content/work";
+import { site } from "@/content/site";
 import { JsonLd, breadcrumbList } from "@/lib/jsonld";
 import { pageMetadata } from "@/lib/seo";
 import { heroStaggerStyle as heroStyle } from "@/lib/motion";
@@ -469,7 +470,7 @@ export default async function CaseStudyPage({
     "@type": "CreativeWork",
     name: study.title,
     description: study.summary,
-    creator: { "@type": "Organization", name: "Hexary Labs" },
+    creator: { "@type": "Organization", name: site.name },
   };
 
   const breadcrumbJsonLd = breadcrumbList([

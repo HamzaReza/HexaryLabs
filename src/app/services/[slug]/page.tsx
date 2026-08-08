@@ -25,6 +25,7 @@ import {
   type ServiceFaq,
 } from "@/content/services";
 import { work } from "@/content/work";
+import { site } from "@/content/site";
 import { JsonLd, breadcrumbList } from "@/lib/jsonld";
 import { pageMetadata } from "@/lib/seo";
 
@@ -500,7 +501,7 @@ export default async function ServicePage({
     "@type": "Service",
     name: service.title,
     description: service.heroSubhead,
-    provider: { "@type": "Organization", name: "Hexary Labs" },
+    provider: { "@type": "Organization", name: site.name },
     areaServed: "Worldwide",
   };
 
