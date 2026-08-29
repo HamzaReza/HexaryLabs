@@ -6,17 +6,7 @@ import { ClippedPanel } from "@/components/ui/ClippedPanel";
 import { CaseCover } from "@/app/work/CaseCover";
 import { AnimatedCaseHero, hasAnimatedHero } from "@/app/work/animatedHeroes";
 import { cn } from "@/lib/cn";
-import type { CaseStudy } from "@/content/work";
-
-export const CLIENT_TAGS: Record<string, string> = {
-  eden: "Client · Eden Labs",
-  keepcoming: "In-house product",
-  "medical-records-platform": "Client · Anonymized",
-  "social-lead-capture-automation": "Client · Anonymized",
-  truecell: "Client · TrueCell",
-  kinein: "Client · Kinein",
-  "b2b-access": "Client · B2B Access",
-};
+import type { CaseStudy } from "@/lib/data/types";
 
 const VISUAL_ASPECT = "aspect-[4/3] sm:aspect-[1.7]";
 
@@ -69,7 +59,7 @@ export function CaseStoryRow({
 
       <div className={cn(flip && "lg:col-start-1 lg:row-start-1")}>
         <Annotation index={String(index + 1).padStart(2, "0")}>
-          {eyebrow ?? CLIENT_TAGS[study.slug] ?? study.client}
+          {eyebrow ?? study.client}
         </Annotation>
 
         <h3 className="mt-4 text-[1.625rem] leading-[1.2] lg:text-h3">

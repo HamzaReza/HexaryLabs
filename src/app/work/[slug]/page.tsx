@@ -6,23 +6,26 @@ import { ArrowIcon } from "@/components/ui/ArrowIcon";
 import { Annotation } from "@/components/ui/Annotation";
 import { ClippedPanel } from "@/components/ui/ClippedPanel";
 import { Reveal } from "@/components/ui/Reveal";
-import { CLIENT_TAGS } from "@/components/cards/CaseStoryRow";
 import { cn } from "@/lib/cn";
 import { CtaBand } from "@/components/sections/CtaBand";
 import { CaseCover, gradients } from "../CaseCover";
 import { AnimatedCaseHero, hasAnimatedHero } from "../animatedHeroes";
 import { WorkImagesGrid } from "../WorkImagesGrid";
-import { work } from "@/content/work";
-import type { CaseStudy, Metric, CaseSection } from "@/content/work";
-import { site } from "@/content/site";
+import {
+  getCaseStudyBySlug,
+  getCaseStudySlugs,
+  getClientTags,
+  getSiteMeta,
+} from "@/lib/data";
+import type { CaseStudy, Metric, CaseSection } from "@/lib/data/types";
 import { JsonLd, breadcrumbList } from "@/lib/jsonld";
 import { pageMetadata } from "@/lib/seo";
 import { heroStaggerStyle as heroStyle } from "@/lib/motion";
 
 type Params = { slug: string };
 
-export function generateStaticParams() {
-  return work.map((w) => ({ slug: w.slug }));
+export async function generateStaticParams() {
+  return (await getCaseStudySlugs()).map((slug) => ({ slug }));
 }
 
 const SEO_DESCRIPTION: Record<string, string> = {
@@ -48,7 +51,7 @@ export async function generateMetadata({
   params: Promise<Params>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const study = work.find((w) => w.slug === slug);
+  const study = await getCaseStudyBySlug(slug);
   if (!study) return {};
 
   return pageMetadata({
@@ -158,12 +161,12 @@ function PullQuote({ study, className }: { study: CaseStudy; className?: string 
   );
 }
 
-function HeroText({ study }: { study: CaseStudy }) {
+function HeroText({ study, eyebrow }: { study: CaseStudy; eyebrow: string }) {
   return (
     <>
       <p className="hero-stagger-item" style={heroStyle(0)}>
         <Annotation>
-          {study.category} · {CLIENT_TAGS[study.slug] ?? study.client}
+          {eyebrow}
         </Annotation>
       </p>
       <h1
@@ -182,7 +185,7 @@ function HeroText({ study }: { study: CaseStudy }) {
   );
 }
 
-function CaseHero({ study }: { study: CaseStudy }) {
+function CaseHero({ study, eyebrow }: { study: CaseStudy; eyebrow: string }) {
   const { hero } = study.variant;
 
   if (hero === "image-fullbleed") {
@@ -193,7 +196,7 @@ function CaseHero({ study }: { study: CaseStudy }) {
         </div>
         <section className="border-b-[0.8px] border-grey-100 bg-base pb-14 pt-12 lg:pb-20 lg:pt-16">
           <Container>
-            <HeroText study={study} />
+            <HeroText study={study} eyebrow={eyebrow} />
           </Container>
         </section>
       </>
@@ -206,7 +209,7 @@ function CaseHero({ study }: { study: CaseStudy }) {
         <Container>
           <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr] lg:items-end">
             <div>
-              <HeroText study={study} />
+              <HeroText study={study} eyebrow={eyebrow} />
             </div>
             {study.heroMetric && (
               <div
@@ -240,7 +243,7 @@ function CaseHero({ study }: { study: CaseStudy }) {
         <Container>
           <p className="hero-stagger-item" style={heroStyle(0)}>
             <Annotation>
-              {study.category} · {CLIENT_TAGS[study.slug] ?? study.client}
+              {eyebrow}
             </Annotation>
           </p>
           <h1
@@ -263,7 +266,7 @@ function CaseHero({ study }: { study: CaseStudy }) {
   return (
     <section className="border-b-[0.8px] border-grey-100 bg-base pb-14 pt-12 lg:pb-20 lg:pt-18">
       <Container>
-        <HeroText study={study} />
+        <HeroText study={study} eyebrow={eyebrow} />
         <div className="hero-stagger-item mt-12" style={heroStyle(3)}>
           <ClippedPanel clip="lg" bordered className="bg-base" as="figure">
             {hasAnimatedHero(study.slug) ? (
@@ -460,9 +463,14 @@ export default async function CaseStudyPage({
   params: Promise<Params>;
 }) {
   const { slug } = await params;
-  const study = work.find((w) => w.slug === slug);
+  const [study, clientTags, site] = await Promise.all([
+    getCaseStudyBySlug(slug),
+    getClientTags(),
+    getSiteMeta(),
+  ]);
   if (!study) notFound();
 
+  const eyebrow = `${study.category} · ${clientTags[study.slug] ?? study.client}`;
   const { body } = study.variant;
 
   const creativeWorkJsonLd = {
@@ -482,7 +490,7 @@ export default async function CaseStudyPage({
   return (
     <>
       <JsonLd data={[creativeWorkJsonLd, breadcrumbJsonLd]} />
-      <CaseHero study={study} />
+      <CaseHero study={study} eyebrow={eyebrow} />
       <TechArchStrip study={study} />
 
       {body === "sectioned" && <SectionedBody study={study} />}

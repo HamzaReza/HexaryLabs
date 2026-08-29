@@ -5,7 +5,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { Annotation } from "@/components/ui/Annotation";
 import { ClippedPanel } from "@/components/ui/ClippedPanel";
 import { ContactForm } from "@/components/sections/ContactForm";
-import { site } from "@/content/site";
+import { getSiteMeta } from "@/lib/data";
 import { JsonLd, breadcrumbList } from "@/lib/jsonld";
 import { pageMetadata } from "@/lib/seo";
 
@@ -44,7 +44,9 @@ const expectations = [
   },
 ];
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const site = await getSiteMeta();
+
   return (
     <Section tone="dark" className="texture-grid min-h-full">
       <JsonLd data={breadcrumbJsonLd} />

@@ -80,17 +80,22 @@
 
 /* Gradients + structural values that aren't Tailwind scales */
 :root {
+  /* Rule midpoint — a warm grey between grey-600 and grey-700, used only by the
+     fading dividers. Named here rather than repeated as a literal in both
+     gradients and their transparent endpoints. */
+  --rule-ink: 75, 72, 57; /* #4b4839 as channels, so the stops can vary alpha */
+
   --gradient-rule-v: linear-gradient(
     180deg,
-    rgba(75, 72, 57, 0) 0%,
-    #4b4839 49%,
-    rgba(75, 72, 57, 0) 100%
+    rgba(var(--rule-ink), 0) 0%,
+    rgb(var(--rule-ink)) 49%,
+    rgba(var(--rule-ink), 0) 100%
   );
   --gradient-rule-h: linear-gradient(
     270deg,
-    rgba(75, 72, 57, 0) 0%,
-    #4b4839 49%,
-    rgba(75, 72, 57, 0) 100%
+    rgba(var(--rule-ink), 0) 0%,
+    rgb(var(--rule-ink)) 49%,
+    rgba(var(--rule-ink), 0) 100%
   );
   --header-h: 87px;
   --texture-ink: rgba(20, 19, 15, 0.07);

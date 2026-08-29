@@ -1,5 +1,4 @@
-import { site } from "@/content/site";
-import { work } from "@/content/work";
+import { getCaseStudyBySlug, getSiteMeta } from "@/lib/data";
 import { renderOgImage, OG_SIZE } from "@/lib/ogImage";
 
 export const alt = "Hexary Labs case study";
@@ -12,9 +11,10 @@ export default async function Image({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const study = work.find((w) => w.slug === slug);
+  const study = await getCaseStudyBySlug(slug);
 
   if (!study) {
+    const site = await getSiteMeta();
     return renderOgImage({ title: site.tagline });
   }
 

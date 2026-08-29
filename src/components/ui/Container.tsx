@@ -18,7 +18,9 @@ export function Container({
       <div
         className={cn(
           "mx-auto w-full",
-          wide ? "max-w-[1400px]" : "max-w-[1200px]",
+          /* --container-content / --container-wide in globals.css @theme; these
+             were duplicated here as literals. */
+          wide ? "max-w-wide" : "max-w-content",
           className,
         )}
       >

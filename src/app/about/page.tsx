@@ -10,12 +10,7 @@ import { HexCluster } from "@/components/ui/HexCluster";
 import { ConnectorLine } from "@/components/ui/ConnectorLine";
 import { ClosingCta } from "@/components/sections/ClosingCta";
 import { cn } from "@/lib/cn";
-import {
-  whyWeExist,
-  whosBehind,
-  whereExpertiseRanges,
-  whyChooseUs,
-} from "@/content/about";
+import { getAboutContent } from "@/lib/data";
 import { JsonLd, breadcrumbList } from "@/lib/jsonld";
 import { pageMetadata } from "@/lib/seo";
 
@@ -33,7 +28,10 @@ const breadcrumbJsonLd = breadcrumbList([
 
 const contentHeading = "text-[1.3125rem] leading-[1.2] md:text-[1.625rem] lg:text-h3";
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const { whyWeExist, whosBehind, whereExpertiseRanges, whyChooseUs } =
+    await getAboutContent();
+
   return (
     <>
       <JsonLd data={breadcrumbJsonLd} />

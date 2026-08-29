@@ -5,29 +5,16 @@ import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Annotation } from "@/components/ui/Annotation";
 import { ClippedPanel } from "@/components/ui/ClippedPanel";
 import { HexCluster } from "@/components/ui/HexCluster";
-import { tech, techIntro } from "@/content/tech";
-import { work } from "@/content/work";
+import { getTechGroups, getTechIntro, getToolCaseStudyLinks } from "@/lib/data";
 
 /* 5.4: categories as hexagonal modules; every tool that appears in a shipped
    case study's stack links to that case study — capability tied to evidence,
-   derived at render time so it can't drift from work.ts. Names stay text
-   marks (no vendor logos, no trademarks). */
-function caseStudyFor(tool: string): { slug: string; title: string } | null {
-  const normalized = tool.toLowerCase();
-  for (const study of work) {
-    if (
-      study.stack.some((s) => {
-        const entry = s.toLowerCase();
-        return entry === normalized || entry.startsWith(`${normalized} `) || entry.startsWith(`${normalized}(`);
-      })
-    ) {
-      return { slug: study.slug, title: study.title };
-    }
-  }
-  return null;
-}
+   derived from the data layer so it can't drift from the case studies. Names
+   stay text marks (no vendor logos, no trademarks). */
+export async function TechStack() {
+  const [tech, techIntro] = await Promise.all([getTechGroups(), getTechIntro()]);
+  const links = await getToolCaseStudyLinks(tech.flatMap((group) => group.items));
 
-export function TechStack() {
   return (
     <Section tone="light">
       <Container>
@@ -54,7 +41,7 @@ export function TechStack() {
 
               <ul className="mt-6 grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-3">
                 {group.items.map((item) => {
-                  const linked = caseStudyFor(item);
+                  const linked = links[item] ?? null;
                   return (
                     <li key={item} className="font-display text-body text-contrast-2">
                       {linked ? (

@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { ArrowIcon } from "./ArrowIcon";
 import { cn } from "@/lib/cn";
-
-type Variant = "primary" | "secondary" | "accent" | "block";
-type Size = "sm" | "md" | "lg";
+import {
+  CLIP_CLASS,
+  type ButtonSize as Size,
+  type ButtonVariant as Variant,
+} from "@/lib/ui/constants";
 
 /**
  * Blueprint buttons: pentagonal silhouette (top-right corner clipped at 10px),
@@ -19,14 +21,14 @@ type Size = "sm" | "md" | "lg";
  */
 const filledVariants: Record<Exclude<Variant, "secondary">, string> = {
   primary: cn(
-    "clip-corner [--clip:10px]",
+    cn("clip-corner", CLIP_CLASS.sm),
     "bg-contrast-2 text-white",
     "hover:bg-accent hover:text-white",
     "[[data-tone=dark]_&]:bg-base [[data-tone=dark]_&]:text-contrast-2",
     "[[data-tone=dark]_&]:hover:bg-accent [[data-tone=dark]_&]:hover:text-white",
   ),
   accent: cn(
-    "clip-corner [--clip:10px]",
+    cn("clip-corner", CLIP_CLASS.sm),
     "bg-accent text-white",
     "hover:bg-base hover:text-accent",
     "[[data-tone=dark]_&]:hover:bg-base [[data-tone=dark]_&]:hover:text-accent",
@@ -41,13 +43,13 @@ const filledVariants: Record<Exclude<Variant, "secondary">, string> = {
 };
 
 const secondaryOuter = cn(
-  "clip-corner [--clip:10px] p-hairline group/btn",
+  cn("clip-corner p-hairline group/btn", CLIP_CLASS.sm),
   "bg-contrast-2 hover:bg-accent",
   "[[data-tone=dark]_&]:bg-base [[data-tone=dark]_&]:hover:bg-accent-hi",
 );
 
 const secondaryInner = cn(
-  "clip-corner [--clip:10px]",
+  cn("clip-corner", CLIP_CLASS.sm),
   "bg-base text-contrast-2 group-hover/btn:text-accent",
   "[[data-tone=dark]_&]:bg-contrast-2 [[data-tone=dark]_&]:text-base",
   "[[data-tone=dark]_&]:group-hover/btn:text-accent-hi",

@@ -8,7 +8,7 @@ import { MobileMenu } from "./MobileMenu";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { ArrowIcon } from "@/components/ui/ArrowIcon";
-import { nav, headerCta } from "@/content/nav";
+import type { NavItem, NavLink } from "@/lib/data/types";
 import { cn } from "@/lib/cn";
 
 /**
@@ -17,8 +17,11 @@ import { cn } from "@/lib/cn";
  * Desktop dropdown is the reference's full-width mega *bar*: cells across the
  * container width, each label + boxed arrow, hairline dividers between.
  * Opens on hover AND focus-within; Esc closes.
+ *
+ * Nav data arrives as props from the server layout rather than being imported —
+ * this is a client component, so it can't await the data layer itself.
  */
-export function Header() {
+export function Header({ nav, headerCta }: { nav: NavItem[]; headerCta: NavLink }) {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
@@ -117,7 +120,13 @@ export function Header() {
         </div>
       </Container>
 
-      {mobileOpen && <MobileMenu onClose={() => setMobileOpen(false)} />}
+      {mobileOpen && (
+        <MobileMenu
+          nav={nav}
+          headerCta={headerCta}
+          onClose={() => setMobileOpen(false)}
+        />
+      )}
     </header>
   );
 }

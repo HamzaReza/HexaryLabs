@@ -4,7 +4,7 @@ import { Section } from "@/components/ui/Section";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { Annotation } from "@/components/ui/Annotation";
 import { ArrowIcon } from "@/components/ui/ArrowIcon";
-import { groups } from "@/content/integrations";
+import { getPlatformNames } from "@/lib/data";
 
 /* Objective 2-3: name all six capability areas, each linking to the page
    that proves it, plus the platform mesh from /integrations. Content
@@ -18,8 +18,8 @@ const capabilities = [
   { label: "Internal business tools", href: "/work/kinein" },
 ];
 
-export function CapabilitiesBand() {
-  const platforms = groups.flatMap((g) => g.platforms.map((p) => p.name));
+export async function CapabilitiesBand() {
+  const platforms = await getPlatformNames();
 
   return (
     <Section tone="muted">

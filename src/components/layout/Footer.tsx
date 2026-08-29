@@ -3,14 +3,15 @@ import { Logo } from "./Logo";
 import { Container } from "@/components/ui/Container";
 import { Divider } from "@/components/ui/Divider";
 import { ArrowIcon } from "@/components/ui/ArrowIcon";
-import { footerNav } from "@/content/nav";
-import { site } from "@/content/site";
+import { getFooterNav, getSiteMeta } from "@/lib/data";
 
 /**
  * Footer — the reference's anatomy: hairline column grid, a full-width CTA row
  * beneath it, then a bottom bar (social / legal / contact).
  */
-export function Footer() {
+export async function Footer() {
+  const [footerNav, site] = await Promise.all([getFooterNav(), getSiteMeta()]);
+
   return (
     <footer data-tone="dark" className="bg-contrast-2 text-white">
       <Container>

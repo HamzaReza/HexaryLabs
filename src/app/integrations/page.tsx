@@ -9,14 +9,7 @@ import { Annotation } from "@/components/ui/Annotation";
 import { ClippedPanel } from "@/components/ui/ClippedPanel";
 import { ConnectorLine } from "@/components/ui/ConnectorLine";
 import { ClosingCta } from "@/components/sections/ClosingCta";
-import {
-  hero,
-  intro,
-  groups,
-  scopeNote,
-  approach,
-  closing,
-} from "@/content/integrations";
+import { getIntegrationsContent } from "@/lib/data";
 import { JsonLd, breadcrumbList } from "@/lib/jsonld";
 import { pageMetadata } from "@/lib/seo";
 
@@ -32,7 +25,10 @@ const breadcrumbJsonLd = breadcrumbList([
   { name: "Integrations", path: "/integrations" },
 ]);
 
-export default function IntegrationsPage() {
+export default async function IntegrationsPage() {
+  const { hero, intro, groups, scopeNote, approach, closing } =
+    await getIntegrationsContent();
+
   return (
     <>
       <JsonLd data={breadcrumbJsonLd} />

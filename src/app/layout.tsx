@@ -2,10 +2,14 @@ import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Mono, Inter, Space_Grotesk } from "next/font/google";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { site } from "@/content/site";
+import { getHeaderCta, getNav, getSiteMetaSync } from "@/lib/data";
 import { truncateAtWord } from "@/lib/truncate";
 import { JsonLd } from "@/lib/jsonld";
 import "./globals.css";
+
+/* Module scope: `metadata` and the JSON-LD constants below are read statically by
+   Next before any request, so they can't await. */
+const site = getSiteMetaSync();
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -80,9 +84,11 @@ const websiteJsonLd = {
   url: site.url,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const [nav, headerCta] = await Promise.all([getNav(), getHeaderCta()]);
+
   return (
     <html
       lang="en"
@@ -97,7 +103,7 @@ export default function RootLayout({
         >
           Skip to content
         </a>
-        <Header />
+        <Header nav={nav} headerCta={headerCta} />
         <main id="main" className="flex-1">
           {children}
         </main>

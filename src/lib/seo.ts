@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { site } from "@/content/site";
+import { getSiteMetaSync } from "@/lib/data";
 
 export function pageMetadata({
   title,
@@ -10,6 +10,7 @@ export function pageMetadata({
   description: string;
   path: string;
 }): Metadata {
+  const site = getSiteMetaSync();
   const socialTitle = `${title} | ${site.name}`;
 
   return {

@@ -4,8 +4,8 @@ import { Section } from "@/components/ui/Section";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { ClosingCta } from "@/components/sections/ClosingCta";
-import { CaseStoryRow, CLIENT_TAGS } from "@/components/cards/CaseStoryRow";
-import { work, WORK_INTRO } from "@/content/work";
+import { CaseStoryRow } from "@/components/cards/CaseStoryRow";
+import { getClientTags, getListedWork, getWorkIntro } from "@/lib/data";
 import { JsonLd, breadcrumbList } from "@/lib/jsonld";
 import { pageMetadata } from "@/lib/seo";
 
@@ -21,16 +21,14 @@ const breadcrumbJsonLd = breadcrumbList([
   { name: "Work", path: "/work" },
 ]);
 
-/* Live at its URL and in the sitemap, but not listed in the grid — shared
-   directly with prospects instead. */
-const UNLISTED_SLUGS = new Set(["social-lead-capture-automation"]);
-
-export default function WorkPage() {
-  const listed = work.filter((study) => !UNLISTED_SLUGS.has(study.slug));
-  const ordered = [
-    ...listed.filter((s) => s.featured),
-    ...listed.filter((s) => !s.featured),
-  ];
+export default async function WorkPage() {
+  /* Unlisted studies filtered and featured-first ordering both live in the data
+     layer now, so the homepage and this page can't disagree about either. */
+  const [ordered, clientTags, WORK_INTRO] = await Promise.all([
+    getListedWork(),
+    getClientTags(),
+    getWorkIntro(),
+  ]);
 
   return (
     <>
@@ -57,7 +55,7 @@ export default function WorkPage() {
                   study={study}
                   index={i}
                   flip={i % 2 === 1}
-                  eyebrow={`${study.category} · ${CLIENT_TAGS[study.slug] ?? study.client}`}
+                  eyebrow={`${study.category} · ${clientTags[study.slug] ?? study.client}`}
                 />
               </Reveal>
             ))}

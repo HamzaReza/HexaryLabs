@@ -2,7 +2,7 @@ import Image from "next/image";
 import { cn } from "@/lib/cn";
 import { Reveal } from "@/components/ui/Reveal";
 import { REVEAL_STAGGER_MS } from "@/lib/motion";
-import type { WorkImage } from "@/content/work";
+import type { WorkImage } from "@/lib/data/types";
 
 const SIZE_CLASSES: Record<WorkImage["size"], string> = {
   small: "aspect-square md:col-span-2",

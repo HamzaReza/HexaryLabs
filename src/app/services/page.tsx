@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { ArrowIcon } from "@/components/ui/ArrowIcon";
 import { Reveal } from "@/components/ui/Reveal";
 import { ClosingCta } from "@/components/sections/ClosingCta";
-import { services, servicesOverview } from "@/content/services";
+import { getServices, getServicesOverview } from "@/lib/data";
 import { JsonLd, breadcrumbList } from "@/lib/jsonld";
 import { pageMetadata } from "@/lib/seo";
 
@@ -23,7 +23,12 @@ const breadcrumbJsonLd = breadcrumbList([
   { name: "Services", path: "/services" },
 ]);
 
-export default function ServicesPage() {
+export default async function ServicesPage() {
+  const [services, servicesOverview] = await Promise.all([
+    getServices(),
+    getServicesOverview(),
+  ]);
+
   const { hero, notSure, closing } = servicesOverview;
 
   return (

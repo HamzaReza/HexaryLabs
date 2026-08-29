@@ -1,5 +1,4 @@
-import { site } from "@/content/site";
-import { services } from "@/content/services";
+import { getServiceBySlug, getSiteMeta } from "@/lib/data";
 import { renderOgImage, OG_SIZE } from "@/lib/ogImage";
 
 export const alt = "Hexary Labs service";
@@ -12,9 +11,10 @@ export default async function Image({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const service = services.find((s) => s.slug === slug);
+  const service = await getServiceBySlug(slug);
 
   if (!service) {
+    const site = await getSiteMeta();
     return renderOgImage({ title: site.tagline });
   }
 

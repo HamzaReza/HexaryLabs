@@ -17,11 +17,11 @@ import { buildHomepageMarkdown } from "@/lib/homepageMarkdown";
  * Scoped to `/` only for now (see matcher below); the same pattern can be
  * extended to other routes with per-page markdown builders later.
  */
-export function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const accept = request.headers.get("accept") ?? "";
 
   if (accept.includes("text/markdown")) {
-    const markdown = buildHomepageMarkdown();
+    const markdown = await buildHomepageMarkdown();
     return new NextResponse(markdown, {
       headers: {
         "Content-Type": "text/markdown; charset=utf-8",

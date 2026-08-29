@@ -1,9 +1,13 @@
 import type { MetadataRoute } from "next";
-import { site } from "@/content/site";
-import { services } from "@/content/services";
-import { work } from "@/content/work";
+import { getCaseStudySlugs, getServiceSlugs, getSiteMeta } from "@/lib/data";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const [site, serviceSlugs, caseStudySlugs] = await Promise.all([
+    getSiteMeta(),
+    getServiceSlugs(),
+    getCaseStudySlugs(),
+  ]);
+
   const routes = [
     "",
     "/services",
@@ -21,14 +25,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: r === "" ? 1 : 0.8,
     })),
-    ...services.map((s) => ({
-      url: `${site.url}/services/${s.slug}`,
+    ...serviceSlugs.map((slug) => ({
+      url: `${site.url}/services/${slug}`,
       lastModified: new Date(),
       changeFrequency: "monthly" as const,
       priority: 0.7,
     })),
-    ...work.map((w) => ({
-      url: `${site.url}/work/${w.slug}`,
+    ...caseStudySlugs.map((slug) => ({
+      url: `${site.url}/work/${slug}`,
       lastModified: new Date(),
       changeFrequency: "monthly" as const,
       priority: 0.7,

@@ -1,11 +1,13 @@
-import { site } from "@/content/site";
-import { stats } from "@/content/stats";
-import { work } from "@/content/work";
-import { services } from "@/content/services";
-import { tech, techIntro } from "@/content/tech";
-import { process } from "@/content/process";
-
-import { groups } from "@/content/integrations";
+import {
+  getCaseStudies,
+  getIntegrationGroups,
+  getProcessSteps,
+  getServices,
+  getSiteMeta,
+  getStats,
+  getTechGroups,
+  getTechIntro,
+} from "@/lib/data";
 
 const capabilities = [
   "Software development",
@@ -22,7 +24,19 @@ const capabilities = [
  * renders from, so it stays in sync with what's actually on the page rather
  * than an HTML-to-text scrape.
  */
-export function buildHomepageMarkdown(): string {
+export async function buildHomepageMarkdown(): Promise<string> {
+  const [site, stats, work, services, tech, techIntro, process, groups] =
+    await Promise.all([
+      getSiteMeta(),
+      getStats(),
+      getCaseStudies(),
+      getServices(),
+      getTechGroups(),
+      getTechIntro(),
+      getProcessSteps(),
+      getIntegrationGroups(),
+    ]);
+
   const lines: string[] = [];
 
   lines.push(`# ${site.name} — ${site.tagline}`, "", site.description, "");

@@ -8,20 +8,24 @@ import { ClippedPanel } from "@/components/ui/ClippedPanel";
 import { HexCluster } from "@/components/ui/HexCluster";
 import { CaseCover } from "@/app/work/CaseCover";
 import { cn } from "@/lib/cn";
-import { services } from "@/content/services";
-import { work } from "@/content/work";
+import type { CaseStudy, Service } from "@/lib/data/types";
+
+/** A service paired with the case study it points at for proof. */
+export type ServiceWithProof = { service: Service; study: CaseStudy | null };
 
 /* 5.3: gradual disclosure instead of the old hover wipe. Click/tap-driven so
    mobile needs no hover; one panel open at a time. Everything revealed is
-   pulled from the linked case study — no free-standing claims. */
-export function ServicesExplorer() {
+   pulled from the linked case study — no free-standing claims.
+
+   Client component: the service/case-study join is done by the server parent
+   and handed over as props. */
+export function ServicesExplorer({ items }: { items: ServiceWithProof[] }) {
   const [open, setOpen] = useState(0);
   const baseId = useId();
 
   return (
     <ul className="border-t-[0.8px] border-grey-200">
-      {services.map((service, i) => {
-        const study = work.find((w) => w.slug === service.explore.caseStudySlug);
+      {items.map(({ service, study }, i) => {
         const isOpen = open === i;
         const panelId = `${baseId}-panel-${i}`;
         const buttonId = `${baseId}-button-${i}`;

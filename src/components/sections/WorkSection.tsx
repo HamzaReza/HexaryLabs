@@ -4,10 +4,13 @@ import { Section } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
 import { Reveal } from "@/components/ui/Reveal";
 import { CaseStoryRow } from "@/components/cards/CaseStoryRow";
-import { work } from "@/content/work";
+import { getClientTags, getFeaturedWork } from "@/lib/data";
 
-export function WorkSection() {
-  const featured = work.filter((study) => study.featured);
+export async function WorkSection() {
+  const [featured, clientTags] = await Promise.all([
+    getFeaturedWork(),
+    getClientTags(),
+  ]);
 
   return (
     <Section tone="light">
@@ -20,7 +23,12 @@ export function WorkSection() {
         <div className="flex flex-col gap-16 lg:gap-24">
           {featured.map((study, i) => (
             <Reveal key={study.slug} variant="fade-up">
-              <CaseStoryRow study={study} index={i} flip={i % 2 === 1} />
+              <CaseStoryRow
+                study={study}
+                index={i}
+                flip={i % 2 === 1}
+                eyebrow={clientTags[study.slug] ?? study.client}
+              />
             </Reveal>
           ))}
         </div>

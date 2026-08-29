@@ -1,6 +1,5 @@
 import { cn } from "@/lib/cn";
-
-type Tone = "light" | "muted" | "dark";
+import { TONE_CLASS, type Tone } from "@/lib/ui/constants";
 
 /**
  * Vertical rhythm + surface tone. Section padding 40 / 56 / 80px
@@ -10,12 +9,6 @@ type Tone = "light" | "muted" | "dark";
  * `data-tone` is what descendants (Button, Divider, links) key off, so no
  * component needs a tone prop.
  */
-const tones: Record<Tone, string> = {
-  light: "bg-base text-contrast",
-  muted: "bg-base-2 text-contrast",
-  dark: "bg-contrast-2 text-white",
-};
-
 export function Section({
   children,
   tone = "light",
@@ -31,7 +24,7 @@ export function Section({
     <section
       id={id}
       data-tone={tone}
-      className={cn("py-10 md:py-14 lg:py-20", tones[tone], className)}
+      className={cn("py-10 md:py-14 lg:py-20", TONE_CLASS[tone], className)}
     >
       {children}
     </section>

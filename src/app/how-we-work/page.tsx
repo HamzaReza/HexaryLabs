@@ -10,13 +10,7 @@ import { HexCluster } from "@/components/ui/HexCluster";
 import { DirectionalMarker } from "@/components/ui/DirectionalMarker";
 import { ClosingCta } from "@/components/sections/ClosingCta";
 import { cn } from "@/lib/cn";
-import {
-  hero,
-  intro,
-  phases,
-  whatWeAsk,
-  closing,
-} from "@/content/how-we-work";
+import { getHowWeWorkContent } from "@/lib/data";
 import { JsonLd, breadcrumbList } from "@/lib/jsonld";
 import { pageMetadata } from "@/lib/seo";
 
@@ -32,7 +26,10 @@ const breadcrumbJsonLd = breadcrumbList([
   { name: "How We Work", path: "/how-we-work" },
 ]);
 
-export default function HowWeWorkPage() {
+export default async function HowWeWorkPage() {
+  const { hero, intro, phases, whatWeAsk, closing } =
+    await getHowWeWorkContent();
+
   return (
     <>
       <JsonLd data={breadcrumbJsonLd} />

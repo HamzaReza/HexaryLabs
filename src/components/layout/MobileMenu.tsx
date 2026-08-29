@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { nav, headerCta } from "@/content/nav";
+import type { NavItem, NavLink } from "@/lib/data/types";
 import { ArrowIcon } from "@/components/ui/ArrowIcon";
 import { cn } from "@/lib/cn";
 
@@ -13,8 +13,19 @@ import { cn } from "@/lib/cn";
  * parent turns accent, CTA as a full-width filled bar at the end.
  *
  * Adds what the reference lacks: focus trap, Esc to close, scroll lock.
+ *
+ * Nav data is forwarded from `Header` rather than imported — client components
+ * can't await the data layer.
  */
-export function MobileMenu({ onClose }: { onClose: () => void }) {
+export function MobileMenu({
+  nav,
+  headerCta,
+  onClose,
+}: {
+  nav: NavItem[];
+  headerCta: NavLink;
+  onClose: () => void;
+}) {
   const pathname = usePathname();
   const panelRef = useRef<HTMLDivElement>(null);
 

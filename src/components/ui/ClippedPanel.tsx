@@ -1,12 +1,5 @@
 import { cn } from "@/lib/cn";
-
-type ClipSize = "sm" | "md" | "lg";
-
-const clipSizes: Record<ClipSize, string> = {
-  sm: "[--clip:10px]",
-  md: "[--clip:18px]",
-  lg: "[--clip:28px]",
-};
+import { CLIP_CLASS, type ClipSize } from "@/lib/ui/constants";
 
 interface ClippedPanelProps {
   children: React.ReactNode;
@@ -28,7 +21,7 @@ export function ClippedPanel({
 }: ClippedPanelProps) {
   if (!bordered) {
     return (
-      <Tag className={cn("clip-corner", clipSizes[clip], className)}>
+      <Tag className={cn("clip-corner", CLIP_CLASS[clip], className)}>
         {children}
       </Tag>
     );
@@ -38,10 +31,10 @@ export function ClippedPanel({
     <Tag
       className={cn(
         "clip-corner p-hairline bg-grey-200 [[data-tone=dark]_&]:bg-grey-700",
-        clipSizes[clip],
+        CLIP_CLASS[clip],
       )}
     >
-      <div className={cn("clip-corner h-full", clipSizes[clip], className)}>
+      <div className={cn("clip-corner h-full", CLIP_CLASS[clip], className)}>
         {children}
       </div>
     </Tag>

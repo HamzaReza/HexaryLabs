@@ -5,15 +5,18 @@ import { Reveal } from "@/components/ui/Reveal";
 import { Annotation } from "@/components/ui/Annotation";
 import { ClippedPanel } from "@/components/ui/ClippedPanel";
 import { DirectionalMarker } from "@/components/ui/DirectionalMarker";
-import { process } from "@/content/process";
-import { phases } from "@/content/how-we-work";
+import { getProcessSteps } from "@/lib/data";
 
 const STEP_OFFSETS = ["lg:mt-0", "lg:mt-10", "lg:mt-20", "lg:mt-30"];
 
 /* 5.5: a process map, not a row of equally weighted columns — stages step
    down across layers with directional markers carrying the flow. Each stage
    also surfaces its deliverable from the full process page's content. */
-export function ProcessSection() {
+export async function ProcessSection() {
+  /* Steps arrive already joined to their deliverables, keyed on `number` — this
+     used to pair `process[i]` with `phases[i]` by array index. */
+  const steps = await getProcessSteps();
+
   return (
     <Section tone="light">
       <Container>
@@ -28,8 +31,8 @@ export function ProcessSection() {
         />
 
         <ol className="flex flex-col gap-4 lg:grid lg:grid-cols-[1fr_auto_1fr_auto_1fr_auto_1fr] lg:items-start lg:gap-0">
-          {process.map((step, i) => {
-            const deliverable = phases[i]?.deliverable;
+          {steps.map((step, i) => {
+            const deliverable = step.deliverable;
             return (
               <li key={step.number} className="contents">
                 {i > 0 && (

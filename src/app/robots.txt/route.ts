@@ -1,6 +1,7 @@
-import { site } from "@/content/site";
+import { getSiteMetaSync } from "@/lib/data";
 
 export function GET() {
+  const site = getSiteMetaSync();
   const body = `User-Agent: *
 Content-Signal: search=yes, ai-train=no, ai-input=yes
 Allow: /

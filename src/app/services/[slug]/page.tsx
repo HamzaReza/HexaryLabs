@@ -15,24 +15,27 @@ import { HexCluster } from "@/components/ui/HexCluster";
 import { DirectionalMarker } from "@/components/ui/DirectionalMarker";
 import { ClosingCta } from "@/components/sections/ClosingCta";
 import { CaseCover } from "@/app/work/CaseCover";
-import { CLIENT_TAGS } from "@/components/cards/CaseStoryRow";
 import { cn } from "@/lib/cn";
 import {
-  services,
-  type Service,
-  type ServiceStep,
-  type ComparisonRow,
-  type ServiceFaq,
-} from "@/content/services";
-import { work } from "@/content/work";
-import { site } from "@/content/site";
+  getClientTags,
+  getRelatedCaseStudy,
+  getServiceBySlug,
+  getServiceSlugs,
+  getSiteMeta,
+} from "@/lib/data";
+import type {
+  Service,
+  ServiceStep,
+  ComparisonRow,
+  ServiceFaq,
+} from "@/lib/data/types";
 import { JsonLd, breadcrumbList } from "@/lib/jsonld";
 import { pageMetadata } from "@/lib/seo";
 
 type Params = { slug: string };
 
-export function generateStaticParams() {
-  return services.map((s) => ({ slug: s.slug }));
+export async function generateStaticParams() {
+  return (await getServiceSlugs()).map((slug) => ({ slug }));
 }
 
 const SEO_META: Record<string, { title: string; description: string }> = {
@@ -65,7 +68,7 @@ export async function generateMetadata({
   params: Promise<Params>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const service = services.find((s) => s.slug === slug);
+  const service = await getServiceBySlug(slug);
   if (!service) return {};
 
   const seo = SEO_META[service.slug];
@@ -205,8 +208,11 @@ function MidCta({ label }: { label: string }) {
   );
 }
 
-function RelatedWork({ service, flip }: { service: Service; flip?: boolean }) {
-  const study = work.find((w) => w.slug === service.explore.caseStudySlug);
+async function RelatedWork({ service, flip }: { service: Service; flip?: boolean }) {
+  const [study, clientTags] = await Promise.all([
+    getRelatedCaseStudy(service),
+    getClientTags(),
+  ]);
   if (!study) return null;
 
   return (
@@ -218,7 +224,7 @@ function RelatedWork({ service, flip }: { service: Service; flip?: boolean }) {
     >
       <div>
         <Annotation>
-          Related work · {study.category} · {CLIENT_TAGS[study.slug] ?? study.client}
+          Related work · {study.category} · {clientTags[study.slug] ?? study.client}
         </Annotation>
         <h2 className={cn(contentHeading, "mt-4")}>{study.title}</h2>
         <p className="mt-4 text-body-lg text-grey-600">{study.summary}</p>
@@ -489,10 +495,17 @@ export default async function ServicePage({
   params: Promise<Params>;
 }) {
   const { slug } = await params;
-  const service = services.find((s) => s.slug === slug);
+  const [service, site, slugs] = await Promise.all([
+    getServiceBySlug(slug),
+    getSiteMeta(),
+    getServiceSlugs(),
+  ]);
   if (!service) notFound();
 
-  const flip = services.indexOf(service) % 2 === 1;
+  /* Alternate the related-work composition by the service's position in the
+     list. Keyed on slug rather than object identity, which no longer survives
+     the data layer. */
+  const flip = slugs.indexOf(service.slug) % 2 === 1;
   const blocks = buildBlocks(service, flip);
   const midCtaAfter = "approach";
 

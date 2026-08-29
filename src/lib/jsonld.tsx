@@ -1,4 +1,4 @@
-import { site } from "@/content/site";
+import { getSiteMetaSync } from "@/lib/data";
 
 /** Renders a `<script type="application/ld+json">` tag, escaping `<` so embedded content can't break out of the script context. */
 export function JsonLd({ data }: { data: object | object[] }) {
@@ -14,6 +14,7 @@ export type BreadcrumbItem = { name: string; path: string };
 
 /** Builds BreadcrumbList JSON-LD from a list of {name, path} pairs, in order from Home to the current page. */
 export function breadcrumbList(items: BreadcrumbItem[]) {
+  const site = getSiteMetaSync();
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",

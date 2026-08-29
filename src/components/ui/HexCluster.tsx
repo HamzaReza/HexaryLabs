@@ -1,7 +1,8 @@
 import { useId } from "react";
 import { cn } from "@/lib/cn";
 
-export type HexRole = "outline" | "ink" | "signal" | "textured";
+export type { HexRole } from "@/lib/ui/constants";
+import type { HexRole } from "@/lib/ui/constants";
 
 export interface HexCell {
   q: number;

@@ -1,14 +1,14 @@
 import { Container } from "@/components/ui/Container";
+import { Section } from "@/components/ui/Section";
 import { CountUp } from "@/components/ui/CountUp";
 import { Annotation } from "@/components/ui/Annotation";
-import { stats } from "@/content/stats";
+import { getStats } from "@/lib/data";
 
-export function StatsBand() {
+export async function StatsBand() {
+  const stats = await getStats();
+
   return (
-    <section
-      data-tone="dark"
-      className="texture-grid bg-contrast-2 py-10 md:py-14 lg:py-20"
-    >
+    <Section tone="dark" className="texture-grid">
       <Container>
         <ul className="grid sm:grid-cols-3">
           {stats.map((stat, i) => (
@@ -43,6 +43,6 @@ export function StatsBand() {
           ))}
         </ul>
       </Container>
-    </section>
+    </Section>
   );
 }

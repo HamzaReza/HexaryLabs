@@ -8,7 +8,7 @@ import {
   parsePhoneNumberFromString,
   type CountryCode,
 } from "libphonenumber-js";
-import { site } from "@/content/site";
+import { getSiteMeta } from "@/lib/data";
 import { dialCodes } from "@/lib/dialCodes";
 
 const contactSchema = z
@@ -109,6 +109,8 @@ export async function submitContactForm(
     phoneLine,
   ].filter(Boolean);
   const text = `${details.join("\n")}\n\n${message}`;
+
+  const site = await getSiteMeta();
 
   try {
     const resend = new Resend(process.env.RESEND_API_KEY);

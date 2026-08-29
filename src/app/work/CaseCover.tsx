@@ -4,7 +4,7 @@ import { Schematic } from "./Schematic";
 import { EdenSchematic } from "./EdenSchematic";
 import { MedicalRecordsSchematic } from "./MedicalRecordsSchematic";
 import { SocialLeadCaptureSchematic } from "./SocialLeadCaptureSchematic";
-import type { Cover, GradientTone } from "@/content/work";
+import type { Cover, GradientTone } from "@/lib/data/types";
 import { CARD_HOVER_ZOOM, cardHoverZoomStyle } from "@/lib/motion";
 
 export const gradients: Record<GradientTone, string> = {
