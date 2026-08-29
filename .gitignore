@@ -43,3 +43,6 @@ next-env.d.ts
 
 # OS junk
 Thumbs.db
+
+# design-review artifacts (per-phase comparison pages and working screenshots)
+/review
