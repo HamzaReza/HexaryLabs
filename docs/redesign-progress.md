@@ -16,7 +16,7 @@ Phases 0, 2 and 1 are done and committed, in that order — 2 ran before 1 by re
 |---|---|---|---|
 | 0 — Foundations | committed | `a2ace31` | `review/phase-0.html` |
 | 2 — Contact closer | committed | `2fc1978` | `review/phase-2.html` |
-| 1 — Sitewide chrome | committed | latest on branch | `review/phase-1.html` |
+| 1 — Sitewide chrome | committed | `e06ecd4` | `review/phase-1.html` |
 | 3 — Homepage | not started | — | — |
 
 **Read before resuming Phase 3:** the two open asks in *Blocked / waiting*, and the
@@ -138,7 +138,7 @@ Phases 0, 2 and 1 are done and committed, in that order — 2 ran before 1 by re
 
 ---
 
-## Phase 1 — Sitewide chrome · `feat:` — **committed**
+## Phase 1 — Sitewide chrome · `feat:` — **committed** `e06ecd4`
 
 ### A. Palette — the headline change
 - [x] Canvas `#f5f3ee` → `#ffffff`, alt surface `#ebe8df` → `#f1f1f1`
