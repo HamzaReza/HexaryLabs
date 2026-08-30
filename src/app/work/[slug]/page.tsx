@@ -7,7 +7,7 @@ import { Annotation } from "@/components/ui/Annotation";
 import { ClippedPanel } from "@/components/ui/ClippedPanel";
 import { Reveal } from "@/components/ui/Reveal";
 import { cn } from "@/lib/cn";
-import { CtaBand } from "@/components/sections/CtaBand";
+import { ContactSection } from "@/components/sections/ContactSection";
 import { CaseCover, gradients } from "../CaseCover";
 import { AnimatedCaseHero, hasAnimatedHero } from "../animatedHeroes";
 import { WorkImagesGrid } from "../WorkImagesGrid";
@@ -520,9 +520,7 @@ export default async function CaseStudyPage({
         </Section>
       )}
 
-      <Reveal variant="fade-up">
-        <CtaBand />
-      </Reveal>
+      <ContactSection />
     </>
   );
 }

@@ -53,6 +53,20 @@ export type SiteMeta = {
 };
 
 /**
+ * Copy for the contact closer that ends five page types and forms the whole of
+ * `/contact`. Headings are authored in sentence case; the component uppercases.
+ */
+export type ContactCta = {
+  closerHeading: string;
+  pageHeading: string;
+  subtitle: readonly string[];
+  submitLabel: string;
+  submitPendingLabel: string;
+  successHeading: string;
+  successBody: string;
+};
+
+/**
  * A process step already joined to its deliverable.
  *
  * Replaces the positional `process[i]` ↔ `phases[i].deliverable` coupling that

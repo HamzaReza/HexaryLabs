@@ -9,6 +9,7 @@ import { DirectionalMarker } from "@/components/ui/DirectionalMarker";
 import { HexCluster, type HexCell } from "@/components/ui/HexCluster";
 import { Reveal } from "@/components/ui/Reveal";
 import { CountUp } from "@/components/ui/CountUp";
+import { UnderlineField } from "@/components/ui/UnderlineField";
 
 export const metadata: Metadata = {
   title: "Styleguide",
@@ -260,6 +261,29 @@ export default function StyleguidePage() {
               />
             </div>
           </div>
+          <div className="mt-10 rounded-lg bg-surface-dark p-6 sm:p-8">
+            <Annotation index="05">form fields</Annotation>
+            <div className="mt-6 grid gap-8 sm:grid-cols-2 sm:gap-6">
+              <UnderlineField
+                id="sg-empty"
+                label="Empty — label at rest"
+                name="sg-empty"
+              />
+              <UnderlineField
+                id="sg-filled"
+                label="Filled — label floated"
+                name="sg-filled"
+                defaultValue="Hexary Labs"
+              />
+              <UnderlineField
+                id="sg-error"
+                label="Error"
+                name="sg-error"
+                error="Enter a valid email address."
+              />
+            </div>
+          </div>
+
           <p className="mt-10 font-display text-stat font-medium">
             <CountUp value={99} suffix="%" />
           </p>

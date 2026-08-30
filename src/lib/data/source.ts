@@ -14,7 +14,7 @@
 
 import { services as rawServices, servicesOverview as rawServicesOverview } from "@/content/services";
 import { work as rawWork, WORK_INTRO as rawWorkIntro } from "@/content/work";
-import { site as rawSite } from "@/content/site";
+import { site as rawSite, contactCta as rawContactCta } from "@/content/site";
 import { nav as rawNav, headerCta as rawHeaderCta, footerNav as rawFooterNav } from "@/content/nav";
 import { stats as rawStats } from "@/content/stats";
 import { tech as rawTech, techIntro as rawTechIntro } from "@/content/tech";
@@ -44,6 +44,7 @@ import {
 import { z } from "zod";
 import {
   caseStudySchema,
+  contactCtaSchema,
   footerNavGroupSchema,
   navItemSchema,
   navLinkSchema,
@@ -58,6 +59,7 @@ import {
 } from "./schemas";
 import type {
   CaseStudy,
+  ContactCta,
   FooterNavGroup,
   NavItem,
   NavLink,
@@ -112,6 +114,10 @@ export const loadWorkIntro = once((): string => rawWorkIntro);
 
 export const loadSiteMeta = once((): SiteMeta =>
   checked(siteMetaSchema, rawSite as SiteMeta, "site"),
+);
+
+export const loadContactCta = once((): ContactCta =>
+  checked(contactCtaSchema, rawContactCta as ContactCta, "contactCta"),
 );
 
 export const loadNav = once((): NavItem[] =>

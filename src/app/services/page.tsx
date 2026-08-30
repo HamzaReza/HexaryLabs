@@ -6,7 +6,7 @@ import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { ArrowIcon } from "@/components/ui/ArrowIcon";
 import { Reveal } from "@/components/ui/Reveal";
-import { ClosingCta } from "@/components/sections/ClosingCta";
+import { ContactSection } from "@/components/sections/ContactSection";
 import { getServices, getServicesOverview } from "@/lib/data";
 import { JsonLd, breadcrumbList } from "@/lib/jsonld";
 import { pageMetadata } from "@/lib/seo";
@@ -29,7 +29,7 @@ export default async function ServicesPage() {
     getServicesOverview(),
   ]);
 
-  const { hero, notSure, closing } = servicesOverview;
+  const { hero, notSure } = servicesOverview;
 
   return (
     <>
@@ -106,7 +106,7 @@ export default async function ServicesPage() {
         </Container>
       </Section>
 
-      <ClosingCta heading={closing.heading} cta={{ label: closing.cta, href: "/contact" }} />
+      <ContactSection />
     </>
   );
 }

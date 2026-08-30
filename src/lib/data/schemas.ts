@@ -37,6 +37,16 @@ export const siteMetaSchema = z.object({
   phone: nonEmpty,
 });
 
+export const contactCtaSchema = z.object({
+  closerHeading: nonEmpty,
+  pageHeading: nonEmpty,
+  subtitle: z.array(nonEmpty).min(1),
+  submitLabel: nonEmpty,
+  submitPendingLabel: nonEmpty,
+  successHeading: nonEmpty,
+  successBody: nonEmpty,
+});
+
 /* ------------------------------------------------------------------ services */
 
 export const serviceStepSchema = z.object({

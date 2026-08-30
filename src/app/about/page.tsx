@@ -8,7 +8,7 @@ import { Annotation } from "@/components/ui/Annotation";
 import { ClippedPanel } from "@/components/ui/ClippedPanel";
 import { HexCluster } from "@/components/ui/HexCluster";
 import { ConnectorLine } from "@/components/ui/ConnectorLine";
-import { ClosingCta } from "@/components/sections/ClosingCta";
+import { ContactSection } from "@/components/sections/ContactSection";
 import { cn } from "@/lib/cn";
 import { getAboutContent } from "@/lib/data";
 import { JsonLd, breadcrumbList } from "@/lib/jsonld";
@@ -175,10 +175,7 @@ export default async function AboutPage() {
         </Container>
       </Section>
 
-      <ClosingCta
-        heading="Let's talk about what you're building"
-        cta={{ label: "Start a Project", href: "/contact" }}
-      />
+      <ContactSection />
     </>
   );
 }

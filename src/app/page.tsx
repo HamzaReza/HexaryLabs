@@ -5,7 +5,7 @@ import { ServicesSection } from "@/components/sections/ServicesSection";
 import { TechStack } from "@/components/sections/TechStack";
 import { CapabilitiesBand } from "@/components/sections/CapabilitiesBand";
 import { ProcessSection } from "@/components/sections/ProcessSection";
-import { CtaBand } from "@/components/sections/CtaBand";
+import { ContactSection } from "@/components/sections/ContactSection";
 
 export default function HomePage() {
   return (
@@ -17,7 +17,7 @@ export default function HomePage() {
       <TechStack />
       <CapabilitiesBand />
       <ProcessSection />
-      <CtaBand />
+      <ContactSection />
     </>
   );
 }

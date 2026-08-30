@@ -57,6 +57,12 @@
   --text-body--line-height: 1.5;
   --text-small: 0.75rem; /* 12px */
   --text-small--line-height: 1.5;
+  /* Caption — the mono label step in the approved design: 14/18 with 0.96px
+     tracking. Used for form labels and other uppercase mono annotations that
+     sit next to 18px body copy, where `text-small` reads a step too tight. */
+  --text-caption: 0.875rem; /* 14px */
+  --text-caption--line-height: 1.2857; /* 18px */
+  --text-caption--letter-spacing: 0.069em; /* 0.96px */
 
   /* Fluid moments */
   --text-stat: clamp(2.75rem, 1.6rem + 3.4vw, 5rem); /* 44 → 80 */

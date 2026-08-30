@@ -19,16 +19,25 @@ import {
  * `[[data-tone=dark]_&]` re-colours the button inside dark sections, so
  * callers never pass tone manually.
  */
+/** The pentagonal silhouette itself, kept separate so `clip` can switch it off. */
+const CLIPPED = cn("clip-corner", CLIP_CLASS.sm);
+
+/** `block` is a full-width structural row, so it is square by default. */
+const CLIPS_BY_DEFAULT: Record<Variant, boolean> = {
+  primary: true,
+  secondary: true,
+  accent: true,
+  block: false,
+};
+
 const filledVariants: Record<Exclude<Variant, "secondary">, string> = {
   primary: cn(
-    cn("clip-corner", CLIP_CLASS.sm),
     "bg-contrast-2 text-white",
     "hover:bg-accent hover:text-white",
     "[[data-tone=dark]_&]:bg-base [[data-tone=dark]_&]:text-contrast-2",
     "[[data-tone=dark]_&]:hover:bg-accent [[data-tone=dark]_&]:hover:text-white",
   ),
   accent: cn(
-    cn("clip-corner", CLIP_CLASS.sm),
     "bg-accent text-white",
     "hover:bg-base hover:text-accent",
     "[[data-tone=dark]_&]:hover:bg-base [[data-tone=dark]_&]:hover:text-accent",
@@ -43,13 +52,12 @@ const filledVariants: Record<Exclude<Variant, "secondary">, string> = {
 };
 
 const secondaryOuter = cn(
-  cn("clip-corner p-hairline group/btn", CLIP_CLASS.sm),
+  "p-hairline group/btn",
   "bg-contrast-2 hover:bg-accent",
   "[[data-tone=dark]_&]:bg-base [[data-tone=dark]_&]:hover:bg-accent-hi",
 );
 
 const secondaryInner = cn(
-  cn("clip-corner", CLIP_CLASS.sm),
   "bg-base text-contrast-2 group-hover/btn:text-accent",
   "[[data-tone=dark]_&]:bg-contrast-2 [[data-tone=dark]_&]:text-base",
   "[[data-tone=dark]_&]:group-hover/btn:text-accent-hi",
@@ -73,6 +81,8 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: Variant;
   size?: Size;
   icon?: boolean;
+  /** Override the variant's default corner treatment. */
+  clip?: boolean;
   className?: string;
 }
 
@@ -82,9 +92,11 @@ export function Button({
   variant = "primary",
   size = "md",
   icon = true,
+  clip,
   className,
   ...rest
 }: ButtonProps) {
+  const clipped = clip ?? CLIPS_BY_DEFAULT[variant];
   const inner = (
     <>
       <span>{children}</span>
@@ -95,10 +107,11 @@ export function Button({
   if (variant === "secondary") {
     const outerCls = cn(
       "inline-flex cursor-pointer rounded-none transition-colors duration-300 ease-in-out",
+      clipped && CLIPPED,
       secondaryOuter,
       className,
     );
-    const innerCls = cn(layout, sizes[size], secondaryInner);
+    const innerCls = cn(layout, sizes[size], clipped && CLIPPED, secondaryInner);
     const content = <span className={innerCls}>{inner}</span>;
 
     if (href) {
@@ -118,6 +131,7 @@ export function Button({
   const cls = cn(
     layout,
     "cursor-pointer",
+    clipped && CLIPPED,
     filledVariants[variant],
     variant === "block" ? "px-6 py-8 sm:px-8" : sizes[size],
     className,

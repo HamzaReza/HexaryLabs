@@ -13,7 +13,7 @@ import { Annotation } from "@/components/ui/Annotation";
 import { ClippedPanel } from "@/components/ui/ClippedPanel";
 import { HexCluster } from "@/components/ui/HexCluster";
 import { DirectionalMarker } from "@/components/ui/DirectionalMarker";
-import { ClosingCta } from "@/components/sections/ClosingCta";
+import { ContactSection } from "@/components/sections/ContactSection";
 import { CaseCover } from "@/app/work/CaseCover";
 import { cn } from "@/lib/cn";
 import {
@@ -562,10 +562,7 @@ export default async function ServicePage({
         );
       })}
 
-      <ClosingCta
-        heading={service.closingHeading}
-        cta={{ label: service.closingCta, href: "/contact" }}
-      />
+      <ContactSection />
     </>
   );
 }

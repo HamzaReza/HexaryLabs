@@ -144,13 +144,14 @@ export function CountrySelect({ name, defaultIso }: CountrySelectProps) {
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-label="Country dial code"
+        /* Sized and stripped to sit on an underline field row rather than in a
+           box of its own: the only border is the divider to the number input,
+           and the fixed width holds that divider still as the country changes. */
         className={cn(
-          "flex w-[9.5rem] cursor-pointer items-center gap-2 px-4 py-3 sm:w-[13.5rem]",
-          "border-r-[0.8px] border-grey-200 bg-base text-left text-body",
-          "transition-colors duration-300 ease-in-out hover:bg-base-2",
-          "focus:outline-none focus-visible:bg-base-2",
-          "[[data-tone=dark]_&]:border-grey-700 [[data-tone=dark]_&]:bg-contrast-2",
-          "[[data-tone=dark]_&]:hover:bg-surface-dark [[data-tone=dark]_&]:focus-visible:bg-surface-dark",
+          "flex w-[11.5rem] shrink-0 cursor-pointer items-center gap-2 py-1 pr-4 sm:w-[12rem]",
+          "border-r border-grey-500 bg-transparent text-left text-body-lg",
+          "transition-colors duration-300 ease-in-out",
+          "focus:outline-none",
         )}
       >
         <span className="min-w-0 flex-1 truncate">
@@ -163,7 +164,8 @@ export function CountrySelect({ name, defaultIso }: CountrySelectProps) {
         </span>
         <ChevronDownIcon
           className={cn(
-            "size-3.5 shrink-0 text-grey-600 transition-transform duration-300 ease-in-out",
+            "size-3.5 shrink-0 text-grey-600 [[data-tone=dark]_&]:text-grey-300",
+            "transition-transform duration-300 ease-in-out",
             open && "rotate-180",
           )}
         />

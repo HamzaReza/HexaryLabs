@@ -7,8 +7,20 @@
  * further changes.
  */
 
-import { loadFooterNav, loadHeaderCta, loadNav, loadSiteMeta } from "./source";
-import type { FooterNavGroup, NavItem, NavLink, SiteMeta } from "./types";
+import {
+  loadContactCta,
+  loadFooterNav,
+  loadHeaderCta,
+  loadNav,
+  loadSiteMeta,
+} from "./source";
+import type {
+  ContactCta,
+  FooterNavGroup,
+  NavItem,
+  NavLink,
+  SiteMeta,
+} from "./types";
 
 export async function getSiteMeta(): Promise<SiteMeta> {
   return loadSiteMeta();
@@ -24,6 +36,11 @@ export async function getHeaderCta(): Promise<NavLink> {
 
 export async function getFooterNav(): Promise<FooterNavGroup[]> {
   return loadFooterNav();
+}
+
+/** Copy for the contact closer — see `ContactSection`. */
+export async function getContactCta(): Promise<ContactCta> {
+  return loadContactCta();
 }
 
 /**
