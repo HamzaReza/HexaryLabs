@@ -25,7 +25,7 @@ export function PageHero({
   let index = 0;
 
   return (
-    <section className="texture-dots border-b-[0.8px] border-grey-100 bg-base pb-14 pt-12 lg:pb-20 lg:pt-18">
+    <section className="border-b border-grey-200 bg-base pb-14 pt-12 lg:pb-20 lg:pt-18">
       <Container>
         {eyebrow && (
           <p
@@ -37,7 +37,7 @@ export function PageHero({
         )}
         <h1
           className={cn(
-            "max-w-[20ch] text-[2.125rem] leading-[1.2] tracking-[0.02em] md:text-[3rem] lg:text-h1",
+            "max-w-[20ch] uppercase text-[2.125rem] leading-[1.2] tracking-[0.02em] md:text-[3rem] lg:text-h1",
             staggerReveal && "hero-stagger-item",
           )}
           style={heroDelayStyle(staggerReveal, index++)}

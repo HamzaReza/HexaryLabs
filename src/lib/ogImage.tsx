@@ -19,7 +19,7 @@ export function renderOgImage({
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          background: "#F5F3EE",
+          background: "#FFFFFF",
           backgroundImage:
             "radial-gradient(circle, rgba(20,19,15,0.07) 1.5px, transparent 1.5px)",
           backgroundSize: "24px 24px",
@@ -31,12 +31,12 @@ export function renderOgImage({
             <polygon
               points="16,3 27.26,9.5 27.26,22.5 16,29 4.74,22.5 4.74,9.5"
               fill="none"
-              stroke="#14130F"
+              stroke="#2B2B2B"
               strokeWidth={2}
             />
             <polygon
               points="16,10.5 20.76,13.25 20.76,18.75 16,21.5 11.24,18.75 11.24,13.25"
-              fill="#5B5BF0"
+              fill="#5B45F5"
             />
           </svg>
           <div
@@ -47,8 +47,8 @@ export function renderOgImage({
               fontWeight: 600,
             }}
           >
-            <div style={{ display: "flex", color: "#14130F" }}>Hexary</div>
-            <div style={{ display: "flex", color: "#5C5849", fontWeight: 400 }}>
+            <div style={{ display: "flex", color: "#2B2B2B" }}>Hexary</div>
+            <div style={{ display: "flex", color: "#5A5A5A", fontWeight: 400 }}>
               Labs
             </div>
           </div>
@@ -62,7 +62,7 @@ export function renderOgImage({
                 fontSize: 24,
                 letterSpacing: 4,
                 textTransform: "uppercase",
-                color: "#5C5849",
+                color: "#5A5A5A",
                 marginBottom: 20,
               }}
             >
@@ -75,7 +75,7 @@ export function renderOgImage({
               fontSize: 64,
               lineHeight: 1.15,
               fontWeight: 600,
-              color: "#14130F",
+              color: "#2B2B2B",
               maxWidth: 980,
             }}
           >

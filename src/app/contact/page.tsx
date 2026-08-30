@@ -27,7 +27,10 @@ export default async function ContactPage() {
   return (
     <>
       <JsonLd data={breadcrumbJsonLd} />
-      <ContactSection heading={contact.pageHeading} className="texture-dots" />
+      {/* `main` is `flex-1`, so on the one page short enough not to fill the
+          viewport the section has to stretch — otherwise the body's white
+          shows between this dark surface and the dark footer. */}
+      <ContactSection heading={contact.pageHeading} className="texture-dots min-h-full" />
     </>
   );
 }

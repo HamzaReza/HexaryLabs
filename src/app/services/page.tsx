@@ -44,8 +44,8 @@ export default async function ServicesPage() {
       {/* Small, sits right under the hero — not a full Section. */}
       <div className="border-b-[0.8px] border-grey-100 bg-base">
         <Container>
-          <div className="clip-corner [--clip:18px] p-hairline bg-grey-200">
-            <div className="clip-corner flex flex-col items-start gap-6 [--clip:18px] bg-base-2 p-8 py-10 md:flex-row md:items-center md:justify-between">
+          <div className="clip-corner p-hairline bg-grey-200">
+            <div className="clip-corner flex flex-col items-start gap-6 bg-base-2 p-8 py-10 md:flex-row md:items-center md:justify-between">
             <div>
               <h2 className="font-display text-h4 font-medium text-contrast-2">
                 {notSure.heading}
@@ -77,10 +77,10 @@ export default async function ServicesPage() {
           <div className="grid gap-6 sm:grid-cols-2">
             {services.map((service, i) => (
               <Reveal key={service.slug} delay={i * 60} className="h-full">
-                <div className="clip-corner h-full [--clip:18px] p-hairline bg-grey-200 transition-colors duration-300 hover:bg-accent">
+                <div className="clip-corner h-full p-hairline bg-grey-200 transition-colors duration-300 hover:bg-accent">
                 <Link
                   href={`/services/${service.slug}`}
-                  className="clip-corner group flex h-full flex-col gap-6 [--clip:18px] bg-base p-8"
+                  className="clip-corner group flex h-full flex-col gap-6 bg-base p-8"
                 >
                   <h3 className="text-[1.3125rem] leading-[1.2] lg:text-h3">
                     {service.title}

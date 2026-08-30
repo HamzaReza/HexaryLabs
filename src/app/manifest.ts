@@ -19,8 +19,8 @@ export default function manifest(): MetadataRoute.Manifest {
     display: "standalone",
     /* Matches --color-base and the themeColor in layout.tsx; these were #ffffff,
        which flashed white against the warm canvas on PWA launch. */
-    background_color: "#f5f3ee",
-    theme_color: "#f5f3ee",
+    background_color: "#ffffff",
+    theme_color: "#ffffff",
     icons: [
       { src: "/icon-512.png", sizes: "512x512", type: "image/png" },
     ],

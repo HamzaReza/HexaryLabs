@@ -8,6 +8,13 @@ export const site = {
 
   email: "hello@hexarylabs.com",
   phone: "+1 (407) 735-6142",
+
+  /* The design's footer carries a LinkedIn glyph. No URL exists anywhere in
+     the project and inventing one would ship a broken link, so the icon is
+     rendered only once this is filled in. */
+  social: {
+    linkedin: "",
+  },
 } as const;
 
 /**

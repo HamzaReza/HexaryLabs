@@ -12,8 +12,8 @@ import { cn } from "@/lib/cn";
  * entirety of `/contact` — only the headline differs, which is why both live in
  * `src/content/site.ts` rather than at each call site.
  *
- * Grid measured from the design at 1440: a 500px column, a 40px gutter and a
- * 740px panel inside 1280px of content — 1 : 1.48 with a 40px gap.
+ * Grid measured from the design's Contact frame: a 494px column, a 48px gutter
+ * and a 738px panel inside 1280px of content — 1 : 1.494 with a 48px gap.
  */
 export async function ContactSection({
   heading,
@@ -28,7 +28,7 @@ export async function ContactSection({
   return (
     <Section tone="dark" className={className}>
       <Container>
-        <div className="grid gap-10 lg:grid-cols-[1fr_1.48fr]">
+        <div className="grid gap-10 lg:grid-cols-[1fr_1.494fr] lg:gap-12">
           <Reveal>
             <h2
               className={cn(

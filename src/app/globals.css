@@ -2,35 +2,46 @@
 
 /* ==========================================================================
    Hexary Labs — design tokens
-   Blueprint system: warm beige-grey canvas, ink structure, purple signal.
-   See docs/design-system.md and docs/redesign-plan.md §4.
+   Neutral canvas, ink structure, purple signal — per the approved design.
+   See docs/design-system.md.
    ========================================================================== */
 
 @theme {
-  /* --- Colour ------------------------------------------------------------ */
-  --color-base: #f5f3ee;
-  --color-base-2: #ebe8df; /* alt section surface */
-  --color-contrast: #14130f; /* body text */
-  --color-contrast-2: #0c0b09; /* dark sections */
-  --color-surface-dark: #191813; /* cards on dark */
+  /* --- Colour ------------------------------------------------------------
+     Neutral, per the approved design. This replaced a warm beige-grey system
+     (`#f5f3ee` canvas, warm grey ramp) that the previous build used; every
+     value below is either sampled from the design's frames or, where the
+     design has no equivalent, derived and marked as such. Reverting is this
+     block and nothing else. */
+  --color-base: #ffffff; /* sampled on contact, services, about, work */
+  --color-base-2: #f1f1f1; /* alt section surface */
+  --color-contrast: #2b2b2b; /* body text on light */
+  --color-contrast-2: #171717; /* dark sections and the footer */
+  --color-surface-dark: #222222; /* cards on dark */
 
-  --color-accent: #5b45f5; /* 5.2:1 on base, 4.7:1 on base-2 */
-  --color-accent-hi: #8b7bff; /* accent on dark: 6.0:1 on contrast-2 */
+  --color-accent: #5b45f5; /* 5.8:1 on base, 5.1:1 on base-2 */
+  --color-accent-hi: #9b8dff; /* accent on dark: 6.7:1 on contrast-2 */
 
-  /* Grey ramp (warm). Contrast rules — do not mix these up:
-     · grey-600 = body text on LIGHT   (6.4:1 on base, 5.8:1 on base-2) ✓
-     · grey-500 = muted text on DARK   (5.3:1 on contrast-2, 4.8:1 on surface-dark) ✓
-                  ✗ NEVER on light: only 3.3:1 on base, fails AA.
-     · grey-300 = body text on DARK    (9.0:1 on contrast-2) ✓
-     · grey-100/200 = hairline borders on light; grey-700 on dark. */
-  --color-grey-100: #e2ddd1;
-  --color-grey-200: #d1ccbe;
-  --color-grey-300: #b5af9f;
-  --color-grey-500: #8a8577;
-  --color-grey-600: #5c5849;
-  --color-grey-700: #35332a;
+  /* Grey ramp. Contrast rules — do not mix these up:
+     · grey-600 = body text on LIGHT   (6.9:1 on base, 6.1:1 on base-2) ✓
+     · grey-500 = muted text on DARK   (5.2:1 on contrast-2, 4.6:1 on surface-dark) ✓
+                  ✗ NEVER on light: only 3.5:1 on base, fails AA.
+     · grey-300 = body text on DARK    (12.8:1 on contrast-2) ✓
+     · grey-100/200 = hairline borders on light; grey-700 on dark.
 
-  --color-success: #2f7a43; /* 4.8:1 on base — light surfaces only */
+     grey-500 is deliberately NOT the design's `#5A5A5A`: that value measures
+     2.6:1 on `#171717`, below both the 4.5:1 AA needs for body text and the
+     3:1 it needs as a control boundary. `#5A5A5A` is kept as grey-600, where
+     the design actually uses it — on light. grey-100 is interpolated; the
+     design only specifies the one light border, which is grey-200. */
+  --color-grey-100: #ededed;
+  --color-grey-200: #dadada;
+  --color-grey-300: #dadada;
+  --color-grey-500: #8a8a8a;
+  --color-grey-600: #5a5a5a;
+  --color-grey-700: #333333;
+
+  --color-success: #2f7a43; /* 5.3:1 on base — light surfaces only */
 
   /* --- Typography -------------------------------------------------------- */
   --font-display: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
@@ -76,7 +87,7 @@
   --spacing-hairline: 0.05rem; /* 0.8px */
 
   /* --- Layout ------------------------------------------------------------ */
-  --container-content: 1200px;
+  --container-content: 1280px; /* 80px gutters at 1440, per the design */
   --container-wide: 1400px;
 
   /* --- Motion ------------------------------------------------------------ */
@@ -86,10 +97,10 @@
 
 /* Gradients + structural values that aren't Tailwind scales */
 :root {
-  /* Rule midpoint — a warm grey between grey-600 and grey-700, used only by the
+  /* Rule midpoint — sits between grey-600 and grey-700, used only by the
      fading dividers. Named here rather than repeated as a literal in both
      gradients and their transparent endpoints. */
-  --rule-ink: 75, 72, 57; /* #4b4839 as channels, so the stops can vary alpha */
+  --rule-ink: 58, 58, 58; /* #3a3a3a as channels, so the stops can vary alpha */
 
   --gradient-rule-v: linear-gradient(
     180deg,
@@ -103,14 +114,15 @@
     rgb(var(--rule-ink)) 49%,
     rgba(var(--rule-ink), 0) 100%
   );
-  --header-h: 87px;
-  --texture-ink: rgba(20, 19, 15, 0.07);
-  --texture-grid-ink: rgba(20, 19, 15, 0.05);
+  --header-h: 84px; /* measured on the design's header frame */
+  --header-h-sm: 72px; /* below lg; the mobile overlay hangs off this */
+  --texture-ink: rgba(23, 23, 23, 0.07);
+  --texture-grid-ink: rgba(23, 23, 23, 0.05);
 }
 
 [data-tone="dark"] {
-  --texture-ink: rgba(245, 243, 238, 0.06);
-  --texture-grid-ink: rgba(245, 243, 238, 0.05);
+  --texture-ink: rgba(255, 255, 255, 0.12);
+  --texture-grid-ink: rgba(255, 255, 255, 0.05);
 }
 
 /* ==========================================================================
@@ -168,9 +180,11 @@
 
 /* Blueprint surface textures — tone-aware via --texture-ink, backgrounds
    only, at most one textured surface per viewport (redesign-plan §4.4). */
+/* 4px dots on a 34.6px grid, measured off the design's ellipse field
+   (34.643 horizontal / 34.521 vertical — squared off here). */
 @utility texture-dots {
-  background-image: radial-gradient(circle, var(--texture-ink) 1px, transparent 1px);
-  background-size: 24px 24px;
+  background-image: radial-gradient(circle, var(--texture-ink) 2px, transparent 2px);
+  background-size: 34.6px 34.6px;
 }
 @utility texture-grid {
   background-image:
@@ -179,8 +193,11 @@
   background-size: 96px 96px;
 }
 
-/* Pentagonal silhouette — one clipped corner, always top-right. Size via
-   --clip: 10px buttons/fields · 18px cards · 28px heroes/frames. */
+/* Pentagonal silhouette — one clipped corner, always top-right.
+   The approved design has no chamfer, so every --clip size is 0 and this
+   resolves to a plain rectangle. The utility and the CLIP scale in
+   src/lib/ui/constants.ts are kept as the single switch, so the treatment can
+   be restored by changing those numbers rather than re-editing components. */
 @utility clip-corner {
   clip-path: polygon(
     0 0,

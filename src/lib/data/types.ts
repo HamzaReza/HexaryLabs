@@ -50,6 +50,8 @@ export type SiteMeta = {
   url: string;
   email: string;
   phone: string;
+  /** Empty strings mean "not published yet" — callers skip the link. */
+  social: { linkedin: string };
 };
 
 /**

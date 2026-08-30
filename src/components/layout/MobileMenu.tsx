@@ -75,7 +75,7 @@ export function MobileMenu({
   return (
     <div
       ref={panelRef}
-      className="fixed inset-x-0 bottom-0 top-[72px] z-100 overflow-y-auto bg-base lg:hidden"
+      className="fixed inset-x-0 bottom-0 top-[var(--header-h-sm)] z-100 overflow-y-auto bg-base lg:hidden"
     >
       <nav aria-label="Mobile">
         <ul className="flex flex-col px-4">

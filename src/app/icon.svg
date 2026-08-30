@@ -1,19 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
   <!--
-    Hexary mark. Geometry is mirrored in src/components/layout/Logo.tsx —
-    keep the two polygons in sync.
+    Square app icon. Deliberately NOT the wordmark in
+    src/components/ui/Wordmark.tsx: "hexarylabs" is unreadable at 32px, so the
+    icon carries the hexagon from the mark's "e" on its own.
 
-    Pointy-top hexes, matching the lattice visuals. Concentric on (16,16):
-    outer R=13, inner R=5.5.
-
-    Ring stays #1F2937 always, matching the logo's light-mode default —
-    same as the rasterised icons (apple-icon.png, icon-512.png).
+    Pointy-top hexes, concentric on (16,16): outer R=13, inner R=5.5.
+    Ring is the ink colour, inner hex the accent — both from the token palette
+    in src/app/globals.css. The rasterised icons (apple-icon.png, icon-512.png)
+    are generated from this file, so keep the two in step.
   -->
   <polygon
     points="16,3 27.26,9.5 27.26,22.5 16,29 4.74,22.5 4.74,9.5"
     fill="none"
-    stroke="#1F2937"
+    stroke="#2B2B2B"
     stroke-width="2"
   />
-  <polygon points="16,10.5 20.76,13.25 20.76,18.75 16,21.5 11.24,18.75 11.24,13.25" fill="#5B5BF0" />
+  <polygon points="16,10.5 20.76,13.25 20.76,18.75 16,21.5 11.24,18.75 11.24,13.25" fill="#5B45F5" />
 </svg>

@@ -32,22 +32,27 @@ export const TONE_CLASS: Record<Tone, string> = {
 
 /**
  * The pentagonal silhouette: one clipped corner, always top-right, cut at 45°.
- * Sizes per `docs/design-system.md` — 10px on controls, 18px on cards, 28px on
- * heroes and page-level frames.
+ *
+ * **The approved design has no chamfer**, so all three sizes are 0 and every
+ * `clip-corner` surface renders as a plain rectangle. The scale is kept rather
+ * than deleted because it is the one place the treatment is defined: the
+ * previous values were 10px on controls, 18px on cards and 28px on heroes and
+ * page-level frames, and restoring them is these three numbers and nothing
+ * else.
  */
 export const CLIP = {
-  sm: 10,
-  md: 18,
-  lg: 28,
+  sm: 0,
+  md: 0,
+  lg: 0,
 } as const;
 
 export type ClipSize = keyof typeof CLIP;
 
 /** Tailwind arbitrary-property class that sets `--clip` for `clip-corner`. */
 export const CLIP_CLASS: Record<ClipSize, string> = {
-  sm: "[--clip:10px]",
-  md: "[--clip:18px]",
-  lg: "[--clip:28px]",
+  sm: "[--clip:0px]",
+  md: "[--clip:0px]",
+  lg: "[--clip:0px]",
 };
 
 /* ------------------------------------------------------------------ elements */

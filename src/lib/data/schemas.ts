@@ -35,6 +35,7 @@ export const siteMetaSchema = z.object({
   url: z.string().url(),
   email: z.string().email(),
   phone: nonEmpty,
+  social: z.object({ linkedin: z.union([z.literal(""), z.string().url()]) }),
 });
 
 export const contactCtaSchema = z.object({
