@@ -9,15 +9,15 @@ Plan of record: `~/.claude/plans/what-i-meant-by-peppy-pinwheel.md`.
 
 ## Now
 
-Phases 0, 2 and 1 are done and committed, in that order — 2 ran before 1 by request.
-**Phase 3 is built and verified, awaiting sign-off. Nothing is committed yet.**
+Phases 0, 2, 1 and 3 are committed (0/2/1 ran in that order — 2 before 1 by request).
+**Next up: Phase 4, the services index and the four service pages.** Nothing is in flight.
 
 | Phase | State | Commit | Review page |
 |---|---|---|---|
 | 0 — Foundations | committed | `a2ace31` | `review/phase-0.html` |
 | 2 — Contact closer | committed | `2fc1978` | `review/phase-2.html` |
 | 1 — Sitewide chrome | committed | `e06ecd4` | `review/phase-1.html` |
-| 3 — Homepage | **awaiting review** | — | `review/phase-3.html` |
+| 3 — Homepage | committed | `dd9e7aa` | `review/phase-3.html` |
 
 **Read before resuming:** the open asks in *Blocked / waiting*, and the *Environment
 gotchas* section — every trap in there cost real time.
@@ -191,7 +191,7 @@ gotchas* section — every trap in there cost real time.
 
 ---
 
-## Phase 3 — Homepage · `feat:` — **built, awaiting sign-off**
+## Phase 3 — Homepage · `feat:` — **committed** `dd9e7aa`
 
 Verified section by section against the design's own frames, at 1:1.
 
@@ -245,7 +245,7 @@ Verified section by section against the design's own frames, at 1:1.
       the closer's new watermark
 - [x] No horizontal overflow at 390, 768 or 1440 (one real overflow found and fixed: the
       chevron ornament held 402px at every size)
-- [ ] Sign-off, then commit as `feat: rebuild the homepage on the approved design`
+- [x] Committed as `feat: rebuild the homepage on the approved design`
 
 ### Harness bugs found while verifying — both produced convincing false results
 - [x] A capture clip combined with a full-height emulated viewport makes Chrome **silently
