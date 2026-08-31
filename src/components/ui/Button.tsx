@@ -24,13 +24,57 @@ const CLIPPED = cn("clip-corner", CLIP_CLASS.sm);
 
 /** `block` is a full-width structural row, so it is square by default. */
 const CLIPS_BY_DEFAULT: Record<Variant, boolean> = {
+  solid: false,
+  outline: false,
   primary: true,
   secondary: true,
   accent: true,
   block: false,
 };
 
-const filledVariants: Record<Exclude<Variant, "secondary">, string> = {
+/**
+ * The approved design's control geometry, measured off its button instances:
+ * every button on every frame is 46px tall — 24px of horizontal padding over a
+ * 16/18 display line — with 14px from the label to the ↗, which is drawn about
+ * 9.5px tall. Both are shorter than the 18px line box, so neither changes the
+ * height.
+ */
+const DESIGN_SHAPE = cn(
+  "inline-flex cursor-pointer items-center gap-[14px] px-6",
+  "font-display text-body font-medium leading-[1.125]",
+  "transition-colors duration-300 ease-in-out",
+);
+
+/**
+ * On light the outline button is a 1px `contrast` rule around nothing. On dark
+ * the design drops the rule entirely and lifts the surface instead — the
+ * button reads as a slightly lighter panel, the same 4% white the dark cards
+ * use. Hover is ours: the design ships no interaction states, so both follow
+ * the accent convention already established sitewide.
+ */
+const designVariants: Record<"solid" | "outline", string> = {
+  solid: cn(
+    "py-3.5",
+    "bg-contrast text-white hover:bg-accent",
+    "[[data-tone=dark]_&]:bg-base [[data-tone=dark]_&]:text-contrast-2",
+    "[[data-tone=dark]_&]:hover:bg-accent [[data-tone=dark]_&]:hover:text-white",
+  ),
+  /* One pixel less padding each way than `solid`, because the 1px rule is
+     inside the border box: both land on the design's 46px. */
+  outline: cn(
+    "py-[13px]",
+    "border border-contrast text-contrast",
+    "hover:border-accent hover:text-accent",
+    "[[data-tone=dark]_&]:border-transparent [[data-tone=dark]_&]:bg-white/[0.04]",
+    "[[data-tone=dark]_&]:text-white [[data-tone=dark]_&]:hover:bg-white/10",
+    "[[data-tone=dark]_&]:hover:text-white",
+  ),
+};
+
+const filledVariants: Record<
+  Exclude<Variant, "secondary" | "solid" | "outline">,
+  string
+> = {
   primary: cn(
     "bg-contrast-2 text-white",
     "hover:bg-accent hover:text-white",
@@ -103,6 +147,30 @@ export function Button({
       {icon && <ArrowIcon />}
     </>
   );
+
+  if (variant === "solid" || variant === "outline") {
+    const cls = cn(DESIGN_SHAPE, designVariants[variant], className);
+    /* The design's arrow is drawn to its own edges, not centred in a 16px box
+       — see `ArrowIcon`. */
+    const designInner = (
+      <>
+        <span>{children}</span>
+        {icon && <ArrowIcon tight className="size-[9.5px] shrink-0" />}
+      </>
+    );
+    if (href) {
+      return (
+        <Link href={href} className={cls}>
+          {designInner}
+        </Link>
+      );
+    }
+    return (
+      <button className={cls} {...rest}>
+        {designInner}
+      </button>
+    );
+  }
 
   if (variant === "secondary") {
     const outerCls = cn(

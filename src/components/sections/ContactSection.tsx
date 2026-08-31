@@ -2,6 +2,7 @@ import { Section } from "@/components/ui/Section";
 import { Container } from "@/components/ui/Container";
 import { Reveal } from "@/components/ui/Reveal";
 import { ContactForm } from "@/components/sections/ContactForm";
+import { HexWatermark } from "@/components/visuals/HexWatermark";
 import { getContactCta } from "@/lib/data";
 import { cn } from "@/lib/cn";
 
@@ -29,7 +30,7 @@ export async function ContactSection({
     <Section tone="dark" className={className}>
       <Container>
         <div className="grid gap-10 lg:grid-cols-[1fr_1.494fr] lg:gap-12">
-          <Reveal>
+          <Reveal className="flex flex-col">
             <h2
               className={cn(
                 "text-[2.125rem] uppercase leading-[1.2] tracking-[0.02em]",
@@ -50,6 +51,13 @@ export async function ContactSection({
                 </span>
               ))}
             </p>
+
+            {/* The design fills the rest of the left column with the hatched
+                hexagon, its bottom edge on the form panel's. `mt-auto` is what
+                pins it there, so it holds however tall the form gets. Dropped
+                below `lg`, where the column is no longer beside anything and
+                the mark would only push the form down the page. */}
+            <HexWatermark className="mt-auto w-full max-lg:hidden" />
           </Reveal>
 
           <Reveal delay={120}>

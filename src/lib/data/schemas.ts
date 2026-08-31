@@ -199,6 +199,38 @@ export const platformGroupSchema = z.object({
   platforms: z.array(platformSchema),
 });
 
+/* ------------------------------------------------------------------- homepage */
+
+export const homeHeroSchema = z.object({
+  headline: z.object({
+    lines: z
+      .array(
+        z
+          .array(z.object({ text: nonEmpty, tone: z.enum(["lead", "emphasis"]) }))
+          .min(1),
+      )
+      .min(1),
+  }),
+  subhead: z.array(nonEmpty).min(1),
+  actions: z.array(navLinkSchema).min(1),
+});
+
+export const homeProofSchema = z.object({
+  prefix: nonEmpty,
+  clients: z.array(z.object({ label: nonEmpty, slug: nonEmpty })).min(1),
+});
+
+export const homeOutcomeSchema = z.object({
+  heading: nonEmpty,
+  body: nonEmpty,
+  diagram: z.object({
+    src: nonEmpty,
+    alt: nonEmpty,
+    width: z.number().positive(),
+    height: z.number().positive(),
+  }),
+});
+
 /* -------------------------------------------------------------------- helper */
 
 /**

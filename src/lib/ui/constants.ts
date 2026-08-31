@@ -67,8 +67,20 @@ export const HEX_ROLE = {
 
 export type HexRole = (typeof HEX_ROLE)[keyof typeof HEX_ROLE];
 
-/** Button appearance. `block` is the full-width row variant and stays square. */
+/**
+ * Button appearance.
+ *
+ * `solid` and `outline` are the approved design's pair, and the only two it
+ * draws: a 46px-tall square control, 24px of horizontal padding, display 16/18
+ * at medium, 12px to a ↗ glyph. Everything else here is the previous build's
+ * set, still carried by the pages Phases 4–6 have yet to rebuild. Those go when
+ * their last call site does.
+ *
+ * `block` is the full-width row variant and stays square.
+ */
 export const BUTTON_VARIANT = {
+  solid: "solid",
+  outline: "outline",
   primary: "primary",
   secondary: "secondary",
   accent: "accent",

@@ -2,7 +2,7 @@
  * Service offerings.
  *
  * Structure (4 services) is final — it drives the nav dropdown, the homepage
- * Services section (via ServicesExplorer + `summary`), and the /services/[slug]
+ * Services section (via `summary`), and the /services/[slug]
  * routes. `title` and `summary` are also consumed by the homepage, so their
  * values are left as-is here; everything else below is specific to the
  * /services pages themselves.

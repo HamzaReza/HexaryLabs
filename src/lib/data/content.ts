@@ -4,6 +4,10 @@
 
 import {
   loadAboutContent,
+  loadCaseStudies,
+  loadHomeHero,
+  loadHomeOutcome,
+  loadHomeProof,
   loadHowWeWorkContent,
   loadIntegrationsContent,
   loadPlatformGroups,
@@ -14,12 +18,50 @@ import {
   loadTechIntro,
 } from "./source";
 import type {
+  HomeHero,
+  HomeOutcome,
+  HomeProof,
   PlatformGroup,
   ProcessPhase,
   ProcessStepDetail,
   Stat,
   TechGroup,
 } from "./types";
+
+/* ------------------------------------------------------------------ homepage */
+
+export async function getHomeHero(): Promise<HomeHero> {
+  return loadHomeHero();
+}
+
+export async function getHomeOutcome(): Promise<HomeOutcome> {
+  return loadHomeOutcome();
+}
+
+/**
+ * The proof line, with each client name resolved to its case study.
+ *
+ * The join happens here rather than in the component for the same reason the
+ * process steps are joined here: a slug that no longer exists should stop the
+ * build, not render a link to a 404 that nobody clicks until launch.
+ */
+export async function getHomeProof(): Promise<HomeProof> {
+  const proof = loadHomeProof();
+  const studies = loadCaseStudies();
+
+  return {
+    prefix: proof.prefix,
+    clients: proof.clients.map((client) => {
+      const study = studies.find((s) => s.slug === client.slug);
+      if (!study) {
+        throw new Error(
+          `[data] homepage proof line names "${client.label}" (${client.slug}), which is not a case study`,
+        );
+      }
+      return { label: client.label, href: `/work/${study.slug}` };
+    }),
+  };
+}
 
 export async function getStats(): Promise<Stat[]> {
   return loadStats();
@@ -64,16 +106,6 @@ export async function getProcessPhases(): Promise<ProcessPhase[]> {
 
 export async function getIntegrationGroups(): Promise<PlatformGroup[]> {
   return loadPlatformGroups();
-}
-
-/**
- * Every integrated platform name, flattened. Was computed inline in
- * `CapabilitiesBand`.
- */
-export async function getPlatformNames(): Promise<string[]> {
-  return loadPlatformGroups().flatMap((group) =>
-    group.platforms.map((platform) => platform.name),
-  );
 }
 
 export async function getAboutContent() {

@@ -12,11 +12,14 @@ export function Reveal({
   delay = 0,
   variant = "fade",
   className,
+  style: styleOverride,
 }: {
   children: React.ReactNode;
   delay?: number;
   variant?: RevealVariant;
   className?: string;
+  /** Merged after the reveal's own custom properties, never replacing them. */
+  style?: React.CSSProperties;
 }) {
   const { ref, inView } = useInView<HTMLDivElement>(THRESHOLD.reveal);
 
@@ -45,7 +48,11 @@ export function Reveal({
   }
 
   return (
-    <div ref={ref} className={cn(revealClass, inView && "is-visible", className)} style={style}>
+    <div
+      ref={ref}
+      className={cn(revealClass, inView && "is-visible", className)}
+      style={{ ...style, ...styleOverride }}
+    >
       {children}
     </div>
   );

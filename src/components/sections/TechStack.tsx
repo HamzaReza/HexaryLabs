@@ -1,72 +1,83 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
-import { Section } from "@/components/ui/Section";
-import { SectionHeader } from "@/components/ui/SectionHeader";
-import { Annotation } from "@/components/ui/Annotation";
-import { ClippedPanel } from "@/components/ui/ClippedPanel";
-import { HexCluster } from "@/components/ui/HexCluster";
+import { Chip } from "@/components/ui/Chip";
+import { StackHexagons } from "@/components/visuals/StackHexagons";
 import { getTechGroups, getTechIntro, getToolCaseStudyLinks } from "@/lib/data";
 
-/* 5.4: categories as hexagonal modules; every tool that appears in a shipped
-   case study's stack links to that case study — capability tied to evidence,
-   derived from the data layer so it can't drift from the case studies. Names
-   stay text marks (no vendor logos, no trademarks). */
+/**
+ * Our Stack: an intro column against four numbered rows of technology chips,
+ * hairline-ruled between them.
+ *
+ * The previous build boxed each group in a bordered panel with a hex cluster
+ * beside it. The design flattens that to a single list — a numbered label in a
+ * fixed column, chips flowing beside it — and moves the hexagons out of the
+ * groups and into one piece of artwork bleeding off the left edge.
+ *
+ * Measured off the 1440 × 740 frame: a 385px intro, rows starting at 513 and
+ * running 847 wide, a 240px label column, 92px of chips, then 32px to the rule
+ * and 32px to the next row.
+ *
+ * Tools that shipped in a case study stay linked to it — capability tied to
+ * evidence. That behaviour is carried over from the previous build; the design
+ * draws the chips plain, and the underline is ours.
+ */
 export async function TechStack() {
   const [tech, techIntro] = await Promise.all([getTechGroups(), getTechIntro()]);
   const links = await getToolCaseStudyLinks(tech.flatMap((group) => group.items));
 
   return (
-    <Section tone="light">
-      <Container>
-        <SectionHeader align="center" title="Our Stack" intro={techIntro} />
+    <section className="relative overflow-hidden bg-base py-14 lg:pb-[100px] lg:pt-20">
+      <StackHexagons className="pointer-events-none absolute left-[-78px] top-[269px] hidden h-[498px] w-[502px] lg:block" />
 
-        <div className="grid gap-6 md:grid-cols-2">
-          {tech.map((group, gi) => (
-            <ClippedPanel key={group.heading} clip="md" bordered className="bg-base p-8">
-              <div className="flex items-center gap-5">
-                <HexCluster
-                  cells={[
-                    { q: 0, r: 0, role: gi % 2 === 0 ? "ink" : "signal" },
-                    { q: 1, r: 0, role: "outline" },
-                    { q: 0, r: 1, role: "textured" },
-                  ]}
-                  className="h-14 w-auto"
-                />
-                <div>
-                  <Annotation index={String(gi + 1).padStart(2, "0")}>
-                    {group.heading}
-                  </Annotation>
+      <Container className="relative">
+        <div className="grid gap-10 lg:grid-cols-[385fr_847fr] lg:gap-12">
+          <div>
+            <h2 className="font-display text-section uppercase">Our Stack</h2>
+            <p className="mt-6 text-lead text-grey-600">{techIntro}</p>
+          </div>
+
+          <ul>
+            {tech.map((group, i) => (
+              <li
+                key={group.heading}
+                className="border-grey-200 py-8 first:pt-0 last:pb-0 [&:not(:last-child)]:border-b"
+              >
+                <div className="flex flex-col gap-6 lg:flex-row lg:gap-6">
+                  <p className="font-display text-lead font-medium lg:w-[240px] lg:shrink-0">
+                    <span className="text-accent">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>{" "}
+                    <span className="text-grey-600">/</span> {group.heading}
+                  </p>
+
+                  <ul className="flex flex-wrap gap-0.5">
+                    {group.items.map((item) => {
+                      const linked = links[item] ?? null;
+                      return (
+                        <li key={item}>
+                          {linked ? (
+                            <Link
+                              href={`/work/${linked.slug}`}
+                              title={`Used in ${linked.title}`}
+                              className="rounded-full focus-visible:outline-offset-4"
+                            >
+                              <Chip className="underline decoration-grey-300 underline-offset-4 hover:bg-accent hover:text-white hover:decoration-transparent">
+                                {item}
+                              </Chip>
+                            </Link>
+                          ) : (
+                            <Chip>{item}</Chip>
+                          )}
+                        </li>
+                      );
+                    })}
+                  </ul>
                 </div>
-              </div>
-
-              <ul className="mt-6 grid grid-cols-2 gap-x-6 gap-y-3 sm:grid-cols-3">
-                {group.items.map((item) => {
-                  const linked = links[item] ?? null;
-                  return (
-                    <li key={item} className="font-display text-body text-contrast-2">
-                      {linked ? (
-                        <Link
-                          href={`/work/${linked.slug}`}
-                          title={`Used in ${linked.title}`}
-                          className="underline decoration-grey-300 underline-offset-4 transition-colors duration-300 hover:text-accent hover:decoration-accent"
-                        >
-                          {item}
-                        </Link>
-                      ) : (
-                        item
-                      )}
-                    </li>
-                  );
-                })}
-              </ul>
-            </ClippedPanel>
-          ))}
+              </li>
+            ))}
+          </ul>
         </div>
-
-        <p className="mt-8 text-center">
-          <Annotation>Underlined tools link to the case study they shipped in</Annotation>
-        </p>
       </Container>
-    </Section>
+    </section>
   );
 }

@@ -30,7 +30,7 @@ export async function getServicesOverview() {
  * The case study a service points at for proof.
  *
  * Was `work.find(w => w.slug === service.explore.caseStudySlug)`, duplicated in
- * `ServicesExplorer` and `services/[slug]/page.tsx`.
+ * the homepage services grid and `services/[slug]/page.tsx`.
  */
 export async function getRelatedCaseStudy(
   service: Service,

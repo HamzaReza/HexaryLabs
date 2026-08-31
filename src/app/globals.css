@@ -21,6 +21,7 @@
 
   --color-accent: #5b45f5; /* 5.8:1 on base, 5.1:1 on base-2 */
   --color-accent-hi: #9b8dff; /* accent on dark: 6.7:1 on contrast-2 */
+  --color-accent-soft: #ded9ff; /* body copy on an accent fill: 4.9:1 */
 
   /* Grey ramp. Contrast rules — do not mix these up:
      · grey-600 = body text on LIGHT   (6.9:1 on base, 6.1:1 on base-2) ✓
@@ -37,9 +38,17 @@
   --color-grey-100: #ededed;
   --color-grey-200: #dadada;
   --color-grey-300: #dadada;
+  --color-grey-400: #a5a5a5; /* decorative outlines only — 2.3:1 on base */
   --color-grey-500: #8a8a8a;
   --color-grey-600: #5a5a5a;
   --color-grey-700: #333333;
+
+  /* The warm canvas the design keeps for product-preview surfaces — the plate a
+     screenshot or interface mock sits on, nowhere else. It is the beige the
+     rest of the site used to be painted in; the design retired it as a page
+     colour and kept it as a material. */
+  --color-canvas-warm: #f5f3ee;
+  --color-canvas-warm-2: #ebe8df;
 
   --color-success: #2f7a43; /* 5.3:1 on base — light surfaces only */
 
@@ -74,6 +83,55 @@
   --text-caption: 0.875rem; /* 14px */
   --text-caption--line-height: 1.2857; /* 18px */
   --text-caption--letter-spacing: 0.069em; /* 0.96px */
+
+  /* --- The approved design's own type scale ------------------------------
+     The six steps above were derived from the previous build's reference and
+     only two of them (`body` 16/24 and `caption` 14/18) happen to match the
+     design. The design's display steps are markedly smaller: its section
+     headings are 28px where `text-h2` is 48, and its card titles 24 where
+     `text-h3` is 32.
+
+     Rather than retune `--text-h*` — which would resize headings on six pages
+     that still carry the old compositions, and whose call sites hard-code
+     responsive step-downs against the old values — the design's steps are
+     added here under their own names. Phase 3 puts the homepage on them; each
+     later phase moves its own page across, and Phase 7 deletes whichever
+     `--text-h*` steps are left unused. Until then both scales exist on
+     purpose, and this comment is the record of why.
+
+     Measured, not assumed: every line-height below is a text-box height read
+     off the design's frames, and every size was solved from the cap height of
+     the rendered glyphs, calibrated against the one step whose size the
+     design's own type spec states (28px → 21px of measured cap). */
+
+  /* Homepage hero. 64/72 — the only place the design goes above its H1. */
+  --text-display: 4rem;
+  --text-display--line-height: 1.125; /* 72px */
+  --text-display--letter-spacing: 0.0173em; /* 1.11px — the design's +1.04 at 60 */
+  /* The design's H1. Used for the stat figures. */
+  --text-figure: 3.75rem; /* 60px */
+  --text-figure--line-height: 1.2167; /* 73px */
+  --text-figure--letter-spacing: 0.0173em;
+  /* The design's H2 — every section heading on the site. */
+  --text-section: 1.75rem; /* 28px */
+  --text-section--line-height: 1.2857; /* 36px */
+  /* The design's H3 — card and step titles. */
+  --text-card: 1.5rem; /* 24px */
+  --text-card--line-height: 1.2917; /* 31px */
+  /* The design's Subheader. Differs from `body-lg` only in leading (26 vs
+     25.2); they merge in Phase 7 once nothing reads the old value. */
+  --text-lead: 1.125rem; /* 18px */
+  --text-lead--line-height: 1.4444; /* 26px */
+  /* The mono chip step. Same 6.9% tracking as `caption`, one size up — the
+     design uses 14 for labels that annotate and 16 for chips that are the
+     content. */
+  --text-tag: 1rem; /* 16px */
+  --text-tag--line-height: 1.3125; /* 21px */
+  --text-tag--letter-spacing: 0.069em;
+  /* Oversized index numerals — services grid and process steps. Decorative;
+     line-height is set per composition because the design boxes it two
+     different ways (48px in the grid, 71px auto in the process cards). */
+  --text-numeral: 3.5rem; /* 56px */
 
   /* Fluid moments */
   --text-stat: clamp(2.75rem, 1.6rem + 3.4vw, 5rem); /* 44 → 80 */
@@ -118,11 +176,30 @@
   --header-h-sm: 72px; /* below lg; the mobile overlay hangs off this */
   --texture-ink: rgba(23, 23, 23, 0.07);
   --texture-grid-ink: rgba(23, 23, 23, 0.05);
+
+  /* --- The design's two section gradients -------------------------------
+     Both sampled down a full-height column of the rendered frames, so the
+     endpoints are the real stops rather than an eyeballed pair. The hero's is
+     the one place the retired warm canvas still shows: it lands on #ecebe1,
+     which is why the page reads warm at the fold and neutral below it. */
+  --gradient-hero: linear-gradient(180deg, #fefefe 0%, #ecebe1 100%);
+  --gradient-dark: linear-gradient(180deg, #2a2a2a 0%, #171717 100%);
+
+  /* Hatch fill for the hexagon watermarks and the process filler blocks, and
+     the ink the watermark's own hatching is drawn in. Both flip on tone. */
+  --hatch-ink: #bfbfbf;
+  --watermark-ink: rgba(23, 23, 23, 0.19);
+  /* Hexagon lattice behind the stats band. A flat ink, not a translucent
+     white: the design lets it disappear into the top of the dark gradient and
+     surface towards the bottom, which an alpha would not do. */
+  --lattice-ink: #343434;
 }
 
 [data-tone="dark"] {
   --texture-ink: rgba(255, 255, 255, 0.12);
   --texture-grid-ink: rgba(255, 255, 255, 0.05);
+  --hatch-ink: rgba(255, 255, 255, 0.16);
+  --watermark-ink: rgba(255, 255, 255, 0.22);
 }
 
 /* ==========================================================================
@@ -191,6 +268,38 @@
     linear-gradient(to right, var(--texture-grid-ink) 1px, transparent 1px),
     linear-gradient(to bottom, var(--texture-grid-ink) 1px, transparent 1px);
   background-size: 96px 96px;
+}
+
+/* 45° hatch, running bottom-left to top-right, on a 16.5px perpendicular
+   period. Measured off the design's filler blocks: 23.4px between line centres
+   horizontally at 45°, which is 16.5px perpendicular. These blocks are the
+   negative space that staggers the process map — they carry no content, so
+   they are painted on an aria-hidden element. */
+@utility texture-hatch {
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent 0 15.5px,
+    var(--hatch-ink) 15.5px 16.5px
+  );
+}
+
+/* The work carousel scrolls horizontally by design; a scrollbar under it would
+   read as a second, competing control next to the filter chips. Keyboard and
+   touch scrolling are unaffected — only the bar is hidden. */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* The design's two section gradients, as utilities so a section declares its
+   surface the same way it declares its tone. */
+@utility surface-hero {
+  background-image: var(--gradient-hero);
+}
+@utility surface-dark {
+  background-image: var(--gradient-dark);
 }
 
 /* Pentagonal silhouette — one clipped corner, always top-right.

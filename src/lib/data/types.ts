@@ -82,3 +82,36 @@ export type ProcessStepDetail = {
   deliverableLabel: string;
   deliverable: string;
 };
+
+/* ------------------------------------------------------------------ homepage */
+
+/**
+ * The hero headline, as hand-set lines of inked runs. `lead` is the design's
+ * mid-grey, `emphasis` its near-black; the tone changes partway through a line,
+ * so the two structures are separate.
+ */
+export type HeadlineRun = { text: string; tone: "lead" | "emphasis" };
+
+export type HomeHero = {
+  headline: { lines: readonly (readonly HeadlineRun[])[] };
+  subhead: readonly string[];
+  actions: readonly NavLink[];
+};
+
+/**
+ * The proof line beside the stats, with each client name already resolved to
+ * the case study it links to — the raw content stores slugs, and the data layer
+ * turns them into destinations so a dead slug fails at build rather than in the
+ * browser.
+ */
+export type HomeProof = {
+  prefix: string;
+  clients: readonly NavLink[];
+};
+
+/** The outcome block: a heading, a paragraph, and the architecture still. */
+export type HomeOutcome = {
+  heading: string;
+  body: string;
+  diagram: { src: string; alt: string; width: number; height: number };
+};

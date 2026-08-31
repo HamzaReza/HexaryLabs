@@ -17,6 +17,11 @@ import { work as rawWork, WORK_INTRO as rawWorkIntro } from "@/content/work";
 import { site as rawSite, contactCta as rawContactCta } from "@/content/site";
 import { nav as rawNav, headerCta as rawHeaderCta, footerNav as rawFooterNav } from "@/content/nav";
 import { stats as rawStats } from "@/content/stats";
+import {
+  homeHero as rawHomeHero,
+  homeOutcome as rawHomeOutcome,
+  homeProof as rawHomeProof,
+} from "@/content/home";
 import { tech as rawTech, techIntro as rawTechIntro } from "@/content/tech";
 import { process as rawProcess } from "@/content/process";
 import {
@@ -45,6 +50,9 @@ import { z } from "zod";
 import {
   caseStudySchema,
   contactCtaSchema,
+  homeHeroSchema,
+  homeOutcomeSchema,
+  homeProofSchema,
   footerNavGroupSchema,
   navItemSchema,
   navLinkSchema,
@@ -61,6 +69,8 @@ import type {
   CaseStudy,
   ContactCta,
   FooterNavGroup,
+  HomeHero,
+  HomeOutcome,
   NavItem,
   NavLink,
   Platform,
@@ -152,6 +162,19 @@ export const loadProcessPhases = once((): ProcessPhase[] =>
 
 export const loadPlatformGroups = once((): PlatformGroup[] =>
   checked(z.array(platformGroupSchema), rawGroups, "integrations"),
+);
+
+export const loadHomeHero = once((): HomeHero =>
+  checked(homeHeroSchema, rawHomeHero as HomeHero, "homeHero"),
+);
+
+/* Slugs, not links — `getHomeProof` resolves them against the case studies. */
+export const loadHomeProof = once(() =>
+  checked(homeProofSchema, rawHomeProof, "homeProof"),
+);
+
+export const loadHomeOutcome = once((): HomeOutcome =>
+  checked(homeOutcomeSchema, rawHomeOutcome as HomeOutcome, "homeOutcome"),
 );
 
 /* --------------------------------------------------- whole-page copy blocks */

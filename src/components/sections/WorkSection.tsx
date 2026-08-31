@@ -1,44 +1,51 @@
 import { Container } from "@/components/ui/Container";
-import { SectionHeader } from "@/components/ui/SectionHeader";
-import { Section } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
-import { Reveal } from "@/components/ui/Reveal";
-import { CaseStoryRow } from "@/components/cards/CaseStoryRow";
-import { getClientTags, getFeaturedWork } from "@/lib/data";
+import { SectionHead } from "@/components/ui/SectionHead";
+import { WorkCarousel, type WorkCarouselItem } from "@/components/sections/WorkCarousel";
+import { getClientTags, getListedWork } from "@/lib/data";
 
+/**
+ * Our Work: a centred heading, a row of category chips, and a full-bleed
+ * carousel of case studies.
+ *
+ * The previous build stacked three featured studies vertically as long
+ * alternating rows. The design shows every listed study instead, one card each,
+ * reachable by category — so this reads `getListedWork()` rather than
+ * `getFeaturedWork()`, and the chips are the studies' own `category` values.
+ * The design's six chips are exactly that list, in that order.
+ *
+ * The carousel is a client component because it holds a position; the pairing
+ * of each study with its eyebrow happens here, on the server, so the client
+ * receives finished items rather than reaching for content itself.
+ */
 export async function WorkSection() {
-  const [featured, clientTags] = await Promise.all([
-    getFeaturedWork(),
-    getClientTags(),
-  ]);
+  const [studies, clientTags] = await Promise.all([getListedWork(), getClientTags()]);
+
+  const items: WorkCarouselItem[] = studies.map((study) => ({
+    study,
+    /* `category · client`. The design also names the product in the third
+       segment on the one in-house study; that repeats the card title directly
+       beneath it, so it is left off. */
+    eyebrow: `${study.category} · ${clientTags[study.slug] ?? study.client}`,
+  }));
 
   return (
-    <Section tone="light">
+    <section className="bg-base py-14 lg:py-20">
       <Container>
-        <SectionHeader
-          title="Our Work"
-          action={{ label: "See all Work", href: "/work" }}
-        />
+        <SectionHead title="Our Work" align="center" className="mb-12" />
+      </Container>
 
-        <div className="flex flex-col gap-16 lg:gap-24">
-          {featured.map((study, i) => (
-            <Reveal key={study.slug} variant="fade-up">
-              <CaseStoryRow
-                study={study}
-                index={i}
-                flip={i % 2 === 1}
-                eyebrow={clientTags[study.slug] ?? study.client}
-              />
-            </Reveal>
-          ))}
-        </div>
+      {/* Only the card track is full-bleed. The chip row is content, so it
+          starts on the gutter like everything else and scrolls inside it. */}
+      <WorkCarousel items={items} />
 
-        <div className="mt-16 lg:mt-24">
-          <Button href="/work" variant="block">
-            See All Work
+      <Container>
+        <div className="mt-14 flex justify-center">
+          <Button href="/work" variant="outline">
+            See Our Work
           </Button>
         </div>
       </Container>
-    </Section>
+    </section>
   );
 }

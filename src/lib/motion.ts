@@ -69,3 +69,18 @@ export function cardHoverZoomStyle(scale: number): CSSProperties {
     "--card-hover-easing": CARD_HOVER_ZOOM.easing,
   } as CSSProperties;
 }
+
+/**
+ * Whether the visitor has asked for reduced motion.
+ *
+ * The CSS side of this is handled by media queries; this is for the cases a
+ * query cannot reach — imperative scrolling, where the choice is an argument to
+ * `scrollTo` rather than a property to override. Returns `false` during server
+ * rendering, where there is no visitor to ask.
+ */
+export function prefersReducedMotion(): boolean {
+  return (
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+}

@@ -10,17 +10,17 @@ Plan of record: `~/.claude/plans/what-i-meant-by-peppy-pinwheel.md`.
 ## Now
 
 Phases 0, 2 and 1 are done and committed, in that order — 2 ran before 1 by request.
-**Next up: Phase 3, the homepage.** Nothing is in flight.
+**Phase 3 is built and verified, awaiting sign-off. Nothing is committed yet.**
 
 | Phase | State | Commit | Review page |
 |---|---|---|---|
 | 0 — Foundations | committed | `a2ace31` | `review/phase-0.html` |
 | 2 — Contact closer | committed | `2fc1978` | `review/phase-2.html` |
 | 1 — Sitewide chrome | committed | `e06ecd4` | `review/phase-1.html` |
-| 3 — Homepage | not started | — | — |
+| 3 — Homepage | **awaiting review** | — | `review/phase-3.html` |
 
-**Read before resuming Phase 3:** the two open asks in *Blocked / waiting*, and the
-*Environment gotchas* section — both of the traps in there cost an hour each.
+**Read before resuming:** the open asks in *Blocked / waiting*, and the *Environment
+gotchas* section — every trap in there cost real time.
 
 ---
 
@@ -191,22 +191,75 @@ Phases 0, 2 and 1 are done and committed, in that order — 2 ran before 1 by re
 
 ---
 
+## Phase 3 — Homepage · `feat:` — **built, awaiting sign-off**
+
+Verified section by section against the design's own frames, at 1:1.
+
+### Section heights vs the design
+| Section | Design | Build | |
+|---|---|---|---|
+| Hero | 605 | 605 | exact |
+| Stats | 275 | 275 | exact |
+| Outcome | 566 | 566 | exact |
+| Our Work | 1046 | 1047 | +1 |
+| Services | 664 | 664 | exact |
+| Stack | 740 | 743 | +3 — three real 1px rules the design draws as zero-height lines |
+| How We Work | 1586 | 1562 | −24 — **correct**: the design's four cards share one placeholder paragraph, ours carry the real steps |
+| Contact closer | 985 | 987 | +2, inside the Phase 2 form |
+
+### Built
+- [x] Hero — two-tone ALL-CAPS 64/72 on the warm gradient, hatched hexagon, copy/actions baseline row
+- [x] `StatsBand` — bordered 12%-white cards over the honeycomb; proof line moved down from the hero
+- [x] **`OutcomeSection` — new**, the designed block that had never existed
+- [x] `WorkCarousel` + `WorkCard` — chips and track as one control, native scroll-snap
+- [x] `ServicesSection` — flat 2×2 dark grid; `ServicesExplorer` accordion deleted
+- [x] `TechStack` — numbered chip rows + the bleeding hexagon cluster
+- [x] `ProcessSection` + `ProcessRail` — staggered two-column map with hatch fillers
+- [x] `CapabilitiesBand` deleted; `getPlatformNames()` went with its last caller
+- [x] Hex watermark added to the contact closer — **reaches every page carrying it**
+- [x] Homepage copy moved to `src/content/home.ts`, behind the data layer
+- [x] New primitives: `HexWatermark`, `HexLattice`, `ChevronRun`, `StackHexagons`,
+      `ProcessRail`, `Chip`, `SectionHead`, `WorkCard`, `WorkCarousel`
+- [x] `Button` gains the design's `solid` / `outline` at its 46px geometry;
+      `ArrowIcon` gains `tight`, cropping the box to the ink
+
+### Corrections made during the phase — worth remembering
+- [!] **The design's headline breaks are hand-set.** Widest line 692px inside a 900px box,
+      so no measure reproduces them. Left to wrap it lost a line and the hero came out 72px
+      short. Stored in content as lines of inked runs, applied from `lg`.
+- [!] **Section headings are weight 500, not Bold.** Derived Bold from stem-to-size ratios;
+      measuring build against design with one method gave 47px cap and 7px stems in both at
+      500. **Ratio-based weight inference does not work here — measure both sides instead.**
+- [!] **The honeycomb cell is three hexagons, not one.** The 173×172 layer box holds three;
+      drawing one hexagon at that size on that pitch gives a field of stars.
+- [!] **The hatch ran the wrong way** — the CSS gradient angle was 90° out.
+- [-] The design's type scale is not the build's. Added under its own names
+      (`text-display/section/card/figure/lead/tag/numeral`) rather than retuning `--text-h*`,
+      which would have resized headings on six pages Phases 4–6 have yet to rebuild.
+      **Both scales exist on purpose. Phase 7 merges them.**
+
+### Verify
+- [x] `npx tsc --noEmit`, `npm run lint`, `npm run build` clean — 36/36 static pages
+- [x] All 17 routes captured at 1440 and diffed against Phase 1: homepage −1269px / 39.3%
+      changed, **every other route identical in height, 0.00–0.09% of pixels** — all of it
+      the closer's new watermark
+- [x] No horizontal overflow at 390, 768 or 1440 (one real overflow found and fixed: the
+      chevron ornament held 402px at every size)
+- [ ] Sign-off, then commit as `feat: rebuild the homepage on the approved design`
+
+### Harness bugs found while verifying — both produced convincing false results
+- [x] A capture clip combined with a full-height emulated viewport makes Chrome **silently
+      rescale** the page. Section diffs read 28% and 49% for code that was correct.
+      Fixed: capture the page whole, slice locally, assert the width.
+- [x] `shoot.mjs` gave lazy images 400ms after growing the viewport. A below-fold image
+      missing from one route looked exactly like a regression (2.35% on a service page).
+      Fixed: wait for images that will be in frame to decode, with an 8s ceiling — scoped to
+      visible ones, since the carousel's off-screen cards stay lazy forever by design.
+
+---
+
 ## Upcoming
 
-- [ ] **Phase 3** — Homepage. The largest single phase. Against the design frame, what is
-      still wrong on `/`:
-      - hero is sentence case in the old layout; the design has a **two-tone ALL-CAPS**
-        headline (first sentence mid-grey, second near-black), copy bottom-left with the
-        buttons bottom-right, on a **warm gradient** rather than flat white, with a hatched
-        hexagon watermark top-right
-      - stats band should be bordered cards on a hex-lattice surface
-      - the **"Software built by people who own the outcome"** block with the system
-        architecture diagram is **missing entirely**
-      - Our Work should be filter chips + a peeking-card carousel, not a vertical stack
-      - Services should be a flat 2×2 dark grid, not the click-to-expand accordion
-      - tech stack and process use different layouts
-      - `CapabilitiesBand` is not in the design and comes out
-      - the closer is already correct (Phase 2)
 - [ ] **Phase 4** — Services index + 4 service pages
 - [ ] **Phase 5** — Work index + collapse case studies to one template
 - [ ] **Phase 6** — About
