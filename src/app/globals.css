@@ -112,6 +112,13 @@
   --text-figure: 3.75rem; /* 60px */
   --text-figure--line-height: 1.2167; /* 73px */
   --text-figure--letter-spacing: 0.0173em;
+  /* Inner-page hero headlines. Read off the Figma type panel rather than
+     measured: Space Grotesk Medium 40/48, +1.04px. The same +1.04 the design
+     uses at 60 and 64 — it tracks headlines by an absolute amount, not a
+     proportional one, so this is 0.026em here and 0.0173em there. */
+  --text-page-title: 2.5rem; /* 40px */
+  --text-page-title--line-height: 1.2; /* 48px */
+  --text-page-title--letter-spacing: 0.026em; /* 1.04px */
   /* The design's H2 — every section heading on the site. */
   --text-section: 1.75rem; /* 28px */
   --text-section--line-height: 1.2857; /* 36px */
@@ -184,6 +191,9 @@
      which is why the page reads warm at the fold and neutral below it. */
   --gradient-hero: linear-gradient(180deg, #fefefe 0%, #ecebe1 100%);
   --gradient-dark: linear-gradient(180deg, #2a2a2a 0%, #171717 100%);
+  /* Exact stops from the exported frame, not sampled off the render. */
+  --gradient-hero-ramp: linear-gradient(90deg, #494949 0%, #a9a9a9 100%);
+  --gradient-accent-band: linear-gradient(90deg, #9485fc 0%, #5d48f5 100%);
 
   /* Hatch fill for the hexagon watermarks and the process filler blocks, and
      the ink the watermark's own hatching is drawn in. Both flip on tone. */
@@ -257,11 +267,16 @@
 
 /* Blueprint surface textures — tone-aware via --texture-ink, backgrounds
    only, at most one textured surface per viewport (redesign-plan §4.4). */
-/* 4px dots on a 34.6px grid, measured off the design's ellipse field
-   (34.643 horizontal / 34.521 vertical — squared off here). */
+/* 4px dots on a 32px grid.
+   Corrected in Phase 4. Phase 3 set 34.6px from a render whose scale was not
+   1:1; two independent sources now agree on 32 — the ellipse nodes step by
+   exactly 32 in x (31.94 in y) in the frame metadata, and a native 1:1 render
+   of the Services frame measures 32.0 between dot centres, with each dot 4px
+   across. The error was ~8%, which compounds to a visibly drifted field over
+   the width of a page. */
 @utility texture-dots {
   background-image: radial-gradient(circle, var(--texture-ink) 2px, transparent 2px);
-  background-size: 34.6px 34.6px;
+  background-size: 32px 32px;
 }
 @utility texture-grid {
   background-image:
@@ -300,6 +315,17 @@
 }
 @utility surface-dark {
   background-image: var(--gradient-dark);
+}
+/* The service pages' hero ramp. Horizontal, not diagonal: sampled at three
+   heights across the frame, every column is a constant value, and the ramp
+   from #484848 to #A8A8A8 is linear in between. */
+@utility bg-hero-ramp {
+  background-image: var(--gradient-hero-ramp);
+}
+/* The "Why it matters" band on the service pages: #9485FC → #5B45F5, left to
+   right, ending on the accent itself. */
+@utility bg-accent-band {
+  background-image: var(--gradient-accent-band);
 }
 
 /* Pentagonal silhouette — one clipped corner, always top-right.

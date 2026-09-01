@@ -74,6 +74,8 @@ export const serviceSchema = z.object({
   summary: nonEmpty,
   teaserQuote: nonEmpty,
   teaserBestFor: nonEmpty,
+  typicalEngagement: nonEmpty,
+  relatedWorkLabel: nonEmpty,
   explore: z.object({
     caseStudySlug: nonEmpty,
     diagram: z.tuple([nonEmpty, nonEmpty, nonEmpty]),

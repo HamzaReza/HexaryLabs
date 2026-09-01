@@ -9,8 +9,13 @@ Plan of record: `~/.claude/plans/what-i-meant-by-peppy-pinwheel.md`.
 
 ## Now
 
-Phases 0, 2, 1 and 3 are committed (0/2/1 ran in that order — 2 before 1 by request).
-**Next up: Phase 4, the services index and the four service pages.** Nothing is in flight.
+Phases 0, 2, 1, 3 and 4 are committed (0/2/1 ran in that order — 2 before 1 by request).
+**Next up: Phase 5, the work index and collapsing the case studies to one template.**
+Nothing is in flight.
+
+**Open decisions carried into Phase 5** — see *Blocked / waiting*: whether to re-audit
+Phases 1–3 against Figma's source data before continuing, and whether `/privacy`,
+`/terms` and `/work` should keep the 540px hero the shared band now gives them.
 
 | Phase | State | Commit | Review page |
 |---|---|---|---|
@@ -18,6 +23,7 @@ Phases 0, 2, 1 and 3 are committed (0/2/1 ran in that order — 2 before 1 by re
 | 2 — Contact closer | committed | `2fc1978` | `review/phase-2.html` |
 | 1 — Sitewide chrome | committed | `e06ecd4` | `review/phase-1.html` |
 | 3 — Homepage | committed | `dd9e7aa` | `review/phase-3.html` |
+| 4 — Services | committed | `PENDING` | `review/phase-4.html` |
 
 **Read before resuming:** the open asks in *Blocked / waiting*, and the *Environment
 gotchas* section — every trap in there cost real time.
@@ -258,9 +264,95 @@ Verified section by section against the design's own frames, at 1:1.
 
 ---
 
+## Phase 4 — Services · `feat:` — **built, awaiting review**
+
+Frames: index `81:5724`, Product Strategy `95:11809` (the one detail page measured
+end to end; the other three share its template).
+
+### A. The index page
+- [x] `PageHero` rebuilt to the design: a 540px band, content **bottom**-anchored 64px
+      clear of the edge, 738px column, uniform 24px gaps. The block grows upward as the
+      headline takes more lines — 335px at three, 287px at two, both ending on the same
+      baseline
+- [x] `--text-page-title` — Space Grotesk **Medium 40/48, +1.04px**, read off the Figma
+      type panel. Phase 1 had this at 64px (`text-h1`), which was the homepage display
+      step borrowed for want of a measurement
+- [x] `HeadlineLines` — the designer's breaks, kept in content. Each hero typesets in a box
+      sized to its own widest line (521 index, 630 service), so no single shared max-width
+      reproduces both
+- [x] `ServiceCard` — 1280 card, 32px padding, 120px numeral column, 952 content, 80px
+      icon, all gaps 32. Radius 16, white on `#F1F1F1`, no border, no shadow
+- [x] `ServiceIcon` — the four glyphs pulled as vectors; per-icon size is part of the
+      artwork (49.23 for the line marks, 61.54 for the dense ones)
+- [x] `Chip` gains a third size, `stack` — 34px on 24px padding, 2px gaps
+- [x] Two additive content fields, `typicalEngagement` and `relatedWorkLabel`. **The stack
+      chips are not stored**: they are the first six of the related case study's own
+      `stack`, which is exactly what the design shows on all four cards
+- [x] "Not sure which one fits?" band and the integrations link removed — neither is in the
+      approved design
+- [x] Hero **540** and cards block **2040** — both exactly the design, first try
+
+### B. The four service pages, one template
+- [x] 568 lines → ~270. All per-service layout branching gone; the four pages differ only
+      in data. Two beats stay conditional because only some services have the content:
+      the accent band needs `cost`, the proof line is Software Engineering's alone
+- [x] Dark hero on the `#484848 → #A8A8A8` ramp — horizontal, not diagonal: sampled at
+      three heights, every column is constant
+- [x] `Accordion` (client) for the FAQs — one open at a time, panels kept mounted so
+      in-page search finds closed answers
+- [x] `ServiceApproach` — flat-top hexagons 160×138 (side 80) on a 324px pitch, chevron
+      connectors, captions repeating the same pitch so each sits under its hexagon
+- [x] `ServiceOutcomes` — ghost numerals on the honeycomb field
+- [x] `ChevronRun` gains a `pitch` prop (15.005 for long runs, 16.005 for the connectors)
+- [x] Product Strategy measures **5549 against the design's 5547**; seven of eight sections
+      exact, `approach` +1, `faq` −1, closer +2 (the known Phase 2 delta)
+
+### Corrections to earlier phases, found by measuring
+- [!] **The dot texture was on the wrong pitch sitewide.** Phase 3 set 34.6px from a render
+      that was not 1:1. Two independent sources now agree on **32px**: the ellipse nodes
+      step by exactly 32 in x (31.94 in y), and a native 1:1 render measures 32.0 between
+      centres. ~8% error, compounding to a visibly drifted field across a page. **This
+      changes the homepage, which was already approved** — the top band of the services
+      hero, which is pure texture, now diffs at 0.00%.
+- [!] **Inner-page heroes are 40px, not 64.** Confirmed on two frames. Every route using
+      `PageHero` inherits it — Work and About get their own frames in Phases 5–6, which is
+      where this gets confirmed a third and fourth time.
+
+### Known deviations, deliberate
+- [-] Related-work panel diffs at 11.8%: the design shows a mockup, the build shows the
+      real case-study cover from `public/work/`. Structure matches; the artwork differs on
+      purpose.
+- [-] Accent-band body set 6px nearer its rule than the design's 26px. Chrome renders Inter
+      ~0.55% wider than Figma, enough to orphan a fifth line and leave the band 24px too
+      deep. Six pixels of gap buys the measure back; a band a whole line too tall is the
+      more visible error.
+- [-] The index headline keeps the build's comma. The Figma reads "…the right thing. and
+      build it well." — a full stop and a lowercase "and". That is a copy error, not a
+      design decision; only the breaks were taken from the design.
+
+### Verify
+- [x] `npx tsc --noEmit`, `npm run lint` clean
+- [x] One real mobile bug found and fixed: the related-work chevron run kept its intrinsic
+      width against `flex-1` and sized the grid column to 553px inside a 390 viewport
+- [x] All 17 routes captured at 1440 **and 390** into `review/phase4`, and diffed against
+      the Phase 3 captures
+- [x] Review page `review/phase-4.html` — 42 comparisons, 8 of them Figma beside build
+- [!] **Correction to the claim above: the dot-pitch fix does not visibly change the
+      homepage.** Diffed at a threshold low enough to see the dots at all, home moves
+      0.01%, contact 0.92%, styleguide 0.10%, and none of them crosses the visible
+      threshold. The pitch was wrong and is fixed — 32.00 in the build against the design's
+      31.95, with `background-size:32px 32px` in the compiled CSS — but it only matters
+      where the dot field is prominent, which is the inner-page heroes. Stated twice as
+      "this changes the homepage"; it does not.
+- [!] **The 540px hero grows four undesigned routes.** privacy and terms 277 → 539, work
+      495 → 539. About was already 623 → 624, which is independent support for the band:
+      the design's own About hero is 540. On routes the designer never covered this is our
+      call, not theirs.
+
+---
+
 ## Upcoming
 
-- [ ] **Phase 4** — Services index + 4 service pages
 - [ ] **Phase 5** — Work index + collapse case studies to one template
 - [ ] **Phase 6** — About
 - [ ] **Phase 7** — Responsive, contrast, motion audit. Includes rewriting

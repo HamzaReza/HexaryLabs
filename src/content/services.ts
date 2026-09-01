@@ -26,6 +26,15 @@ export type Service = {
   /** /services overview page teaser card. */
   teaserQuote: string;
   teaserBestFor: string;
+  /**
+   * The card's two lower columns in the approved design. The third column it
+   * shows — the stack chips — is not stored here: it is the first six entries
+   * of the related case study's own `stack`, which is where the design took
+   * them from, so it stays derived rather than duplicated.
+   */
+  typicalEngagement: string;
+  /** How the related case study is named on the card, which is not its title. */
+  relatedWorkLabel: string;
 
   /** Homepage services expansion (5.3): related evidence + mini diagram. */
   explore: {
@@ -71,6 +80,8 @@ export const services: Service[] = [
       "For when you need to know what to build before you spend a cent building it.",
     teaserBestFor:
       "founders and product leads with an idea, a messy backlog, or a board that wants a plan before approving budget.",
+    typicalEngagement: "2-4 weeks",
+    relatedWorkLabel: "KeepComing — loyalty platform",
 
     heroEyebrow: "Product Strategy",
     heroHeadline: "Know what to build before you spend a cent building it",
@@ -155,6 +166,8 @@ export const services: Service[] = [
       "For when the product works but doesn't yet look, feel, or convert like it should.",
     teaserBestFor:
       "teams with a working product that needs consistency, or a new product that needs to get the first impression right.",
+    typicalEngagement: "4–8 weeks",
+    relatedWorkLabel: "Eden — studio for autonomous creative AI",
 
     heroEyebrow: "Product Design",
     heroHeadline: "Design that holds up once real users touch it",
@@ -241,6 +254,8 @@ export const services: Service[] = [
     teaserQuote: "For building, scaling, or connecting the systems your business actually runs on.",
     teaserBestFor:
       "teams ready to build, rebuild past a system that's outgrown itself, or connect tools that were never meant to talk to each other.",
+    typicalEngagement: "3 months and up",
+    relatedWorkLabel: "TrueCell — inventory OS",
 
     heroEyebrow: "Software Engineering",
     heroHeadline: "Software that's still easy to change a year from now",
@@ -358,6 +373,8 @@ export const services: Service[] = [
     teaserQuote: "For AI that survives contact with real users, not just a demo.",
     teaserBestFor:
       "teams with a specific process (support, document handling, internal ops) they want to make faster with AI that's actually been evaluated.",
+    typicalEngagement: "6–12 weeks",
+    relatedWorkLabel: "Medical Records Integration & AI Platform",
 
     heroEyebrow: "AI Engineering",
     heroHeadline: "AI that works in production, not just in the demo",
@@ -446,6 +463,21 @@ export const servicesOverview = {
   hero: {
     eyebrow: "Services",
     headline: "Four ways we help you build the right thing, and build it well",
+    /**
+     * The designer's line breaks, kept explicitly because the design typesets
+     * this headline in a box sized to its own widest line — no single shared
+     * max-width reproduces both this and the service pages'. Below `lg` these
+     * run together and wrap naturally.
+     *
+     * The Figma reads "…the right thing. and build it well." with a full stop
+     * and a lowercase "and". That is a copy error, not a design decision, so
+     * the comma here stands; only the breaks are taken from the design.
+     */
+    headlineLines: [
+      "Four ways we help you",
+      "build the right thing,",
+      "and build it well",
+    ],
     subhead:
       "Most engagements start with one of these and pull in the others as the project needs them. Here's what each one actually solves.",
     cta: "Start a Project",

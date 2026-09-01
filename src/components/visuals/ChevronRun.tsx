@@ -31,16 +31,20 @@ export function ChevronRun({
   direction = "right",
   /** Step the run down to 20% opacity away from the head. */
   fade = false,
+  /** Centre-to-centre spacing. The design uses 15.005 for the long runs and
+      16.005 for the short connectors between the approach hexagons. */
+  pitch = PITCH,
   className,
 }: {
   count: number;
   head?: boolean;
   direction?: "left" | "right";
   fade?: boolean;
+  pitch?: number;
   className?: string;
 }) {
   const headOffset = head ? HEAD_WIDTH : 0;
-  const width = headOffset + (count - 1) * PITCH + 17.432;
+  const width = headOffset + (count - 1) * pitch + 17.432;
 
   return (
     <svg
@@ -64,7 +68,7 @@ export function ChevronRun({
           /* The design steps whole chevrons rather than applying a gradient, so
              the ramp is per-shape opacity: 1 down to 0.2 across the run. */
           opacity={fade ? 1 - i / count : undefined}
-          transform={`translate(${headOffset + i * PITCH} 0)`}
+          transform={`translate(${headOffset + i * pitch} 0)`}
         />
       ))}
     </svg>
