@@ -23,7 +23,7 @@ Phases 1–3 against Figma's source data before continuing, and whether `/privac
 | 2 — Contact closer | committed | `2fc1978` | `review/phase-2.html` |
 | 1 — Sitewide chrome | committed | `e06ecd4` | `review/phase-1.html` |
 | 3 — Homepage | committed | `dd9e7aa` | `review/phase-3.html` |
-| 4 — Services | committed | `PENDING` | `review/phase-4.html` |
+| 4 — Services | committed | `c98ec8a` | `review/phase-4.html` |
 
 **Read before resuming:** the open asks in *Blocked / waiting*, and the *Environment
 gotchas* section — every trap in there cost real time.
