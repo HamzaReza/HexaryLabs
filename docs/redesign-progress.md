@@ -9,13 +9,18 @@ Plan of record: `~/.claude/plans/what-i-meant-by-peppy-pinwheel.md`.
 
 ## Now
 
-Phases 0, 2, 1, 3 and 4 are committed (0/2/1 ran in that order — 2 before 1 by request).
-**Next up: Phase 5, the work index and collapsing the case studies to one template.**
-Nothing is in flight.
+Phases 0, 2, 1, 3, 4 and 5 are committed (0/2/1 ran in that order — 2 before 1 by request).
+**Next up: Phase 6, the About page.** Nothing is in flight.
 
-**Open decisions carried into Phase 5** — see *Blocked / waiting*: whether to re-audit
-Phases 1–3 against Figma's source data before continuing, and whether `/privacy`,
-`/terms` and `/work` should keep the 540px hero the shared band now gives them.
+Phase 5 was **returned once** before it was accepted — see *A0* under Phase 5 for what was
+wrong and why. The short version: it was built from the design's measurements rather than
+the design's assets, so every band height matched while the ground the rows sit on, the
+hero artwork and five of six row images did not.
+
+**Phase 6 is no longer blocked.** The "team photograph" is a **stock office photo** placed
+in the Figma (1240 × 413), not a photo of the team — so the section can be built now. Worth
+a decision from the client: shipping it reads as a real team photo. Recommendation is to
+build with the design's image as the placeholder it is and swap one file later.
 
 | Phase | State | Commit | Review page |
 |---|---|---|---|
@@ -23,8 +28,9 @@ Phases 1–3 against Figma's source data before continuing, and whether `/privac
 | 2 — Contact closer | committed | `2fc1978` | `review/phase-2.html` |
 | 1 — Sitewide chrome | committed | `e06ecd4` | `review/phase-1.html` |
 | 3 — Homepage | committed | `dd9e7aa` | `review/phase-3.html` |
-| 5 — Work | **built, unreviewed** | — | `review/phase-5.html` |
 | 4 — Services | committed | `c98ec8a` | `review/phase-4.html` |
+| 5 — Work | committed | `9e66a58` | `review/phase-5.html` |
+| 6 — About | **not started** | — | — |
 
 **Read before resuming:** the open asks in *Blocked / waiting*, and the *Environment
 gotchas* section — every trap in there cost real time.
@@ -393,7 +399,7 @@ is a cross-check, never a source. Anything unsourceable is flagged explicitly, n
 
 ---
 
-## Phase 5 — Work + case studies · `feat:` — **in progress**
+## Phase 5 — Work + case studies · `feat:` — **committed** `9e66a58`
 
 Source-first throughout, per the method change above: frame metadata, `get_design_context`
 for type, and `download_assets` for artwork, all pulled before any code was written.
@@ -546,9 +552,13 @@ samples `(237,234,254)` against `(236,234,254)`.
   field exists in the content and durations for real client engagements cannot be invented.
   `duration?` is in the type and schema; the row appears the moment values arrive.
   Needed from the client.
-- [!] **About team photograph** — full-bleed, ideally ≥2880px wide. Not in `public/`, which
-  holds only case-study images. Check whether it is placed in the Figma first; otherwise
-  needed from the client. Blocks Phase 6.
+- [x] ~~**About team photograph** blocks Phase 6~~ — **it does not.** Checked the Figma, as
+  this entry said to: the image is placed, and it is a **stock office photo** (1240 × 413),
+  not the team. Phase 6 can proceed on it. Still worth a client decision, because on a
+  section headed *"A small, senior team, on purpose"* a stock photo reads as the team —
+  recommendation is to ship the design's image as the placeholder it is and swap one file
+  when a real photograph exists. Note the export is 1240 wide for a full-bleed slot, so it
+  will be soft; **ask the designer for a larger export** either way.
 - [ ] **Decision pending: is white right?** Phase 1 replaced the warm beige identity with
   the design's neutral one. The client approved the design, but they have only ever seen the
   build in beige. Worth confirming explicitly before launch rather than at launch.
