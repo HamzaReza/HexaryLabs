@@ -351,7 +351,7 @@ end to end; the other three share its template).
 
 ---
 
-## Source-data audit of Phases 1–3 — **committed** `PENDING`
+## Source-data audit of Phases 1–3 — **committed** `0f5fd51`
 
 Run before Phase 5, after Phase 4 found that ornaments had been reconstructed from
 renders rather than pulled from Figma. Every ornament and every homepage type value
