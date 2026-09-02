@@ -351,6 +351,47 @@ end to end; the other three share its template).
 
 ---
 
+## Source-data audit of Phases 1–3 — **committed** `PENDING`
+
+Run before Phase 5, after Phase 4 found that ornaments had been reconstructed from
+renders rather than pulled from Figma. Every ornament and every homepage type value
+shipped in Phases 1–3 was re-checked against `download_assets` / node metadata.
+
+### Verified correct — no change needed
+- [x] `HexWatermark` silhouette — exported mask path and viewBox `384.367 × 374.507` identical
+- [x] `HexLattice` — 3-hexagon cell, side 47.94, pitches **77.58 / 89.06**, stroke 1.08: exact
+- [x] `StackHexagons` outlines — exact; same artwork as the services hero
+- [x] `ChevronRun` — pitch 15.005, height 38 correct (run 77.45 vs 78.03, ignorable)
+- [x] **Homepage type scale** — hero 64/72 over 4 lines, section heads 28/36, stat figures
+      60/73, lead 18/26. All correct; the 40px error was confined to `PageHero`.
+
+### Defects found and fixed
+- [!] `HexWatermark` hatch — period **13.2 → 14.065**, stroke **1.1 → 1**, ink
+      `rgba(23,23,23,0.19)` (rendered `#D3D3D3`) → **`#C8C8C8`**. Ships on every page via
+      the closer. Verified after: renders `rgb(200,200,200)` at a 14.00 period.
+- [!] `StackHexagons` hatch — period **9.7 → 12.73** (24% too dense) **and the rotation was
+      mirrored**, `-30.1 → 30`. The doc comment asserted 9.7 as measured; it was not.
+- [!] `ProcessRail` — the node was a **pointy-top 39 × 58** hexagon against the design's
+      **flat-top 32 × 27**: rotated a quarter turn and twice the height. The 309 pitch still
+      measured right because the oversized node was offset by too little air.
+
+### Not audited
+- [-] `Wordmark` (real bezier paths, low risk), the footer watermark, and the **dark-tone**
+      watermark on the closer — no source pulled for the dark variant, still unverified.
+- [-] `HexCluster` — pre-Figma legacy on `/about` and `/how-we-work`; Phase 6 replaces it.
+- [-] Work / case-study / About frames — Phases 5–6 rebuild them from source anyway.
+
+### Method change adopted for Phases 5–7
+Source-first, no exceptions: `download_assets` before drawing any ornament, the type panel
+before setting any type, the export SVG before setting any fill or mask. Measuring a render
+is a cross-check, never a source. Anything unsourceable is flagged explicitly, not guessed.
+
+### Also
+- [-] `HexAssembly` is dead code — no importers. Left in place pending instruction.
+- [x] No layout moved: all 8 homepage sections identical to the Phase 3 approved numbers.
+
+---
+
 ## Upcoming
 
 - [ ] **Phase 5** — Work index + collapse case studies to one template

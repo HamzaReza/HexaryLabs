@@ -12,10 +12,14 @@ import { cn } from "@/lib/cn";
  * line nodes the export contains — same result, a hundredth of the markup, and
  * it stays crisp at any size.
  *
- * Hatch geometry is measured, not styled: the design's lines run 74.8° off
- * horizontal on a 13.2px perpendicular period at this artwork's native 384px.
- * Because the pattern is declared in user space, that period scales with the
- * viewBox — the mark keeps its texture density however large it is drawn.
+ * Hatch geometry is taken from the export's own line nodes, not measured off a
+ * render: the 34 lines sit 15.10° off vertical on a 14.065px perpendicular
+ * period, stroke 1, in `#C8C8C8`. Because the pattern is declared in user
+ * space, that period scales with the viewBox — the mark keeps its texture
+ * density however large it is drawn.
+ *
+ * An earlier pass had 13.2 / 1.1, measured off a render, which ran the texture
+ * 6% dense. Solving the period from two adjacent line nodes gives it exactly.
  *
  * Decorative by definition, so it is always `aria-hidden`.
  */
@@ -35,18 +39,18 @@ export function HexWatermark({ className }: { className?: string }) {
       <defs>
         <pattern
           id={id}
-          width="13.2"
-          height="13.2"
+          width="14.065"
+          height="14.065"
           patternUnits="userSpaceOnUse"
-          patternTransform="rotate(15.2)"
+          patternTransform="rotate(15.1)"
         >
           <line
             x1="0"
             y1="0"
             x2="0"
-            y2="13.2"
+            y2="14.065"
             stroke="currentColor"
-            strokeWidth="1.1"
+            strokeWidth="1"
           />
         </pattern>
       </defs>

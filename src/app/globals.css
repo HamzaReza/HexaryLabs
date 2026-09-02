@@ -198,7 +198,9 @@
   /* Hatch fill for the hexagon watermarks and the process filler blocks, and
      the ink the watermark's own hatching is drawn in. Both flip on tone. */
   --hatch-ink: #bfbfbf;
-  --watermark-ink: rgba(23, 23, 23, 0.19);
+  /* The export draws the watermark hatch as flat #C8C8C8, not a tint of the
+     ink — an alpha of 0.19 rendered it #D3D3D3, a shade too light. */
+  --watermark-ink: #c8c8c8;
   /* Hexagon lattice behind the stats band. A flat ink, not a translucent
      white: the design lets it disappear into the top of the dark gradient and
      surface towards the bottom, which an alpha would not do. */
