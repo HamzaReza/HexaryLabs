@@ -1,15 +1,6 @@
 export const WORK_INTRO =
   "Six engagements that show what we build: AI-native products, SaaS running in production, PHI-safe enterprise platforms, and the integration and automation work that connects the tools our clients already depend on. Different scales, different stacks, one team behind all of them.";
 
-export type HeroVariant =
-  | "image-contained"
-  | "text-metric"
-  | "schematic"
-  | "gradient"
-  | "image-fullbleed";
-
-export type BodyVariant = "sectioned" | "narrative" | "sidebar" | "two-column";
-export type MetricVariant = "grid" | "hero" | "inline";
 export type WorkImageSize = "small" | "rectangle" | "full";
 export type WorkImage = { src: string; alt: string; size: WorkImageSize };
 
@@ -35,16 +26,26 @@ export type CaseStudy = {
   slug: string;
   client: string;
   title: string;
+  /**
+   * What the work is called on `/work`. Defaults to `title`; set only where the
+   * design shows something else — Eden's row is headed by the studio's name
+   * rather than the product's.
+   */
+  displayName?: string;
   summary: string;
   category: string;
   featured?: boolean;
   scope?: string[];
-  variant: {
-    hero: HeroVariant;
-    body: BodyVariant;
-    metrics: MetricVariant;
-  };
+  /** The case study's own visual — usually its architecture diagram. */
   cover: Cover;
+  /**
+   * The image the `/work` row uses, when that differs from `cover`. The design
+   * fronts most rows with a product screenshot but keeps the diagram on the
+   * study itself; only Eden needs both.
+   */
+  rowCover?: Cover;
+  /** "4-8 weeks". Shown in the study's spec panel; omitted where unknown. */
+  duration?: string;
   heroMetric?: Metric;
   metrics: Metric[];
   challenge: CaseSection;
@@ -63,6 +64,7 @@ export const work: CaseStudy[] = [
     featured: true,
     client: "Eden Labs",
     title: "Eden",
+    displayName: "Eden Labs",
     summary:
       "A studio for autonomous creative AI, where agents make art, video, and stories with people and with each other.",
     scope: [
@@ -73,12 +75,12 @@ export const work: CaseStudy[] = [
       "Community workflow ecosystem",
       "Autonomous agent runtime",
     ],
-    variant: {
-      hero: "schematic",
-      body: "sidebar",
-      metrics: "inline",
-    },
     cover: { kind: "schematic", diagram: "eden" },
+    rowCover: {
+      kind: "photo",
+      src: "/work/eden.webp",
+      alt: "The Eden agents directory, showing featured autonomous creative agents with their authors, descriptions and chat counts",
+    },
     metrics: [
       {
         value: "Live",
@@ -156,16 +158,16 @@ export const work: CaseStudy[] = [
       "Developer API & docs",
       "Partners program",
     ],
-    variant: {
-      hero: "image-contained",
-      body: "sectioned",
-      metrics: "grid",
-    },
     cover: {
       kind: "photo",
       src: "/work/keepcoming.png",
       alt: "KeepComing's marketing key art, showing the KeepComing logo and a loyalty card in Apple Wallet",
       objectPosition: "left",
+    },
+    rowCover: {
+      kind: "photo",
+      src: "/work/keepcoming-row.webp",
+      alt: "A KeepComing digital loyalty card at four of five stamps, beside the QR code a customer scans to earn the next one",
     },
     metrics: [
       { value: "Live", label: "Paid customers in production at www.keepcoming.app" },
@@ -236,12 +238,16 @@ export const work: CaseStudy[] = [
       "Legal & healthcare tech",
       "Multi-system middleware",
     ],
-    variant: {
-      hero: "schematic",
-      body: "sidebar",
-      metrics: "inline",
+    cover: {
+      kind: "photo",
+      src: "/work/medical-architecture.webp",
+      alt: "System architecture: Litify (Salesforce), Filevine and Zendesk each connect to an integration middleware built on Laravel; Zendesk's tickets also feed an AI backend on Bedrock and Textract, which surfaces suggestions to staff tools",
     },
-    cover: { kind: "schematic", diagram: "medical-records" },
+    rowCover: {
+      kind: "photo",
+      src: "/work/medical-architecture-row.webp",
+      alt: "System architecture: three case-management systems connecting through an integration middleware to an AI backend and staff tools",
+    },
     metrics: [
       { value: "87%", label: "Test coverage across roughly 380 automated tests" },
       { value: "Audited", label: "PHI-safe architecture reviewed by an external security firm, all findings remediated" },
@@ -309,11 +315,6 @@ export const work: CaseStudy[] = [
       "Webhook rebuild & diagnostics",
       "Failure monitoring",
     ],
-    variant: {
-      hero: "schematic",
-      body: "sectioned",
-      metrics: "grid",
-    },
     cover: { kind: "schematic", diagram: "social-lead-capture" },
     metrics: [
       {
@@ -384,12 +385,12 @@ export const work: CaseStudy[] = [
       "Logistics integrations",
       "Accounting & BI integrations",
     ],
-    variant: {
-      hero: "image-contained",
-      body: "two-column",
-      metrics: "grid",
-    },
     cover: { kind: "photo", src: "/work/truecell.webp", alt: "The TrueCell inventory dashboard, showing marketplace sync status and inventory metrics" },
+    rowCover: {
+      kind: "photo",
+      src: "/work/truecell-row.webp",
+      alt: "TrueCell's product page: the inventory brain, one-click automation workflows, and a daily sell-through chart",
+    },
     metrics: [
       { value: "99.7%", label: "Inventory accuracy reported across connected channels" },
       { value: "14 min/day", label: "To reconcile inventory, down from hours of manual cross-checking" },
@@ -452,12 +453,12 @@ export const work: CaseStudy[] = [
       "Order templates & reordering",
       "Admin dashboard & sync monitoring",
     ],
-    variant: {
-      hero: "image-contained",
-      body: "two-column",
-      metrics: "grid",
-    },
     cover: { kind: "photo", src: "/work/kinein.webp", alt: "The Kinein B2B e-commerce storefront, showing bidirectional sync between the storefront and connected accounting systems" },
+    rowCover: {
+      kind: "photo",
+      src: "/work/kinein-row.webp",
+      alt: "Kinein's order-template editor, showing a saved bike build with per-line stock status, pricing and quantities",
+    },
     metrics: [
       { value: "1,000+", label: "Distributors, wholesalers, and manufacturers on the platform" },
       { value: "99.9%", label: "Platform uptime" },
@@ -519,15 +520,15 @@ export const work: CaseStudy[] = [
       "Brand analytics & buyer insights",
       "Shopify & Zoho CRM sync",
     ],
-    variant: {
-      hero: "image-contained",
-      body: "two-column",
-      metrics: "grid",
-    },
     cover: {
       kind: "photo",
       src: "/work/b2b-access.webp",
       alt: "The B2B Access wholesale marketplace homepage, showing platform metrics and calls to action for shops and brands",
+    },
+    rowCover: {
+      kind: "photo",
+      src: "/work/b2b-access-row.webp",
+      alt: "The B2B Access homepage in full, from the header down to the platform metrics band",
     },
     metrics: [
       { value: "2,400+", label: "Verified retail shops on the platform" },

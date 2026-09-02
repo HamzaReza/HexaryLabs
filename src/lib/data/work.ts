@@ -29,6 +29,17 @@ const CLIENT_TAGS: Record<string, string> = {
   "b2b-access": "Client · B2B Access",
 };
 
+/**
+ * The name a case study is headed by. The design titles most rows with the
+ * client, but two studies have no usable client name — one is anonymised, one
+ * is in-house — and one is headed by the studio rather than the product. All
+ * three resolve through `displayName`, so no component has to sniff prose to
+ * work out which field to show.
+ */
+export function caseStudyDisplayName(study: CaseStudy): string {
+  return study.displayName ?? study.title;
+}
+
 export async function getCaseStudies(): Promise<CaseStudy[]> {
   return loadCaseStudies();
 }

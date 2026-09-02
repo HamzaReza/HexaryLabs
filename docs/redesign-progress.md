@@ -23,6 +23,7 @@ Phases 1–3 against Figma's source data before continuing, and whether `/privac
 | 2 — Contact closer | committed | `2fc1978` | `review/phase-2.html` |
 | 1 — Sitewide chrome | committed | `e06ecd4` | `review/phase-1.html` |
 | 3 — Homepage | committed | `dd9e7aa` | `review/phase-3.html` |
+| 5 — Work | **built, unreviewed** | — | `review/phase-5.html` |
 | 4 — Services | committed | `c98ec8a` | `review/phase-4.html` |
 
 **Read before resuming:** the open asks in *Blocked / waiting*, and the *Environment
@@ -392,6 +393,140 @@ is a cross-check, never a source. Anything unsourceable is flagged explicitly, n
 
 ---
 
+## Phase 5 — Work + case studies · `feat:` — **in progress**
+
+Source-first throughout, per the method change above: frame metadata, `get_design_context`
+for type, and `download_assets` for artwork, all pulled before any code was written.
+
+### A0. Rejected on first review, and why
+
+The first submission was returned with *"does not match at all — does not look like you
+have taken anything from figma."* That was fair, and the cause is the same one the audit
+above found: the page was built from the design's **measurements** and not from the
+design's **assets**. Every band height matched to within 19px while three things that
+decide how the page reads were wrong.
+
+| miss | what the design has | what shipped |
+|---|---|---|
+| The rows' ground | full-bleed **`#171717`** behind the whole block | `bg-base` — the page read white where the design reads black |
+| Row corners | square | 16px radius, so the rows read as cards |
+| Hero artwork | the **skewed** five-cell cluster, one filled with the accent at 20% | the three regular cells from the services hero |
+| Row imagery | five specific images placed in the file | the build's own screenshots and a hand-drawn SVG |
+
+All four are now taken from the file: `download_assets` on each row instance and on the
+hero group, rather than a measurement of a render. The lesson is the one already written
+above and not yet fully applied — *a render is a cross-check, never a source* — extended:
+that includes the **ground a thing sits on**, which no measurement of the thing itself
+will ever reveal.
+
+### A. `/work` index — built, geometry verified
+- [x] Hero is the shared 540 band, **no CTA** — the design's work hero has none.
+      Headline 1 line at 48, which **confirms 40/48 on a third frame**.
+- [x] Hero artwork is the **cluster**, not the regular cells. It and the dark service
+      heroes are the same drawing at **1.36727×** — proven by reproducing both sets of
+      exported paths from one shape and one anchor list to within **0.0025 units** — so
+      `HeroHexField` now carries it once as geometry plus a palette.
+- [x] The cluster's hatch is **31 explicit lines**, as the design draws it, not an SVG
+      `<pattern>`. A tile is rasterised at its own size and repeated, so a 1.34px line on
+      a 12.27px tile loses ink to resampling: it rendered at 186 against the design's 151.
+      Fixing this also **corrected the four dark service heroes**, whose hatch was in the
+      wrong phase and too pale — that hero went from 18,346 mismatched pixels against the
+      Figma frame to 10,073.
+- [x] The rows sit on a **full-bleed `#171717` band**, 40 above / 80 between / 80 below.
+- [x] `CaseRow` — 1280 row, **square corners**, clipped. Panel fixed **540**, artwork takes
+      the remaining **740**, sides alternating. Panel `#212121`, `pt-32 pb-40 px-48`,
+      `gap-32`.
+- [x] Panel type from `get_design_context`, not inferred: title Space Grotesk Medium **28**
+      `tracking-0.32`, category mono **14/18** `#8D8D8D` `tracking-0.96` caps, body Inter
+      **16/24** `#B4B4B4`, list items **16/24** `#F1F1F1` on `py-8`.
+- [x] `HexBullet` — the design's own `Polygon 15`, a 10.392 × 12 pointy-top hexagon.
+      Alternates **`#9B8DFF`** / **`#F04E23`** by row position, not by study — new token
+      `--color-accent-warm`.
+- [x] Panel watermark is `HexWatermark` at 405 × 395 in `#434343` — the same artwork scaled
+      1.058×, which is why the hatch period matches without a second component.
+- [x] `WorkCta` — the design keeps a CTA band here rather than the contact closer. Two
+      columns 634 / 16 / 630, white chevrons on `#F1F1F1`, solid `#2B2B2B` button.
+      **Confirms `ChevronRun`'s `HEAD_WIDTH = 38.874`** — it is the hexagon head, 24
+      chevrons at pitch 15.005.
+- [x] `displayName?` added to `CaseStudy` — the design heads rows with the client, but two
+      studies have no usable client name and one is headed by the studio. One override
+      (Eden) rather than sniffing prose in a component.
+- [x] Scope capped at **4** in the row; the studies carry 5–6 and the design shows 4
+      everywhere. Presentational — the full scope still shows on the case study.
+- [x] **Row imagery is the design's own**, pulled per row instance rather than reused from
+      the previous build. `rowCover` now carries five files: the architecture diagram,
+      TrueCell's product page, the full B2B Access homepage, the KeepComing stamp card and
+      Kinein's order-template editor. Eden's was already correct. Each is left at its
+      native aspect so the design's crop falls out of `object-cover` rather than being
+      hand-positioned.
+- [x] `WorkCta`'s headline is typeset in **333**, not the 634 its column gives it, so it
+      breaks over two lines above the chevrons.
+
+| band | design | build | |
+|---|---|---|---|
+| Hero | 540 | 540 | exact |
+| Rows block | 3724 | 3743 | +19 |
+| CTA band | 308 | 308 | exact |
+| **document** | **5241** | **5259** | **+18** |
+
+Row heights 472 / 553 / 592 / 544 / 520 / 544 against 472 / 556 / 568 / 544 / 520 / 544 —
+three exact, one within 3. The +24 on TrueCell is its summary wrapping one line further
+than the design's, whose copy runs "everyunit" as one word.
+
+Hero artwork verified against the frame rather than by eye: ink extent 21,63→502,467
+against the design's 21,62→504,467; the hatch peaks at 156 against 151; the lilac cell
+samples `(237,234,254)` against `(236,234,254)`.
+
+### B. `/work/[slug]` — collapsed to one template
+- [x] `CaseHero` — 800/640 split. Left is the page's only white ground with the dot field;
+      right is the `surface-dark` gradient spec panel: Scope, Stack & architecture, Project
+      duration, Website. Labels mono 14 `#8D8D8D`, values `#F1F1F1`, link `#9B8DFF`.
+- [x] Title is Space Grotesk **SemiBold 48 / +1.04 uppercase** — the only SemiBold on the
+      site. Read from the type panel, not inferred.
+- [x] `Chip` gains `tone="dark"` (grey-600 fill) — a prop, not a passed class, because `cn`
+      is a plain join and an incoming `bg-*` would not reliably win.
+- [x] The architecture diagram is the **design's own image**, square-cornered, replacing
+      `MedicalRecordsSchematic`. The design places it as a raster, so matching it means
+      using that raster: reproducing it as SVG would be a measurement of a render, which
+      is the mistake this phase was returned for. It is 1446px for a 1200px slot, so it is
+      slightly soft on retina — **ask the designer for a 2× export**.
+- [x] `StatCallout` — `#E1DDFF`, 16/24/20/16 padding, figure 24/28 +0.32, caption Inter
+      *italic* 14/24, corner cut 32px via `clip-path` rather than the design's white triangle.
+- [x] Body is four fixed beats on 480 / 80 / 640, callout set against the **foot** of each
+      section so the number lands after the argument.
+- [x] **All layout branching gone**: `SectionedBody`, `TwoColumnBody`, `NarrativeBody`,
+      `SidebarBody`, the hero-variant branch and both `metrics` branches deleted; `variant`
+      removed from the type and all 7 entries. `HeroVariant` / `BodyVariant` /
+      `MetricVariant` retired. **526 lines → 163.**
+- [x] `rowCover?` added so Eden can front its row with a screenshot and keep its diagram.
+- [x] `duration?` added — optional, and **no values exist**; see Blocked.
+
+| band | design | build | |
+|---|---|---|---|
+| Case hero | 600 | 600 | exact |
+| Case body | 2939.7 | 2936 | −4 |
+| Closer | 985 | 987 | +2 (the Phase 2 form residue) |
+| **document** | **5193** | **5191** | **−2** |
+
+### Verify
+- [x] `npx tsc --noEmit`, `npm run lint`, `npm run build` clean — 36/36 static pages
+- [x] `grep -r "variant\." src/app/work` returns nothing — plan check 9 passes
+- [x] All 17 routes diffed against Phase 4: **13 unchanged in height**, 0.00–0.20% of pixels
+      (that residue is the audit's watermark fix, not this phase). Only `/work` and the
+      three case studies moved, as intended.
+- [x] No horizontal overflow at **390 or 768** on any route
+- [x] `review/phase-5.html` — 31.7 MB, 34 comparisons, 4 design-vs-build pairs
+- [ ] **Awaiting review.** Not committed.
+
+### Dead code left in place (deletion needs instruction)
+- [-] `CaseStoryRow.tsx` — `/work` was its only caller
+- [-] `WorkImagesGrid.tsx` — the body variants were its only callers
+- [-] `HexAssembly.tsx` — flagged in the audit, still unused
+- [-] The 7 animated case heroes still build and are still used by the homepage carousel,
+      but no longer appear on the case studies — the design has no animated hero there.
+
+---
+
 ## Upcoming
 
 - [ ] **Phase 5** — Work index + collapse case studies to one template
@@ -406,6 +541,10 @@ is a cross-check, never a source. Anything unsourceable is flagged explicitly, n
 
 - [!] **LinkedIn URL** — the design's footer has the glyph; no URL exists anywhere in the
   project. `site.social.linkedin` is `""` and the icon renders the moment it is filled in.
+  Needed from the client.
+- [!] **Case study durations** — the design's spec panel shows "Project duration"; no such
+  field exists in the content and durations for real client engagements cannot be invented.
+  `duration?` is in the type and schema; the row appears the moment values arrive.
   Needed from the client.
 - [!] **About team photograph** — full-bleed, ideally ≥2880px wide. Not in `public/`, which
   holds only case-study images. Check whether it is placed in the Figma first; otherwise

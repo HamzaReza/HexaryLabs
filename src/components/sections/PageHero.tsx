@@ -1,12 +1,7 @@
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
-import { HeroHexField } from "@/components/visuals/HeroHexField";
+import { HeroHexField, type HexFieldArt } from "@/components/visuals/HeroHexField";
 import { cn } from "@/lib/cn";
-import { heroStaggerStyle } from "@/lib/motion";
-
-function heroDelayStyle(staggerReveal: boolean, index: number): React.CSSProperties | undefined {
-  return staggerReveal ? heroStaggerStyle(index) : undefined;
-}
 
 /**
  * The design masks the dot field with a vertical 0 → 1 ramp over a box that
@@ -41,22 +36,27 @@ export function PageHero({
   intro,
   cta,
   tone = "light",
+  art,
   titleClassName,
-  staggerReveal = false,
 }: {
   eyebrow?: string;
   title: React.ReactNode;
   intro?: string;
   cta?: { label: string; href: string };
   tone?: "light" | "dark";
+  /**
+   * Which hexagon drawing the hero carries. The tone does not decide it: the
+   * services pages open on three regular cells and `/work` opens on the skewed
+   * cluster, both on the same white band. Defaults to the cluster on dark,
+   * because that is the only artwork the design puts on the ramp.
+   */
+  art?: HexFieldArt;
   /** Where the headline is allowed to wrap, when the design sets a box for it
       rather than hand-breaking the lines — the service pages typeset theirs in
       630px. */
   titleClassName?: string;
-  staggerReveal?: boolean;
 }) {
   const dark = tone === "dark";
-  let index = 0;
 
   return (
     <section
@@ -95,7 +95,7 @@ export function PageHero({
           } as React.CSSProperties
         }
       />
-      <HeroHexField tone={tone} />
+      <HeroHexField tone={tone} art={art ?? (dark ? "cluster" : "hexagons")} />
 
       <Container>
         <div className="max-w-[738px]">
@@ -104,9 +104,7 @@ export function PageHero({
               className={cn(
                 "text-tag uppercase",
                 dark ? "text-grey-300" : "text-grey-600",
-                staggerReveal && "hero-stagger-item",
               )}
-              style={heroDelayStyle(staggerReveal, index++)}
             >
               {eyebrow}
             </p>
@@ -117,9 +115,7 @@ export function PageHero({
               "md:text-[2.25rem] lg:text-page-title",
               dark ? "text-white" : "text-contrast-2",
               titleClassName,
-              staggerReveal && "hero-stagger-item",
             )}
-            style={heroDelayStyle(staggerReveal, index++)}
           >
             {title}
           </h1>
@@ -128,18 +124,13 @@ export function PageHero({
               className={cn(
                 "mt-6 text-lead",
                 dark ? "text-grey-300" : "text-grey-600",
-                staggerReveal && "hero-stagger-item",
               )}
-              style={heroDelayStyle(staggerReveal, index++)}
             >
               {intro}
             </p>
           )}
           {cta && (
-            <div
-              className={cn("mt-6", staggerReveal && "hero-stagger-item")}
-              style={heroDelayStyle(staggerReveal, index++)}
-            >
+            <div className="mt-6">
               <Button href={cta.href} variant="outline">
                 {cta.label}
               </Button>

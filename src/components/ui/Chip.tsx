@@ -18,11 +18,18 @@ import { cn } from "@/lib/cn";
 export function Chip({
   children,
   size = "tag",
+  tone = "light",
   active = false,
   className,
 }: {
   children: React.ReactNode;
   size?: "tag" | "filter" | "stack";
+  /**
+   * `dark` is the case study's spec panel: a `grey-600` fill under `base-2`
+   * text. A prop rather than a passed class because `cn` is a plain join, so an
+   * incoming `bg-*` would not reliably beat the one set here.
+   */
+  tone?: "light" | "dark";
   active?: boolean;
   className?: string;
 }) {
@@ -43,7 +50,11 @@ export function Chip({
         "inline-flex shrink-0 items-center justify-center rounded-full font-mono uppercase",
         "transition-colors duration-300 ease-in-out",
         shape,
-        active ? "bg-contrast text-base-2" : "bg-base-2 text-contrast",
+        tone === "dark"
+          ? "bg-grey-600 text-base-2"
+          : active
+            ? "bg-contrast text-base-2"
+            : "bg-base-2 text-contrast",
         className,
       )}
     >

@@ -22,6 +22,9 @@
   --color-accent: #5b45f5; /* 5.8:1 on base, 5.1:1 on base-2 */
   --color-accent-hi: #9b8dff; /* accent on dark: 6.7:1 on contrast-2 */
   --color-accent-soft: #ded9ff; /* body copy on an accent fill: 4.9:1 */
+  /* The work rows alternate their bullet marker between the accent and this
+     warm counterpart — the design's only use of a second hue. */
+  --color-accent-warm: #f04e23;
 
   /* Grey ramp. Contrast rules — do not mix these up:
      · grey-600 = body text on LIGHT   (6.9:1 on base, 6.1:1 on base-2) ✓
