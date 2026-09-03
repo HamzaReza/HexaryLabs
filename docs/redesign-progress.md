@@ -9,8 +9,9 @@ Plan of record: `~/.claude/plans/what-i-meant-by-peppy-pinwheel.md`.
 
 ## Now
 
-Phases 0, 2, 1, 3, 4 and 5 are committed (0/2/1 ran in that order — 2 before 1 by request).
-**Phase 6 (About) is built and awaiting review.** Next up after it: Phase 7, the audit.
+Phases 0, 2, 1, 3, 4, 5 and 6 are committed (0/2/1 ran in that order — 2 before 1 by
+request). **Every designed page is now rebuilt.** Next up: Phase 7, the responsive,
+contrast and motion audit — the last one. Nothing is in flight.
 
 Phase 5 was **returned once** before it was accepted — see *A0* under Phase 5 for what was
 wrong and why. The short version: it was built from the design's measurements rather than
@@ -30,7 +31,7 @@ upscaled into a 1440 × 360 slot. Swapping it is one file.
 | 3 — Homepage | committed | `dd9e7aa` | `review/phase-3.html` |
 | 4 — Services | committed | `c98ec8a` | `review/phase-4.html` |
 | 5 — Work | committed | `9e66a58` | `review/phase-5.html` |
-| 6 — About | **built, unreviewed** | — | `review/phase-6.html` |
+| 6 — About | committed | `bbd3900` | `review/phase-6.html` |
 
 **Read before resuming:** the open asks in *Blocked / waiting*, and the *Environment
 gotchas* section — every trap in there cost real time.
@@ -533,7 +534,7 @@ samples `(237,234,254)` against `(236,234,254)`.
 
 ---
 
-## Phase 6 — About · `feat:` — **built, awaiting review**
+## Phase 6 — About · `feat:` — **committed** `bbd3900`
 
 The most-changed page of the redesign. Source-first throughout: `get_design_context` on all
 five bands before a line was written, `download_assets` for the photograph and the glyphs.
@@ -580,7 +581,7 @@ Failure-mode cards measure **383** against the design's 382.537.
 No horizontal overflow at 390, 768 or 1024 — the checklist's 369 / 738 columns are maxima
 rather than fixed widths, because a fixed pair overflows the container at 1024.
 
-- [ ] **Awaiting review.** Not committed.
+- [x] Committed as `feat: rebuild the About page`.
 
 ---
 
