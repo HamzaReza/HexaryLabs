@@ -20,11 +20,20 @@ import { cn } from "@/lib/cn";
 export function Accordion({
   items,
   defaultOpen = 0,
+  checkmarks = false,
   className,
 }: {
   items: readonly { question: string; answer: string }[];
   /** Index open on load, or `null` for all closed. */
   defaultOpen?: number | null;
+  /**
+   * About's list leads every row with an accent tick and rules *under* each
+   * row rather than between them, so the block closes with a line. The service
+   * FAQs use neither. It is one component because the disclosure behaviour,
+   * and the keyboard and screen-reader handling that goes with it, are the
+   * same — only the framing differs.
+   */
+  checkmarks?: boolean;
   className?: string;
 }) {
   const id = useId();
@@ -40,39 +49,73 @@ export function Accordion({
         return (
           <div
             key={item.question}
-            className={cn(i > 0 && "border-t border-grey-200")}
+            className={cn(
+              checkmarks
+                ? "flex items-start gap-5 border-b border-grey-300 px-2 py-6 first:pt-0"
+                : i > 0 && "border-t border-grey-200",
+            )}
           >
-            <h3>
-              <button
-                type="button"
-                id={buttonId}
-                aria-expanded={isOpen}
-                aria-controls={panelId}
-                onClick={() => setOpen(isOpen ? null : i)}
-                className={cn(
-                  "flex w-full cursor-pointer items-start justify-between gap-6 pb-6 text-left",
-                  i > 0 && "pt-6",
-                  "text-lead text-contrast-2 transition-colors duration-300",
-                  "hover:text-accent",
-                )}
+            {checkmarks && <Tick />}
+            <div className={cn(checkmarks && "min-w-0 flex-1")}>
+              <h3>
+                <button
+                  type="button"
+                  id={buttonId}
+                  aria-expanded={isOpen}
+                  aria-controls={panelId}
+                  onClick={() => setOpen(isOpen ? null : i)}
+                  className={cn(
+                    "flex w-full cursor-pointer items-start justify-between gap-6 text-left",
+                    "text-lead text-contrast-2 transition-colors duration-300",
+                    "hover:text-accent",
+                    checkmarks ? "font-medium" : cn("pb-6", i > 0 && "pt-6"),
+                  )}
+                >
+                  <span className="min-w-0">{item.question}</span>
+                  <Sign open={isOpen} />
+                </button>
+              </h3>
+              <div
+                id={panelId}
+                role="region"
+                aria-labelledby={buttonId}
+                hidden={!isOpen}
+                className={cn(checkmarks ? "pt-4" : "pb-6 pr-[60px]")}
               >
-                <span className="min-w-0">{item.question}</span>
-                <Sign open={isOpen} />
-              </button>
-            </h3>
-            <div
-              id={panelId}
-              role="region"
-              aria-labelledby={buttonId}
-              hidden={!isOpen}
-              className="pb-6 pr-[60px]"
-            >
-              <p className="-mt-2 text-body text-grey-600">{item.answer}</p>
+                <p
+                  className={cn(
+                    "text-body text-grey-600",
+                    !checkmarks && "-mt-2",
+                  )}
+                >
+                  {item.answer}
+                </p>
+              </div>
             </div>
           </div>
         );
       })}
     </div>
+  );
+}
+
+/** The design's `akar-icons:check`, in the accent, at the head of every row. */
+function Tick() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden
+      className="mt-0.5 size-6 shrink-0 text-accent"
+    >
+      <path
+        d="M4 12L10 18L20 6"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }
 

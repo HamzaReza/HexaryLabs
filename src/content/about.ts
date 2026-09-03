@@ -1,12 +1,33 @@
 /** About page copy. */
 
+export type FailureMode = { title: string; body: string };
+
+/**
+ * The design turns this from three paragraphs of prose into a claim with two
+ * named failure modes either side of it, so the copy is authored in that shape
+ * rather than being split by the component.
+ *
+ * The build's third paragraph — on working as an embedded partner rather than a
+ * vendor answering tickets — has no place in the design's composition and is
+ * not carried over. It is worth re-homing rather than losing.
+ */
 export const whyWeExist = {
   heading: "Two ways software projects go wrong",
-  body: [
-    "Most software engagements fail in one of two directions. Some over-invest in strategy: months of workshops and decks that never turn into a working product. Others under-invest in it entirely, and ship the wrong thing quickly and confidently, then spend twice as long unwinding it.",
-    "We started Hexary Labs to close that gap. Our team thinks in product terms and builds in engineering terms, in the same room, on the same timeline. That means the person scoping your roadmap is often the same person who ends up shipping it, which cuts out the translation loss that happens when strategy, design, and engineering live in separate teams that only talk through documents.",
-    "We work as an embedded partner, not a vendor answering tickets. That distinction shows up in small ways: we ask why a feature matters before we ask how to build it, we flag scope that doesn't serve the goal even when it's already been approved, and we measure our own success by whether you still need us a year later, not by billable hours.",
-  ],
+  intro:
+    "Most software engagements fail in one of two directions — and the gap between them is the whole reason this studio exists.",
+  modes: [
+    {
+      title: "Over-invested in strategy",
+      body: "Months of workshops and decks that never turn into a working product. The thinking is sound; nothing ships.",
+    },
+    {
+      title: "No strategy at all",
+      body: "The wrong thing shipped quickly and confidently, then twice as long spent unwinding it.",
+    },
+  ] as FailureMode[],
+  markerLabel: "Where we sit",
+  closing:
+    "Our team thinks in product terms and builds in engineering terms, in the same room, on the same timeline. The person scoping your roadmap is often the person who ends up shipping it, which removes the translation loss that happens when strategy, design and engineering live in separate teams talking through documents.",
 };
 
 export type TeamPrinciple = { title: string; body: string };
@@ -14,18 +35,18 @@ export type TeamPrinciple = { title: string; body: string };
 export const whosBehind = {
   heading: "A small, senior team, on purpose",
   intro:
-    "We stay small by design, so every client works directly with the engineers and designers building their software, never an account manager relaying requests. That's a deliberate constraint, not a limitation we're working around.",
+    "Every client works directly with the engineers and designers building their software, never an account manager relaying requests. That's a deliberate constraint, not a limitation we're working around.",
   principles: [
     {
-      title: "Every project, senior engineers.",
+      title: "Every project, senior engineers",
       body: "No junior bench learning on your engagement.",
     },
     {
-      title: "One team, start to finish.",
+      title: "One team, start to finish",
       body: "The people who scope the work are the people who build it.",
     },
     {
-      title: "A deliberate limit.",
+      title: "A deliberate limit",
       body: "We cap how many engagements we take on at once, so attention doesn't get diluted.",
     },
   ] as TeamPrinciple[],
@@ -35,6 +56,13 @@ export const whosBehind = {
 
 export type ExpertiseArea = { heading: string; body: string };
 
+/**
+ * The design answers this section with the stack scattered as chips rather than
+ * described in prose, so `areas` and `closing` below are no longer rendered.
+ * They are kept, not deleted: they are the only long-form statement of what the
+ * studio builds with, and they are worth re-homing — on `/how-we-work`, or as
+ * the body of a service page — rather than losing.
+ */
 export const whereExpertiseRanges = {
   heading: "The right technology for your business, not the one we'd default to",
   intro:
@@ -59,27 +87,27 @@ export const whyChooseUs = {
   heading: "What that actually means for you",
   items: [
     {
-      title: "Direct access to the team.",
+      title: "Direct access to the team",
       body: "You work with the engineers and designers building your software, not an account manager relaying messages.",
     },
     {
-      title: "Engineering rigor from day one.",
+      title: "Engineering rigour from day one",
       body: "Tests, observability, and CI are built in from the first sprint, not added before handover.",
     },
     {
-      title: "Clean handovers, by design.",
+      title: "Clean handovers, by design",
       body: "Documentation and a team walkthrough are part of every engagement, never an afterthought.",
     },
     {
-      title: "Honest scoping.",
+      title: "Honest scoping",
       body: "If requested scope doesn't serve the goal, we say so before it's built, not after.",
     },
     {
-      title: "We say no when we're not the fit.",
+      title: "We say no when we're not the fit",
       body: "We'd rather decline a project than learn on your budget.",
     },
     {
-      title: "We fit around your stack.",
+      title: "We fit around your stack",
       body: "Extending a system, building something new, or adding AI to a manual workflow, we adapt to what's there instead of starting over.",
     },
   ] as WhyChooseUsItem[],

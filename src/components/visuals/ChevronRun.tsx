@@ -74,3 +74,35 @@ export function ChevronRun({
     </svg>
   );
 }
+
+/**
+ * The hexagon on its own, 38.874 × 37.91.
+ *
+ * About's "where we sit" marker converges two runs on a single hexagon, so the
+ * head cannot be attached to either of them — it is a third element between the
+ * two, and it is drawn from the same vectors rather than a second copy of them.
+ *
+ * The ring takes `currentColor` and the core is a class, because the design
+ * uses two different pairs: ink ring over an accent core on the homepage,
+ * white ring over `accent-hi` here.
+ */
+export function ChevronHead({
+  className,
+  coreClassName = "fill-accent",
+}: {
+  className?: string;
+  coreClassName?: string;
+}) {
+  return (
+    <svg
+      viewBox={`0 0 ${HEAD_WIDTH} 37.9102`}
+      fill="none"
+      aria-hidden="true"
+      focusable="false"
+      className={cn("h-[37.91px] w-[38.874px] shrink-0", className)}
+    >
+      <path d={HEX_RING} fill="currentColor" />
+      <path d={HEX_CORE} className={coreClassName} />
+    </svg>
+  );
+}

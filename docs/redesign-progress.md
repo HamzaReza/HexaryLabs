@@ -10,17 +10,17 @@ Plan of record: `~/.claude/plans/what-i-meant-by-peppy-pinwheel.md`.
 ## Now
 
 Phases 0, 2, 1, 3, 4 and 5 are committed (0/2/1 ran in that order — 2 before 1 by request).
-**Next up: Phase 6, the About page.** Nothing is in flight.
+**Phase 6 (About) is built and awaiting review.** Next up after it: Phase 7, the audit.
 
 Phase 5 was **returned once** before it was accepted — see *A0* under Phase 5 for what was
 wrong and why. The short version: it was built from the design's measurements rather than
 the design's assets, so every band height matched while the ground the rows sit on, the
 hero artwork and five of six row images did not.
 
-**Phase 6 is no longer blocked.** The "team photograph" is a **stock office photo** placed
-in the Figma (1240 × 413), not a photo of the team — so the section can be built now. Worth
-a decision from the client: shipping it reads as a real team photo. Recommendation is to
-build with the design's image as the placeholder it is and swap one file later.
+**The About photograph is a stock office photo**, not the team — 1240 × 413, placed in the
+Figma. It is built in as the placeholder it is. Under a heading reading *"A small, senior
+team, on purpose"* it reads as the team, so it still **needs a client decision**, and it is
+upscaled into a 1440 × 360 slot. Swapping it is one file.
 
 | Phase | State | Commit | Review page |
 |---|---|---|---|
@@ -30,7 +30,7 @@ build with the design's image as the placeholder it is and swap one file later.
 | 3 — Homepage | committed | `dd9e7aa` | `review/phase-3.html` |
 | 4 — Services | committed | `c98ec8a` | `review/phase-4.html` |
 | 5 — Work | committed | `9e66a58` | `review/phase-5.html` |
-| 6 — About | **not started** | — | — |
+| 6 — About | **built, unreviewed** | — | `review/phase-6.html` |
 
 **Read before resuming:** the open asks in *Blocked / waiting*, and the *Environment
 gotchas* section — every trap in there cost real time.
@@ -533,10 +533,59 @@ samples `(237,234,254)` against `(236,234,254)`.
 
 ---
 
+## Phase 6 — About · `feat:` — **built, awaiting review**
+
+The most-changed page of the redesign. Source-first throughout: `get_design_context` on all
+five bands before a line was written, `download_assets` for the photograph and the glyphs.
+
+### A. What the build never had
+- [x] **Hero figures** — 50+ / 10M+ / $100M+ against the right gutter, Space Grotesk Medium
+      40 at `-0.746` over mono 14/18 captions. `PageHero` gains an `aside` slot; the two
+      blocks share a bottom edge because the design ends both 64 above the band's foot.
+- [x] **The hero carries no hexagons.** The figures take that space, so `HexFieldArt` gains
+      `"none"` as a real value rather than a hack.
+- [x] **The indigo band** — `#171717 → #080041 → #171717` across, two `#9B8DFF`-bordered
+      cards on a double inset glow, and the *where we sit* marker between them. The marker
+      is three pieces on a 4 gap — run, hexagon, run — so both sides converge on **one**
+      hexagon; `ChevronRun` gains a `ChevronHead` export rather than a second copy of the
+      vectors.
+- [x] **Full-bleed photograph**, 360 tall, outside the container.
+
+### B. What the design replaces rather than restyles
+- [x] Two long expertise essays → **eight stack chips scattered over the honeycomb**, at the
+      design's own coordinates, two blurred as a depth cue. Reuses `HexLattice`.
+- [x] A 3 × 2 card grid → **a disclosure list**. `Accordion` gains `checkmarks`, which adds
+      the accent tick and rules under each row instead of between them. Defaults untouched,
+      so the service FAQs did not move a pixel.
+- [x] Section annotations (`01 / WHY WE EXIST`) and the sticky-heading prose split: gone.
+
+### C. Refactors this phase paid for
+- [x] `HexMark` — the wordmark hexagon the design uses above each principle is byte-identical
+      to the one in the case-study stat callouts. One component now; the case pages did not
+      move a pixel, which is the proof.
+
+| band | design | build | |
+|---|---|---|---|
+| Hero | 539 | 540 | +1 |
+| Two ways software projects go wrong | 698 | 698 | **exact** |
+| A small, senior team + photograph | 994 | 994 | **exact** |
+| Technology field | 374 | 374 | **exact** |
+| What that actually means for you | 670 | 670 | **exact** |
+| Contact closer | 985 | 987 | +2 |
+| **document** | **4928** | **4931** | **+3** |
+
+Failure-mode cards measure **383** against the design's 382.537.
+
+**Containment: 16 of 17 routes pixel-identical at 0.00%.** Only `/about` moved, 5458 → 4931.
+No horizontal overflow at 390, 768 or 1024 — the checklist's 369 / 738 columns are maxima
+rather than fixed widths, because a fixed pair overflows the container at 1024.
+
+- [ ] **Awaiting review.** Not committed.
+
+---
+
 ## Upcoming
 
-- [ ] **Phase 5** — Work index + collapse case studies to one template
-- [ ] **Phase 6** — About
 - [ ] **Phase 7** — Responsive, contrast, motion audit. Includes rewriting
       `docs/design-system.md`, which still describes the warm beige system in prose and
       carries a contrast table for the retired pairs.

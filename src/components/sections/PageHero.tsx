@@ -37,6 +37,7 @@ export function PageHero({
   cta,
   tone = "light",
   art,
+  aside,
   titleClassName,
 }: {
   eyebrow?: string;
@@ -51,6 +52,13 @@ export function PageHero({
    * because that is the only artwork the design puts on the ramp.
    */
   art?: HexFieldArt;
+  /**
+   * Content set against the right gutter, sharing the copy block's bottom
+   * edge. About puts its three figures here, in the space the other heroes
+   * give to the hexagons — which is why `art` and this are separate: the
+   * design swaps one for the other rather than stacking them.
+   */
+  aside?: React.ReactNode;
   /** Where the headline is allowed to wrap, when the design sets a box for it
       rather than hand-breaking the lines — the service pages typeset theirs in
       630px. */
@@ -98,6 +106,9 @@ export function PageHero({
       <HeroHexField tone={tone} art={art ?? (dark ? "cluster" : "hexagons")} />
 
       <Container>
+        {/* The copy and the aside share a bottom edge — in the design both
+            blocks end 64 above the band's foot, whatever height they are. */}
+        <div className="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
         <div className="max-w-[738px]">
           {eyebrow && (
             <p
@@ -136,6 +147,9 @@ export function PageHero({
               </Button>
             </div>
           )}
+        </div>
+
+          {aside && <div className="lg:shrink-0">{aside}</div>}
         </div>
       </Container>
     </section>

@@ -32,7 +32,8 @@ import { cn } from "@/lib/cn";
  * it out twice would let the two drift apart.
  */
 
-export type HexFieldArt = "hexagons" | "cluster";
+/** `none` is a real value in the design: the About hero carries no artwork. */
+export type HexFieldArt = "hexagons" | "cluster" | "none";
 
 export function HeroHexField({
   tone = "light",
@@ -45,6 +46,8 @@ export function HeroHexField({
   className?: string;
 }) {
   const id = useId();
+
+  if (art === "none") return null;
 
   return (
     <svg
