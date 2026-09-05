@@ -1,10 +1,21 @@
+/** Canonical origin for metadata / sitemap. Empty env values must not win over
+ *  the default — Vercel often injects `NEXT_PUBLIC_SITE_URL=""` which breaks
+ *  `z.string().url()` during build (`??` only skips null/undefined). */
+function resolveSiteUrl(): string {
+  const fromEnv = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (fromEnv) return fromEnv.replace(/\/$/, "");
+  const vercel = process.env.VERCEL_URL?.trim();
+  if (vercel) return `https://${vercel.replace(/\/$/, "")}`;
+  return "https://hexarylabs.com";
+}
+
 export const site = {
   name: "Hexary Labs",
   tagline: "From ambitious idea to production system.",
   description:
     "Hexary Labs is a technology partner for founders, product leaders, and enterprises building serious software: SaaS platforms, AI-powered products, business systems, and the integrations that hold them together.",
 
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://hexarylabs.com",
+  url: resolveSiteUrl(),
 
   email: "hello@hexarylabs.com",
   phone: "+1 (407) 735-6142",
