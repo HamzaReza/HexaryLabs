@@ -71,7 +71,11 @@ export function PageHero({
       data-tone={dark ? "dark" : undefined}
       className={cn(
         "relative isolate overflow-hidden",
-        "flex flex-col justify-end pb-14 pt-12 lg:min-h-[540px] lg:pb-16 lg:pt-0",
+        /* 32 / 32 at mobile with 24 between every element — measured on the
+           work, services and about 390 frames, which all agree. The band only
+           becomes a fixed 540 with its content anchored to the foot from
+           `lg`. */
+        "flex flex-col justify-end pb-8 pt-8 md:pb-14 md:pt-12 lg:min-h-[540px] lg:pb-16 lg:pt-0",
         dark ? "bg-hero-ramp" : "border-b border-grey-200 bg-base",
       )}
     >
@@ -108,12 +112,14 @@ export function PageHero({
       <Container>
         {/* The copy and the aside share a bottom edge — in the design both
             blocks end 64 above the band's foot, whatever height they are. */}
-        <div className="flex flex-col gap-10 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
         <div className="max-w-[738px]">
           {eyebrow && (
             <p
               className={cn(
-                "text-tag uppercase",
+                /* 14/18 at mobile, 16/21 from `md` — the design steps the eyebrow
+                   down a size on the 390 frames. */
+                "text-caption uppercase md:text-tag",
                 dark ? "text-grey-300" : "text-grey-600",
               )}
             >
@@ -122,8 +128,12 @@ export function PageHero({
           )}
           <h1
             className={cn(
-              "mt-6 uppercase text-[2rem] leading-[1.2] tracking-[0.026em]",
-              "md:text-[2.25rem] lg:text-page-title",
+              /* One step, ramped in `globals.css`: 28/40 below `md`, the
+                 design's 40/48 above it. The hand-set 32px and the 36px `md`
+                 step it replaces were both guesses — the 390 frames typeset
+                 this at 28 on a 40px lead, which is two cap-height
+                 measurements and four line-width solves. */
+              "mt-6 text-page-title uppercase",
               dark ? "text-white" : "text-contrast-2",
               titleClassName,
             )}

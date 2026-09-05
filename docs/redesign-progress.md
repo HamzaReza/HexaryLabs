@@ -32,6 +32,7 @@ upscaled into a 1440 × 360 slot. Swapping it is one file.
 | 4 — Services | committed | `c98ec8a` | `review/phase-4.html` |
 | 5 — Work | committed | `9e66a58` | `review/phase-5.html` |
 | 6 — About | committed | `bbd3900` | `review/phase-6.html` |
+| 7 — Audit (part one) | **built, unreviewed** | — | `review/phase-7.html` |
 
 **Read before resuming:** the open asks in *Blocked / waiting*, and the *Environment
 gotchas* section — every trap in there cost real time.
@@ -585,9 +586,81 @@ rather than fixed widths, because a fixed pair overflows the container at 1024.
 
 ---
 
+## Phase 7 — Responsive, contrast, motion audit · `fix:` — **part one built, awaiting review**
+
+The first pass over the **mobile** frames. No earlier phase had ever been checked against
+them — every phase verified 1440 against a desktop frame and only checked that 390 did not
+overflow. All ten pages were 16–30% taller than the design at 390.
+
+### A. Five systematic causes, fixed sitewide
+- [x] **The hero hexagons do not exist at 390.** All six mobile hero frames — work,
+      services, the four service pages and the case study — carry the dot field, the text
+      and nothing else. Drawn at 1440 and pinned right, the cluster reached back across the
+      headline on a phone, which is how it was spotted. `HeroHexField` is now `max-lg:hidden`;
+      one change covers every hero.
+- [x] **The hero's own mobile rhythm**: 32 top / 32 bottom, 24 between every element, and
+      the eyebrow steps down to 14/18. The work, services and about 390 frames all agree.
+- [x] **Header 73 → 57.** The burger loses its box for the design's bare three-bar glyph,
+      but keeps a 44px hit area: a 24px target is below the accessible minimum, and the box
+      was the only thing making it big enough.
+- [x] **Footer 1021 → 793.** The design turns each nav column into a label-beside-links
+      *row*; the build stacked everything in one column. One DOM for both layouts —
+      `max-lg:contents` on the brand block plus `order`, so no link is duplicated.
+- [x] **Gutter 16 → 20.** Every section on the design's 390 frames starts at x=20.
+- [x] **Section rhythm 56–80 → 32 / 40** across 20 sections. The single largest cause.
+- [x] **The contact closer** (~13 routes): form padding, field rhythm 32 → 20, message box
+      232 → 151, headline 40/51, subtitle 16/26 — all measured off the 390 frame.
+- [x] **The work rows**: image aspect 1.57 → 1.458, panel padding 48 → 16, gap 80 → 32.
+
+| route | design | before | now | |
+|---|---|---|---|---|
+| contact | 1934 | 2247 | 1869 | −3.4% |
+| work | 6130 | 7685 | 6326 | +3.2% |
+| about | 5954 | 7071 | 6190 | +4.0% |
+| svc-software-engineering | 7246 | 8412 | 7783 | +7.4% |
+| services | 5188 | 6138 | 5666 | +9.2% |
+| svc-product-design | 6587 | 7963 | 7296 | +10.8% |
+| case-medical-records | 6656 | 7899 | 7389 | +11.0% |
+| svc-product-strategy | 6552 | 8156 | 7534 | +15.0% |
+| home | 7795 | 9921 | 9341 | +19.8% |
+| svc-ai-engineering | 6970 | 9087 | 8476 | +21.6% |
+| **total excess** | | **+13,567** | **+6,858** | **−49%** |
+
+**All seventeen desktop routes byte-identical**, apart from the two deliberate contrast
+fixes below.
+
+### B. Contrast — 19 pairings re-measured
+- [x] Every text pairing the build *renders* meets AA. Two shipped below it and are fixed —
+      both had been **documented as passing**:
+      · `accent-soft` `#DED9FF` on the accent fill measured **4.28:1** where its own token
+        comment claimed 4.9. Now `#E8E4FF`, 4.7:1.
+      · The message box's border was `grey-700` on `#222` — **1.26:1**, where WCAG 1.4.11
+        wants 3:1 for a control boundary. The design's own `#404040` is 1.53 and fails too.
+        Now `grey-500`, 4.6:1, matching the field underlines. **Deliberate departure.**
+- [x] `docs/design-system.md` colour section rewritten to the neutral palette with the
+      re-measured table and a *Corrections* record.
+
+### C. Motion and routes
+- [x] `prefers-reduced-motion` clean on 5 of 6 sampled pages; the sixth is the homepage's
+      case-study loop, whose hidden elements are inactive carousel slides — correct.
+- [x] All 21 routes and every footer link resolve (200).
+
+### Not done — this phase is explicitly partial
+- [ ] Six pages still over the design at 390; causes are page-specific (AI Engineering
+      renders **nine** bands where the design has eight). Work, About and Contact are within 5%.
+- [ ] About's three hero figures are still desktop-sized at 390 — the design's mobile block
+      is 186 tall against the build's 246. Not measured, so not guessed.
+- [ ] Tablet (768) unverified — the design has no tablet artboard.
+- [ ] `/styleguide` not updated with the components added since Phase 0.
+- [ ] `docs/design-system.md` clipped-corner, hex-module and texture sections still
+      describe the retired system.
+- [ ] **Awaiting review.** Not committed.
+
+---
+
 ## Upcoming
 
-- [ ] **Phase 7** — Responsive, contrast, motion audit. Includes rewriting
+- [ ] **Phase 7 part two** — the six remaining mobile pages, `/styleguide`, and the rest of
       `docs/design-system.md`, which still describes the warm beige system in prose and
       carries a contrast table for the retired pairs.
 

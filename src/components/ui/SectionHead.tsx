@@ -37,9 +37,13 @@ export function SectionHead({
   if (align === "center") {
     return (
       <div className={cn("flex items-center justify-center gap-8", className)}>
-        <ChevronRun count={5} direction="left" fade className="h-[38px] max-sm:hidden" />
+        {/* The runs stay at 390: the design's mobile frames carry them either
+            side of every centred heading, faded outward exactly as here. They
+            were hidden below `sm` on the assumption there was no room; there
+            is, because the run is only 78 wide. */}
+        <ChevronRun count={5} direction="left" fade className="h-[38px] shrink-0" />
         {heading}
-        <ChevronRun count={5} fade className="h-[38px] max-sm:hidden" />
+        <ChevronRun count={5} fade className="h-[38px] shrink-0" />
       </div>
     );
   }

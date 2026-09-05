@@ -24,7 +24,7 @@ export function Section({
     <section
       id={id}
       data-tone={tone}
-      className={cn("py-10 md:py-14 lg:py-20", TONE_CLASS[tone], className)}
+      className={cn("pb-10 pt-8 md:py-14 lg:py-20", TONE_CLASS[tone], className)}
     >
       {children}
     </section>

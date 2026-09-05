@@ -13,8 +13,11 @@ export function Container({
   // Padding sits *outside* the max-width so the content box is exactly
   // 1200px — matching the reference's `--wp--style--global--content-size`.
   // (Tailwind's max-w is border-box, so max-w-[1200px] + px-6 would yield 1152.)
+  /* 20px below `md`, which is what the design's 390 frames use throughout —
+     the header logo, the footer and every section start at x=20. The build had
+     16 here, so every mobile page was 8px wider in content than the design. */
   return (
-    <div className="px-4 md:px-6">
+    <div className="px-5 md:px-6">
       <div
         className={cn(
           "mx-auto w-full",

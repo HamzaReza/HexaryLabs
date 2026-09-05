@@ -38,10 +38,16 @@ const CLIPS_BY_DEFAULT: Record<Variant, boolean> = {
  * 16/18 display line — with 14px from the label to the ↗, which is drawn about
  * 9.5px tall. Both are shorter than the 18px line box, so neither changes the
  * height.
+ *
+ * The label is pinned at 16 rather than left on `text-body`, because the design's
+ * mobile ramp (see `globals.css`) does not apply to controls: its 390 frames
+ * still draw every button 46px tall on a 16px label — measured at 16.0 from the
+ * cap height of "Talk to Us About AI" on the AI Engineering hero — while the
+ * prose around them steps down to 14.
  */
 const DESIGN_SHAPE = cn(
   "inline-flex cursor-pointer items-center gap-[14px] px-6",
-  "font-display text-body font-medium leading-[1.125]",
+  "font-display text-[1rem] font-medium leading-[1.125]",
   "transition-colors duration-300 ease-in-out",
 );
 

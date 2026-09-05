@@ -52,7 +52,7 @@ export function Accordion({
             className={cn(
               checkmarks
                 ? "flex items-start gap-5 border-b border-grey-300 px-2 py-6 first:pt-0"
-                : i > 0 && "border-t border-grey-200",
+                : cn("max-sm:px-2", i > 0 && "border-t border-grey-200"),
             )}
           >
             {checkmarks && <Tick />}
@@ -65,10 +65,16 @@ export function Accordion({
                   aria-controls={panelId}
                   onClick={() => setOpen(isOpen ? null : i)}
                   className={cn(
-                    "flex w-full cursor-pointer items-start justify-between gap-6 text-left",
+                    "flex w-full cursor-pointer items-start justify-between gap-3 text-left sm:gap-6",
                     "text-lead text-contrast-2 transition-colors duration-300",
                     "hover:text-accent",
-                    checkmarks ? "font-medium" : cn("pb-6", i > 0 && "pt-6"),
+                    /* 20/20 on a 12px gap to the sign at 390, against 24/24 on
+                       24 above `sm`: the design's mobile row is 93 tall closed,
+                       and the narrower gap puts the question on its own 298px
+                       measure rather than 302. */
+                    checkmarks
+                      ? "font-medium"
+                      : cn("pb-5 sm:pb-6", i > 0 && "pt-5 sm:pt-6"),
                   )}
                 >
                   <span className="min-w-0">{item.question}</span>
@@ -80,7 +86,9 @@ export function Accordion({
                 role="region"
                 aria-labelledby={buttonId}
                 hidden={!isOpen}
-                className={cn(checkmarks ? "pt-4" : "pb-6 pr-[60px]")}
+                className={cn(
+                  checkmarks ? "pt-4" : "pb-5 sm:pb-6 sm:pr-[60px]",
+                )}
               >
                 <p
                   className={cn(

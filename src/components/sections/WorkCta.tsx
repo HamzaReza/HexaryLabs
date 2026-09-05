@@ -25,7 +25,7 @@ export function WorkCta({
   cta: { label: string; href: string };
 }) {
   return (
-    <section className="bg-base-2 py-20">
+    <section className="bg-base-2 pb-10 pt-8 md:py-14 lg:py-20">
       <Container>
         <div className="flex flex-col gap-12 lg:flex-row lg:gap-4">
           <div className="lg:w-[634px] lg:shrink-0">

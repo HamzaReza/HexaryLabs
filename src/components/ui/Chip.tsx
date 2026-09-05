@@ -4,6 +4,8 @@ import { cn } from "@/lib/cn";
  * The design's pill. Three sizes, all fully rounded mono uppercase:
  *
  * · `tag` — 45px tall on 32px of padding, the stack section's technology names.
+ *   On the design's 390 frames it steps down to the `stack` shape, which is what
+ *   lets a whole group's chips run in one line rather than wrapping to four.
  * · `filter` — 34px tall, the work carousel's category switches. Its 94px of
  *   horizontal padding is measured, not a guess: every filter pill in the
  *   design is exactly its label plus 188px. It steps down below `lg`, where
@@ -35,7 +37,7 @@ export function Chip({
 }) {
   const shape =
     size === "tag"
-      ? "h-[45px] px-8 text-tag"
+      ? "h-[34px] pl-6 pr-[calc(1.5rem-0.966px)] text-caption md:h-[45px] md:px-8 md:text-tag"
       : size === "stack"
         /* CSS puts a tracking unit after the *last* glyph; Figma does not. Left
            unpaid, that one pixel per pill pushed the fourth chip onto a second

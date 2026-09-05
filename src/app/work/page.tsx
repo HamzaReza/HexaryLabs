@@ -47,10 +47,11 @@ export default async function WorkPage() {
           rows read as full-bleed compositions rather than cards — they have no
           corner radius and no edge of their own, only the ground showing
           through the gaps. */}
-      <section data-tone="dark" className="bg-contrast-2 pb-20 pt-10">
+      <section data-tone="dark" className="bg-contrast-2 pb-10 pt-8 md:pb-20 md:pt-10">
         <Container>
           <h2 className="sr-only">All case studies</h2>
-          <div className="flex flex-col gap-20">
+          {/* 32 between rows at mobile, the design's own; 80 from `lg`. */}
+          <div className="flex flex-col gap-8 lg:gap-20">
             {ordered.map((study, i) => (
               <Reveal key={study.slug} variant="fade-up">
                 <CaseRow

@@ -22,7 +22,7 @@ export async function OutcomeSection() {
   const outcome = await getHomeOutcome();
 
   return (
-    <section className="bg-base py-14 lg:py-5">
+    <section className="bg-base pb-10 pt-8 md:py-14 lg:py-5">
       <Container>
         <div className="grid items-start gap-10 lg:grid-cols-[413fr_819fr] lg:gap-12">
           <div className="lg:my-[124px]">

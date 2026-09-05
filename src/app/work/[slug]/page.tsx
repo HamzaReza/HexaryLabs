@@ -119,8 +119,9 @@ function CaseBody({ study }: { study: CaseStudy }) {
   ];
 
   return (
-    <div className="bg-base pb-24 pt-10">
-      <div className="mx-auto w-full max-w-[1200px] px-6 lg:px-0">
+    <div className="bg-base pb-10 pt-10 md:pb-24">
+      {/* 20 of gutter at 390, matching `Container` and the design's own x=20. */}
+      <div className="mx-auto w-full max-w-[1200px] px-5 md:px-6 lg:px-0">
         <CaseCover
           cover={study.cover}
           title={study.title}
@@ -129,15 +130,17 @@ function CaseBody({ study }: { study: CaseStudy }) {
           eager
         />
 
-        <div className="mt-20 flex flex-col gap-20">
+        {/* 48 between the beats at 390, against the desktop 80. */}
+        <div className="mt-12 flex flex-col gap-12 md:mt-20 md:gap-20">
           {beats.map(({ section, metric }) => (
             <section
               key={section.heading}
-              className="flex flex-col gap-10 lg:flex-row lg:gap-20"
+              className="flex flex-col gap-6 md:gap-10 lg:flex-row lg:gap-20"
             >
               {/* The gutter is reserved even when there is no metric, so the
-                  prose column stays on the same axis down the page. */}
-              <div className="lg:flex lg:w-[480px] lg:shrink-0 lg:flex-col lg:justify-end">
+                  prose column stays on the same axis down the page. Below `lg`
+                  the design puts the callout *after* the prose, not before it. */}
+              <div className="max-lg:order-2 max-lg:empty:hidden lg:flex lg:w-[480px] lg:shrink-0 lg:flex-col lg:justify-end">
                 {metric && <StatCallout value={metric.value} label={metric.label} />}
               </div>
 
@@ -145,7 +148,7 @@ function CaseBody({ study }: { study: CaseStudy }) {
                 <h2 className="font-display text-section font-medium uppercase text-contrast-2">
                   {section.heading}
                 </h2>
-                <div className="mt-8 flex flex-col gap-6">
+                <div className="mt-6 flex flex-col gap-6 md:mt-8">
                   {section.body.map((paragraph) => (
                     <p key={paragraph} className="text-body text-contrast">
                       {paragraph}

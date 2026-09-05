@@ -36,7 +36,9 @@ export function WorkCard({
         href={`/work/${study.slug}`}
         className="group flex h-full flex-col focus-visible:outline-offset-4"
       >
-        <div className="aspect-[5/3] overflow-hidden bg-canvas-warm p-4 sm:p-6">
+        {/* 350 × 200 on the 390 frame — a slightly wider plate than the 5:3 the
+            desktop card uses. */}
+        <div className="aspect-[1.75] overflow-hidden bg-canvas-warm p-4 md:aspect-[5/3] sm:p-6">
           {hasAnimatedHero(study.slug) ? (
             <AnimatedCaseHero
               slug={study.slug}
@@ -56,7 +58,9 @@ export function WorkCard({
         <div
           data-tone={active ? "dark" : undefined}
           className={cn(
-            "flex flex-1 flex-col px-6 pb-8 pt-6 transition-colors duration-300 sm:px-8",
+            /* 16 of padding and 8 between every element at 390, against the
+               desktop 24/32 and 12/24. */
+            "flex flex-1 flex-col px-4 pb-5 pt-4 transition-colors duration-300 md:px-6 md:pb-8 md:pt-6 lg:px-8",
             active ? "bg-accent" : "bg-base-2",
           )}
         >
@@ -71,7 +75,7 @@ export function WorkCard({
 
           <h3
             className={cn(
-              "mt-3 font-display text-card font-medium",
+              "mt-2 font-display text-card font-medium md:mt-3",
               active ? "text-white" : "text-contrast",
             )}
           >
@@ -80,7 +84,7 @@ export function WorkCard({
 
           <p
             className={cn(
-              "mt-3 line-clamp-3 text-body",
+              "mt-2 line-clamp-3 text-body md:mt-3",
               active ? "text-accent-soft" : "text-grey-600",
             )}
           >
@@ -89,7 +93,8 @@ export function WorkCard({
 
           <span
             className={cn(
-              "mt-6 inline-flex items-center gap-3 self-start font-display text-body font-medium",
+              /* 16, not `text-body`: a control, and the mobile ramp is prose. */
+              "mt-4 inline-flex items-center gap-3 self-start font-display text-[1rem] font-medium md:mt-6",
               "transition-colors duration-300",
               active
                 ? "text-white group-hover:text-grey-300"

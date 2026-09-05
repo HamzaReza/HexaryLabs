@@ -22,7 +22,15 @@ import { cn } from "@/lib/cn";
  * same style.
  */
 
-const LABEL = "font-mono text-[0.875rem] leading-6 text-grey-600";
+/**
+ * The design's 390 card is the same card re-laid: the icon moves from the right
+ * of the row to the top-left with the numeral opposite it, the two field pairs
+ * become one column, and every step of type drops — the label to 12/16, its
+ * value to 14/20, the numeral to 24 and the title to 24/31.
+ */
+const LABEL =
+  "font-mono text-[0.75rem] leading-4 text-grey-600 md:text-[0.875rem] md:leading-6";
+const VALUE = "text-body leading-5 md:leading-6";
 
 function Field({
   label,
@@ -63,24 +71,33 @@ export function ServiceCard({
   relatedWorkHref?: string;
 }) {
   return (
-    <article className="rounded-2xl bg-base p-6 md:p-8">
-      <div className="flex flex-col gap-6 md:flex-row md:gap-8">
+    <article className="rounded-2xl bg-base p-4 md:p-6 lg:p-8">
+      {/* One DOM order, two layouts. Below `md` the row wraps: the icon and the
+          numeral share the first line and the content takes the second, which is
+          what `basis-full` and the three `order`s buy — no duplicated icon. */}
+      <div className="flex flex-wrap items-start gap-5 md:flex-nowrap md:gap-6 lg:gap-8">
         {/* The numeral column is fixed at 120px so all four titles start on the
             same x, regardless of how wide the digits render. */}
         <p
-          className="font-display text-[2.25rem] font-normal leading-8 text-accent md:w-[120px] md:shrink-0"
+          className="font-display text-[1.5rem] font-normal leading-8 text-accent max-md:order-2 max-md:ml-auto md:text-[2.25rem] md:w-[120px] md:shrink-0"
           aria-hidden
         >
           {String(index).padStart(2, "0")}
         </p>
 
-        <div className="min-w-0 flex-1">
-          <h2 className="text-section text-contrast-2">{title}</h2>
-          <p className="mt-6 text-lead text-contrast">&ldquo;{quote}&rdquo;</p>
+        <div className="min-w-0 flex-1 max-md:order-3 max-md:basis-full">
+          <h2 className="text-[1.5rem] leading-[1.2917] text-contrast-2 md:text-section">
+            {title}
+          </h2>
+          <p className="mt-5 text-lead text-contrast md:mt-6">
+            &ldquo;{quote}&rdquo;
+          </p>
 
-          <div className="mt-6 grid gap-6 sm:grid-cols-2 sm:gap-8">
+          {/* One column at 390 on a 20px rhythm; the design's two-by-two grid
+              from `sm`, whose 32/24 gaps are the desktop's unchanged. */}
+          <div className="mt-5 flex flex-col gap-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-x-8 sm:gap-y-6">
             <Field label="Best for">
-              <p className="text-body text-contrast">{bestFor}</p>
+              <p className={cn(VALUE, "text-contrast")}>{bestFor}</p>
             </Field>
             <Field label="Stack">
               {/* 2px gaps, exactly as the design sets them — the pills read as
@@ -93,35 +110,41 @@ export function ServiceCard({
                 ))}
               </div>
             </Field>
-          </div>
-
-          <div className="mt-6 grid gap-6 sm:grid-cols-2 sm:gap-8">
             <Field label="Typical engagement">
-              <p className="text-body text-contrast">{typicalEngagement}</p>
+              <p className={cn(VALUE, "text-contrast")}>{typicalEngagement}</p>
             </Field>
             <Field label="Related work">
               {relatedWorkHref ? (
                 <Link
                   href={relatedWorkHref}
                   className={cn(
-                    "text-body text-accent underline underline-offset-4",
+                    VALUE,
+                    "text-accent underline underline-offset-4",
                     "transition-colors duration-300 hover:text-contrast-2",
                   )}
                 >
                   {relatedWorkLabel}
                 </Link>
               ) : (
-                <p className="text-body text-contrast">{relatedWorkLabel}</p>
+                <p className={cn(VALUE, "text-contrast")}>{relatedWorkLabel}</p>
               )}
             </Field>
           </div>
 
-          <Button href={`/services/${slug}`} variant="outline" className="mt-8">
+          <Button
+            href={`/services/${slug}`}
+            variant="outline"
+            className="mt-6 max-md:w-full max-md:justify-center md:mt-8"
+          >
             About {title}
           </Button>
         </div>
 
-        <ServiceIcon slug={slug} className="shrink-0 self-start text-accent max-md:hidden" />
+        {/* Top-left at 390, where the design puts it; right of the row above. */}
+        <ServiceIcon
+          slug={slug}
+          className="shrink-0 self-start text-accent max-md:order-1 max-md:size-16"
+        />
       </div>
     </article>
   );

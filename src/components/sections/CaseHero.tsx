@@ -30,7 +30,7 @@ export function CaseHero({
   return (
     <section className="relative isolate lg:min-h-[600px] lg:grid lg:grid-cols-[800px_1fr]">
       {/* Left — the story */}
-      <div className="relative overflow-hidden bg-base px-6 py-14 lg:px-[7.5rem] lg:py-0">
+      <div className="relative overflow-hidden bg-base px-6 pb-10 pt-8 md:py-14 lg:px-[7.5rem] lg:py-0">
         <div
           aria-hidden
           /* Not `-z-10`: this div sits inside the half that paints `bg-base`,
@@ -63,7 +63,7 @@ export function CaseHero({
       </div>
 
       {/* Right — the specification */}
-      <div className="surface-dark relative overflow-hidden px-6 py-14 lg:px-10 lg:py-10">
+      <div className="surface-dark relative overflow-hidden px-6 pb-10 pt-8 md:py-14 lg:px-10 lg:py-10">
         <div
           aria-hidden
           className="pointer-events-none absolute left-[354px] top-[360px] h-[329px] w-[337px]"

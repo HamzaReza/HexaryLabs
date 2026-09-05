@@ -7,24 +7,29 @@ this document explains the rules. Scope decisions live in `docs/redesign-plan.md
 ## Colour tokens
 
 All colors are `@theme` tokens in `globals.css` — never hardcode a hex in a component.
-Measured WCAG ratios (from the Phase 1 validation pass):
+Measured WCAG ratios, **re-measured in the Phase 7 audit** against the neutral palette
+that replaced the warm beige system. Every text pairing the build actually renders meets
+AA; the two that did not are recorded under *Corrections* below.
 
-| Token | Value | Role | Measured contrast |
+| Token | Value | Role | Measured contrast (Phase 7 audit) |
 |---|---|---|---|
-| `base` | `#F5F3EE` | warm paper canvas | ink on base 16.8:1 |
-| `base-2` | `#EBE8DF` | alternate sections | ink on base-2 15.2:1 |
-| `contrast` | `#14130F` | ink — text + structure | — |
-| `contrast-2` | `#0C0B09` | dark section background | base on it 17.7:1 |
-| `surface-dark` | `#191813` | cards/panels on dark | — |
-| `accent` | `#5B45F5` | purple signal | 5.2:1 on base, 4.7:1 on base-2 ✓ AA |
-| `accent-hi` | `#8B7BFF` | signal on dark | 6.0:1 on contrast-2, 5.4:1 on surface-dark |
-| `grey-100` | `#E2DDD1` | hairlines on light | decorative |
-| `grey-200` | `#D1CCBE` | hairlines/fills on light | decorative |
-| `grey-300` | `#B5AF9F` | body text on dark | 9.0:1 on contrast-2, 8.1:1 on surface-dark |
-| `grey-500` | `#8A8577` | muted on dark **only** | 5.3:1 on contrast-2 ✓ / **3.3:1 on base ✗ — forbidden on light** |
-| `grey-600` | `#5C5849` | muted text on light | 6.4:1 on base, 5.8:1 on base-2 |
-| `grey-700` | `#35332A` | hairlines on dark | decorative |
-| `success` | `#2F7A43` | results accents, light surfaces only | 4.8:1 on base |
+| `base` | `#FFFFFF` | page canvas | contrast on it 14.2:1 · contrast-2 17.9:1 |
+| `base-2` | `#F1F1F1` | alternate sections | contrast 12.5:1 · contrast-2 15.9:1 |
+| `contrast` | `#2B2B2B` | body text on light | 14.2:1 on base · 12.5:1 on base-2 |
+| `contrast-2` | `#171717` | headings; dark sections | 17.9:1 on base · white on it 17.9:1 |
+| `surface-dark` | `#222222` | panels on dark | white on it 15.9:1 |
+| `accent` | `#5B45F5` | purple signal | 5.8:1 on base · 5.1:1 on base-2 |
+| `accent-hi` | `#9B8DFF` | signal on dark | 6.5:1 on contrast-2 · 5.8:1 on surface-dark |
+| `accent-soft` | `#E8E4FF` | copy on an accent fill | 4.7:1 on accent ✓ AA |
+| `accent-warm` | `#F04E23` | alternating row bullet | decorative |
+| `grey-100` | `#EDEDED` | hairlines on light | decorative |
+| `grey-200` | `#DADADA` | hairlines/fills on light | decorative |
+| `grey-300` | `#DADADA` | body text on dark | 12.8:1 on contrast-2 · 11.4:1 on surface-dark |
+| `grey-400` | `#A5A5A5` | decorative outlines only | 2.5:1 on base — never text |
+| `grey-500` | `#8A8A8A` | muted text on dark only | 5.2:1 on contrast-2 · 4.6:1 on surface-dark · 3.5:1 on base FAIL |
+| `grey-600` | `#5A5A5A` | muted text on light only | 6.9:1 on base · 6.1:1 on base-2 · 2.3:1 on surface-dark FAIL |
+| `grey-700` | `#333333` | hairlines on dark | decorative — below 3:1 on #222, never a control boundary |
+| `success` | `#2F7A43` | results accents, light only | 5.3:1 on base |
 
 Rules:
 - Tone is ambient, not a prop: `Section` stamps `data-tone`, descendants re-color with
@@ -32,8 +37,28 @@ Rules:
 - Buttons/text on `accent` use white (5.8:1). `text-base` is ambiguous with the font-size
   utility — for beige *text* on dark use `text-white` or `fill-base` (SVG); backgrounds
   (`bg-base`) are unambiguous.
-- `--gradient-metal` / `text-metal` are legacy (Goji-derived), consumed only by
-  StatsBand/CtaBand, and are deleted with the Phase 2 homepage rebuild. Do not use in new work.
+- **Never `grey-500` on light, never `grey-600` on dark.** The two are mirror images and
+  swapping them is the easiest contrast mistake to make here: each fails AA on the other's
+  surface.
+- `grey-700` is a decorative hairline only. It measures 1.26:1 on `surface-dark`, so it can
+  never be the visible boundary of a control — WCAG 1.4.11 wants 3:1.
+
+### Corrections made in the Phase 7 audit
+
+Two pairings the build shipped were below AA and are now fixed. Both are recorded here
+because both were *documented as passing* and were not:
+
+| what | was | now | why |
+|---|---|---|---|
+| `accent-soft`, body copy on the active work card | `#DED9FF` — **4.28:1** | `#E8E4FF` — 4.7:1 | the token's own comment claimed 4.9:1; it never measured that |
+| Message-box border on the contact form | `grey-700` — **1.26:1** | `grey-500` — 4.6:1 | a control's visible boundary needs 3:1 (WCAG 1.4.11). The design's own `#404040` measures 1.53 and fails too |
+
+The field underlines were already on `grey-500` from an earlier phase, so the message box
+now matches the fields around it instead of disappearing beside them.
+
+Where the design's own value fails AA, the design loses: `grey-500` is deliberately not the
+design's `#5A5A5A` on dark, and the message-box border is deliberately not `#404040`. Both
+are flagged to the client rather than silently applied.
 
 ## The pentagonal silhouette
 

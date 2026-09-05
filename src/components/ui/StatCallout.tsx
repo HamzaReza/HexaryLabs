@@ -28,7 +28,12 @@ export function StatCallout({
 }) {
   return (
     <div
-      className={cn("relative flex items-start gap-4 pb-5 pl-4 pr-6 pt-4", className)}
+      /* 12/20/12/12 at 390, where the design draws the panel tighter. */
+      className={cn(
+        "relative flex items-start gap-3 py-3 pl-3 pr-5",
+        "md:gap-4 md:pb-5 md:pl-4 md:pr-6 md:pt-4",
+        className,
+      )}
       style={{ background: "#e1ddff", clipPath: CUT_CORNER }}
     >
       <HexMark className="text-accent-hi" />

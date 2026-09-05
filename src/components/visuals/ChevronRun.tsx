@@ -34,6 +34,16 @@ export function ChevronRun({
   /** Centre-to-centre spacing. The design uses 15.005 for the long runs and
       16.005 for the short connectors between the approach hexagons. */
   pitch = PITCH,
+  /**
+   * `down` turns the run through a quarter turn, which is how the design draws
+   * the connector between the approach steps on its 390 frames — the steps
+   * stack, so the chevrons that point across on desktop point down on a phone.
+   *
+   * The turn is applied inside the SVG rather than as a CSS `rotate`, so the
+   * element's own box is upright and the caller sizes it in the direction it
+   * actually runs.
+   */
+  orientation = "across",
   className,
 }: {
   count: number;
@@ -41,19 +51,25 @@ export function ChevronRun({
   direction?: "left" | "right";
   fade?: boolean;
   pitch?: number;
+  orientation?: "across" | "down";
   className?: string;
 }) {
   const headOffset = head ? HEAD_WIDTH : 0;
   const width = headOffset + (count - 1) * pitch + 17.432;
+  const down = orientation === "down";
 
   return (
     <svg
-      viewBox={`0 0 ${width} ${HEIGHT}`}
+      viewBox={down ? `0 0 ${HEIGHT} ${width}` : `0 0 ${width} ${HEIGHT}`}
       fill="none"
       aria-hidden="true"
       focusable="false"
       className={cn("text-grey-200", direction === "left" && "-scale-x-100", className)}
     >
+      {/* (x, y) → (HEIGHT − y, x): the run's length becomes the vertical axis
+          and its 38px depth the horizontal one, with the arrowheads turned to
+          point down the page. */}
+      <g transform={down ? `translate(${HEIGHT} 0) rotate(90)` : undefined}>
       {head && (
         <>
           <path d={HEX_RING} fill="currentColor" />
@@ -71,6 +87,7 @@ export function ChevronRun({
           transform={`translate(${headOffset + i * pitch} 0)`}
         />
       ))}
+      </g>
     </svg>
   );
 }

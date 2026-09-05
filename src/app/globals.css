@@ -21,7 +21,9 @@
 
   --color-accent: #5b45f5; /* 5.8:1 on base, 5.1:1 on base-2 */
   --color-accent-hi: #9b8dff; /* accent on dark: 6.7:1 on contrast-2 */
-  --color-accent-soft: #ded9ff; /* body copy on an accent fill: 4.9:1 */
+  --color-accent-soft: #e8e4ff; /* body copy on an accent fill: 4.7:1 ✓ AA.
+     Was #DED9FF, whose comment claimed 4.9:1 and which actually measures 4.28 —
+     below AA for normal text. Re-measured in the Phase 7 audit. */
   /* The work rows alternate their bullet marker between the accent and this
      warm counterpart — the design's only use of a second hue. */
   --color-accent-warm: #f04e23;
@@ -41,7 +43,7 @@
   --color-grey-100: #ededed;
   --color-grey-200: #dadada;
   --color-grey-300: #dadada;
-  --color-grey-400: #a5a5a5; /* decorative outlines only — 2.3:1 on base */
+  --color-grey-400: #a5a5a5; /* decorative outlines only — 2.5:1 on base */
   --color-grey-500: #8a8a8a;
   --color-grey-600: #5a5a5a;
   --color-grey-700: #333333;
@@ -163,6 +165,49 @@
   --ease-blueprint: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* --- The design's mobile type ramp ---------------------------------------
+   Every one of the design's 390 frames sets the scale a step below the 1440
+   frames, holding the leading fixed in *pixels* rather than in ems: body goes
+   16/24 → 14/24, the section heading 28/36 → 22/28, the card title 24/31 →
+   20/26, the subheader 18/26 → 16/26, and the page title 40/48 → 28/40.
+
+   Measured, not assumed. Two independent methods agree on every step: the cap
+   height of the rendered glyphs (Space Grotesk cap = 0.70em, Inter cap+descender
+   = 0.967em), and the pixel width of thirty-odd typeset lines solved against the
+   same string measured in Chrome — that second method puts body copy at 13.76,
+   13.90, 13.94 and 13.96px on four different frames, and the headline at 28.07
+   and 28.25 on two.
+
+   **This is the single largest cause of the mobile height excess.** Part one
+   fixed the spacing between blocks and found every page still 7–22% too tall;
+   the reason is that every paragraph on the site was set a step too large and so
+   wrapped a line or two early, on every block, on every page.
+
+   It is written as the theme variables rather than as per-component classes
+   because Tailwind's type utilities are `var()` references — `.text-body` emits
+   `font-size: var(--text-body)`. Redefining the variables therefore re-sizes
+   every call site at once, with no churn and nothing to keep in sync, and a
+   local `leading-*` still wins through `--tw-leading`.
+
+   The switch is `md` (768), matching where Phase 7 part one already stepped the
+   hero eyebrow and headline. The design has no tablet artboard, so 768–1023
+   takes the desktop type under the mobile layout — a judgement, not a
+   measurement, and the same one the rest of the build already makes. */
+@media (width < 48rem) {
+  :root {
+    --text-page-title: 1.75rem; /* 28px */
+    --text-page-title--line-height: 1.4286; /* 40px */
+    --text-section: 1.375rem; /* 22px */
+    --text-section--line-height: 1.2727; /* 28px */
+    --text-card: 1.25rem; /* 20px */
+    --text-card--line-height: 1.3; /* 26px */
+    --text-lead: 1rem; /* 16px */
+    --text-lead--line-height: 1.625; /* 26px */
+    --text-body: 0.875rem; /* 14px */
+    --text-body--line-height: 1.7143; /* 24px */
+  }
+}
+
 /* Gradients + structural values that aren't Tailwind scales */
 :root {
   /* Rule midpoint — sits between grey-600 and grey-700, used only by the
@@ -183,7 +228,7 @@
     rgba(var(--rule-ink), 0) 100%
   );
   --header-h: 84px; /* measured on the design's header frame */
-  --header-h-sm: 72px; /* below lg; the mobile overlay hangs off this */
+  --header-h-sm: 57px; /* measured on the design's 390 header frame; the mobile overlay hangs off this */
   --texture-ink: rgba(23, 23, 23, 0.07);
   --texture-grid-ink: rgba(23, 23, 23, 0.05);
 

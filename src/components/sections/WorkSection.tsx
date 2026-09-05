@@ -30,16 +30,20 @@ export async function WorkSection() {
   }));
 
   return (
-    <section className="bg-base py-14 lg:py-20">
+    <section className="bg-base pb-10 pt-8 md:py-14 lg:py-20">
       <Container>
-        <SectionHead title="Our Work" align="center" className="mb-12" />
+        <SectionHead title="Our Work" align="center" className="mb-6 md:mb-12" />
       </Container>
 
       {/* Only the card track is full-bleed. The chip row is content, so it
           starts on the gutter like everything else and scrolls inside it. */}
       <WorkCarousel items={items} />
 
-      <Container>
+      {/* Desktop only. The design's 390 frame closes this band on the dot row
+          and carries no "See Our Work" — `/work` is still one tap away in the
+          header and the footer, but the loss of the in-band CTA on a phone is a
+          real content change and is recorded as one. */}
+      <Container className="max-md:hidden">
         <div className="mt-14 flex justify-center">
           <Button href="/work" variant="outline">
             See Our Work

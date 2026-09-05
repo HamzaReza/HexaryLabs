@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { SectionHead } from "@/components/ui/SectionHead";
 import { Reveal } from "@/components/ui/Reveal";
@@ -42,15 +43,21 @@ export async function ProcessSection() {
   const steps = await getProcessSteps();
 
   return (
-    <section className="bg-base-2 py-14 lg:pb-[100px] lg:pt-20">
+    <section className="bg-base-2 pb-10 pt-8 md:py-14 lg:pb-[100px] lg:pt-20">
       <Container>
+        {/* At 390 the design centres the heading and moves the action to a
+            full-width button under the last card, so the head is title-only
+            there and `SectionHead`'s own action is used from `md` up. */}
+        <h2 className="mb-6 text-center font-display text-section uppercase md:hidden">
+          How We Work
+        </h2>
         <SectionHead
           title="How We Work"
           action={{ label: "See the full process", href: "/how-we-work" }}
-          className="mb-12"
+          className="mb-12 max-md:hidden"
         />
 
-        <div className="flex flex-col gap-8 lg:grid lg:grid-cols-[601fr_40px_601fr] lg:items-start lg:gap-x-[19px]">
+        <div className="flex flex-col gap-4 md:gap-8 lg:grid lg:grid-cols-[601fr_40px_601fr] lg:items-start lg:gap-x-[19px]">
           <Column
             steps={steps.filter((_, i) => i % 2 === 0)}
             positions={[0, 2]}
@@ -63,6 +70,12 @@ export async function ProcessSection() {
             fillers={RIGHT_FILLERS}
             leading
           />
+        </div>
+
+        <div className="mt-6 md:hidden">
+          <Button href="/how-we-work" variant="outline" className="w-full justify-center">
+            See the full process
+          </Button>
         </div>
       </Container>
     </section>
@@ -122,23 +135,28 @@ function StepCard({
       className="max-lg:[order:var(--step-order)]"
       style={{ "--step-order": position } as React.CSSProperties}
     >
-      <article className="bg-base p-6 pt-4">
+      {/* The 390 card is the same composition centred and stepped down: 16 of
+          padding, a 24px numeral rather than 56, and 12 between every element
+          against the desktop 16 and 32. */}
+      <article className="bg-base p-4 text-center md:p-6 md:pt-4 md:text-left">
         <p
           aria-hidden="true"
-          className="font-display text-numeral font-light leading-[1.27] text-accent"
+          className="font-display text-[1.5rem] font-light leading-[1.2917] text-accent md:text-numeral md:leading-[1.27]"
         >
           {step.number}
         </p>
 
-        <h3 className="mt-4 font-display text-card font-medium text-contrast-2">
+        <h3 className="mt-3 font-display text-card font-medium text-contrast-2 md:mt-4">
           {step.title}
         </h3>
 
-        <p className="mt-4 text-body text-grey-600">{step.body}</p>
+        <p className="mt-3 text-body text-grey-600 md:mt-4">{step.body}</p>
 
-        <div className="mt-8 bg-contrast p-5 text-white">
-          <p className="font-display text-lead font-medium">You end up with:</p>
-          <p className="mt-4 text-body text-grey-300">{step.deliverable}</p>
+        <div className="mt-5 bg-contrast p-4 text-white md:mt-8 md:p-5">
+          <p className="font-display text-card font-medium md:text-lead">
+            You end up with:
+          </p>
+          <p className="mt-3 text-body text-grey-300 md:mt-4">{step.deliverable}</p>
         </div>
       </article>
     </Reveal>

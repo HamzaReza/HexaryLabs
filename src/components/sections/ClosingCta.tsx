@@ -19,7 +19,7 @@ export function ClosingCta({
   return (
     <section
       data-tone="dark"
-      className="bg-contrast-2 pb-14 pt-14 text-white lg:pb-20 lg:pt-20"
+      className="bg-contrast-2 pb-10 pt-8 text-white md:pb-14 md:pt-14 lg:pb-20 lg:pt-20"
     >
       <Container>
         <div className="flex flex-col items-center gap-10 text-center">

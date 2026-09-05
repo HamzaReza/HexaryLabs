@@ -57,7 +57,12 @@ export function HeroHexField({
       viewBox="0 0 1440 540"
       fill="none"
       className={cn(
-        "pointer-events-none absolute right-0 top-0 -z-10 h-[540px] w-[1440px]",
+        /* Hidden below `lg`. The design's six mobile hero frames — work,
+           services, all four service pages and the case study — carry the dot
+           field, the text and nothing else: there is no hexagon artwork at 390
+           in any of them. Drawn at 1440 and pinned right, the cluster reached
+           back across the headline on a phone, which is what gave it away. */
+        "pointer-events-none absolute right-0 top-0 -z-10 h-[540px] w-[1440px] max-lg:hidden",
         className,
       )}
     >

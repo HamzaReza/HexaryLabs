@@ -28,7 +28,7 @@ export async function ServicesSection() {
   return (
     <section
       data-tone="dark"
-      className="surface-dark py-14 text-white lg:pb-[100px] lg:pt-20"
+      className="surface-dark pb-10 pt-8 text-white md:py-14 lg:pb-[100px] lg:pt-20"
     >
       <Container>
         <SectionHead

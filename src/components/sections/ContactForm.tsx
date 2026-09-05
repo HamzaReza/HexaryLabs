@@ -68,9 +68,9 @@ export function ContactForm({
   return (
     <form
       action={formAction}
-      className="rounded-lg bg-surface-dark p-6 sm:p-8 lg:p-10"
+      className="rounded-lg bg-surface-dark px-4 pb-5 pt-4 sm:p-8 lg:p-10"
     >
-      <div className="grid gap-8 sm:grid-cols-2 sm:gap-6">
+      <div className="grid gap-5 sm:grid-cols-2 sm:gap-6">
         <UnderlineField
           id="firstName"
           name="firstName"
@@ -102,7 +102,7 @@ export function ContactForm({
         defaultValue={values?.companyName}
         required
         error={fieldErrors.companyName}
-        className="mt-8"
+        className="mt-5 sm:mt-8"
       />
 
       <UnderlineField
@@ -114,14 +114,14 @@ export function ContactForm({
         defaultValue={values?.companyEmail}
         required
         error={fieldErrors.companyEmail}
-        className="mt-8"
+        className="mt-5 sm:mt-8"
       />
 
       <UnderlineFieldRow
         id="phone"
         label="Phone number (optional)"
         error={fieldErrors.phone}
-        className="mt-8"
+        className="mt-5 sm:mt-8"
       >
         <CountrySelect name="phoneCountry" defaultIso={values?.phoneCountry} />
         <input
@@ -141,7 +141,7 @@ export function ContactForm({
         />
       </UnderlineFieldRow>
 
-      <div className="mt-8">
+      <div className="mt-5 sm:mt-8">
         <label
           htmlFor="message"
           className="mb-2 block font-mono text-caption uppercase text-grey-500"
@@ -157,10 +157,15 @@ export function ContactForm({
           aria-invalid={fieldErrors.message ? true : undefined}
           aria-describedby={fieldErrors.message ? "message-error" : undefined}
           className={cn(
-            "h-[14.5rem] min-h-[8rem] w-full resize-y rounded-lg border p-4",
+            "h-[151px] min-h-[8rem] w-full resize-y rounded-lg border p-4 sm:h-[14.5rem]",
             "bg-contrast-2 text-body-lg text-white",
             "transition-colors duration-300 ease-in-out focus:outline-none",
-            fieldErrors.message ? "border-accent-hi" : "border-grey-700 focus:border-white",
+            /* grey-500, not the design's #404040 and not grey-700: a control's
+               visible boundary needs 3:1 under WCAG 1.4.11, and on this #222
+               panel #404040 measures 1.53 and grey-700 1.26. grey-500 is 4.61
+               and is already what every field underline in this form uses, so
+               the box now matches them instead of disappearing beside them. */
+            fieldErrors.message ? "border-accent-hi" : "border-grey-500 focus:border-white",
           )}
         />
         <FieldError id="message-error" message={fieldErrors.message} />
@@ -175,7 +180,7 @@ export function ContactForm({
         </p>
       )}
 
-      <div className="mt-8">
+      <div className="mt-5 sm:mt-8">
         <SubmitButton label={submitLabel} pendingLabel={submitPendingLabel} />
       </div>
     </form>

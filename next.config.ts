@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-
+  allowedDevOrigins: ["a729-39-45-4-35.ngrok-free.app"],
   // No Content-Security-Policy yet — adding one is an open decision (D6 in
   // docs/redesign-plan.md): roll it out report-only first against the live
   // site before enforcing.

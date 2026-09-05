@@ -21,7 +21,7 @@ export function ServiceOutcomes({
   return (
     <section
       data-tone="dark"
-      className="relative isolate overflow-hidden bg-contrast-2 py-14 lg:pb-[100px] lg:pt-20"
+      className="relative isolate overflow-hidden bg-contrast-2 py-10 md:py-14 lg:pb-[100px] lg:pt-20"
     >
       <HexLattice className="pointer-events-none absolute inset-0 -z-10 size-full text-[var(--lattice-ink)]" />
 
@@ -30,15 +30,18 @@ export function ServiceOutcomes({
           What you walk away with
         </h2>
 
-        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {/* 20 above the numeral, 16 to the sentence, 20 below, on a 20px gap —
+            the design's 390 cards, which set the numeral on a 40px line rather
+            than the 48 the 1440 cards use and pad 16 at the sides, not 20. */}
+        <div className="mt-8 grid gap-5 sm:mt-12 sm:grid-cols-2 lg:grid-cols-4">
           {outcomes.map((outcome, i) => (
             <div
               key={outcome}
-              className="rounded-xl bg-white/[0.04] p-5 lg:min-h-[200px]"
+              className="rounded-xl bg-white/[0.04] px-4 py-5 sm:p-5 lg:min-h-[200px]"
             >
               <p
                 aria-hidden
-                className="font-display text-numeral font-normal leading-[48px] text-white/15"
+                className="font-display text-numeral font-normal leading-[40px] text-white/15 sm:leading-[48px]"
               >
                 {String(i + 1).padStart(2, "0")}
               </p>

@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Chip } from "@/components/ui/Chip";
 import { Container } from "@/components/ui/Container";
 import { WorkCard } from "@/components/cards/WorkCard";
+import { cn } from "@/lib/cn";
 import { prefersReducedMotion } from "@/lib/motion";
 import type { CaseStudy } from "@/lib/data/types";
 
@@ -93,7 +94,7 @@ export function WorkCarousel({ items }: { items: WorkCarouselItem[] }) {
       {/* The chip row overflows on every viewport — six pills on 94px of
           padding are wider than the content column by design — so it scrolls
           inside the gutter rather than bleeding to the edge like the track. */}
-      <Container className="no-scrollbar overflow-x-auto">
+      <Container className="no-scrollbar overflow-x-auto max-md:hidden">
         <div className="flex w-max gap-0.5">
           {items.map((item, i) => (
             <button
@@ -114,9 +115,13 @@ export function WorkCarousel({ items }: { items: WorkCarouselItem[] }) {
       <ul
         ref={trackRef}
         /* `--card` is read by both the card width and the centring padding, so
-           the two can never disagree and leave the active card off-centre. */
-        style={{ "--card": "min(600px, 85vw)" } as React.CSSProperties}
-        className="no-scrollbar mt-12 flex snap-x snap-mandatory gap-5 overflow-x-auto px-[max(1rem,calc(50%-var(--card)/2))] py-1"
+           the two can never disagree and leave the active card off-centre. At
+           390 the design's card is the full content column — 350 on an 8px gap,
+           so the neighbours peek 12px in from each edge. */
+        className={cn(
+          "no-scrollbar flex snap-x snap-mandatory overflow-x-auto px-[max(1rem,calc(50%-var(--card)/2))] py-1",
+          "[--card:min(600px,calc(100vw-40px))] gap-2 md:mt-12 md:gap-5 md:[--card:min(600px,85vw)]",
+        )}
       >
         {items.map((item, i) => (
           <li
@@ -131,6 +136,26 @@ export function WorkCarousel({ items }: { items: WorkCarouselItem[] }) {
           </li>
         ))}
       </ul>
+
+      {/* Below `md` the design swaps the category chips for a row of position
+          dots. It is the same control drawn as pagination, so these are real
+          buttons carrying the category name for anyone who cannot see which
+          card is centred. */}
+      <div className="mt-6 flex items-center justify-center gap-2 md:hidden">
+        {items.map((item, i) => (
+          <button
+            key={item.study.slug}
+            type="button"
+            aria-label={item.study.category}
+            aria-pressed={i === active}
+            onClick={() => scrollTo(i)}
+            className={cn(
+              "h-2.5 rounded-full transition-all duration-300 ease-in-out",
+              i === active ? "w-14 bg-contrast" : "w-2.5 bg-grey-300",
+            )}
+          />
+        ))}
+      </div>
     </div>
   );
 }

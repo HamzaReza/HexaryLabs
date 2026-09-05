@@ -97,7 +97,7 @@ export default async function AboutPage() {
         intro={whereExpertiseRanges.intro}
       />
 
-      <section className="bg-base pb-[100px] pt-20">
+      <section className="bg-base pb-10 pt-8 md:pb-14 md:pt-14 lg:pb-[100px] lg:pt-20">
         <Container>
           {/* 369 and 738 with the rest of the 1280 between them, which is the
               design's 173. They are maxima rather than fixed widths: at 1024

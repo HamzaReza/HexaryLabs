@@ -26,8 +26,11 @@ export async function StatsBand() {
       <HexLattice className="absolute inset-0 -z-10 h-full w-full" />
 
       <Container>
-        <div className="flex flex-col gap-10 py-14 lg:flex-row lg:items-center lg:justify-between lg:gap-12 lg:py-[60px]">
-          <p className="max-w-[301px] text-lead text-base-2">
+        <div className="flex flex-col gap-6 pb-10 pt-8 md:gap-10 md:py-14 lg:flex-row lg:items-center lg:justify-between lg:gap-12 lg:py-[60px]">
+          {/* Centred across the full column at 390, and on a 24px line rather
+              than the 26 the lead step carries elsewhere — the design sets this
+              one paragraph tighter, in exactly two lines. */}
+          <p className="text-center text-lead leading-6 text-base-2 md:max-w-[301px] md:text-left md:leading-[1.4444]">
             {proof.prefix}{" "}
             {proof.clients.map((client, i) => (
               <span key={client.href}>
@@ -45,13 +48,15 @@ export async function StatsBand() {
             ))}
           </p>
 
-          <ul className="grid gap-2 sm:grid-cols-3 lg:w-[866px] lg:shrink-0">
+          <ul className="grid gap-4 sm:grid-cols-3 sm:gap-2 lg:w-[866px] lg:shrink-0">
             {stats.map((stat) => (
               <li
                 key={stat.label}
-                className="rounded-md border border-white/20 bg-white/12 px-[25px] pb-[29px] pt-[25px] text-center"
+                className="rounded-md border border-white/20 bg-white/12 px-[25px] pb-[25px] pt-[25px] text-center sm:pb-[29px]"
               >
-                <p className="font-display text-figure font-medium text-base-2">
+                {/* 38/46 at 390 against the desktop 60/73 — 27px of measured cap
+                    ink at a 0.70em cap height. */}
+                <p className="font-display text-[2.375rem] font-medium leading-[1.2167] text-base-2 md:text-figure">
                   <CountUp value={stat.value} prefix={stat.prefix} suffix={stat.suffix} />
                 </p>
                 <p className="mt-2 font-mono text-caption uppercase text-grey-300">

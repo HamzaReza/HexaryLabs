@@ -50,7 +50,7 @@ export function FailureModes({
   return (
     <section
       data-tone="dark"
-      className="relative isolate overflow-hidden pb-[100px] pt-20"
+      className="relative isolate overflow-hidden pb-10 pt-8 md:pb-14 md:pt-14 lg:pb-[100px] lg:pt-20"
       style={{ background: BAND }}
     >
       <Container>

@@ -81,7 +81,12 @@ export function Header({ nav, headerCta }: { nav: NavItem[]; headerCta: NavLink 
               aria-label={mobileOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileOpen}
               onClick={() => setMobileOpen((v) => !v)}
-              className="grid size-11 place-items-center border border-contrast transition-colors duration-300 hover:border-accent hover:text-accent lg:hidden"
+              /* The design draws a bare 24px glyph with no box. The button
+                 keeps a 44px hit area regardless — a 24px target is below the
+                 accessible minimum, and the box was the only thing making it
+                 large enough before. `-mr-2.5` pulls the enlarged target back
+                 so the *glyph* still lands on the 20px gutter. */
+              className="-mr-2.5 grid size-11 place-items-center text-contrast transition-colors duration-300 hover:text-accent lg:hidden"
             >
               <MenuGlyph open={mobileOpen} />
             </button>
@@ -100,23 +105,28 @@ export function Header({ nav, headerCta }: { nav: NavItem[]; headerCta: NavLink 
   );
 }
 
+/**
+ * The design's `iconamoon:menu-burger-horizontal-fill` at 24: three round-capped
+ * bars on 6 / 12 / 18, spanning 3.5 → 20.5. Drawn as strokes rather than the
+ * exported fill path, which is the same picture in a tenth of the bytes.
+ *
+ * The previous build drew two bars at 20px. Three is the design's.
+ */
 function MenuGlyph({ open }: { open: boolean }) {
   return (
-    <svg viewBox="0 0 20 20" aria-hidden="true" className="size-5">
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+      className="size-6"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+    >
       {open ? (
-        <path
-          d="M4 4l12 12M16 4L4 16"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="square"
-        />
+        <path d="M5 5l14 14M19 5L5 19" />
       ) : (
-        <path
-          d="M3 6h14M3 14h14"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="square"
-        />
+        <path d="M3.5 6h17M3.5 12h17M3.5 18h17" />
       )}
     </svg>
   );

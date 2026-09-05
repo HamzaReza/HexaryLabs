@@ -59,7 +59,7 @@ export function CaseRow({
              one; the study itself keeps the architecture diagram. */
           cover={study.rowCover ?? study.cover}
           title={study.title}
-          aspect="aspect-[1.57] lg:h-full lg:aspect-auto"
+          aspect="aspect-[1.458] lg:h-full lg:aspect-auto"
           sizes="(min-width: 1024px) 740px, 100vw"
           className="h-full"
         />
@@ -67,7 +67,7 @@ export function CaseRow({
 
       {/* #212121 is a shade off `surface-dark`, and it is the value the design
           uses for every one of these panels. */}
-      <div className="relative flex flex-col gap-8 overflow-hidden bg-[#212121] px-12 pb-10 pt-8 lg:w-[540px] lg:shrink-0">
+      <div className="relative flex flex-col gap-6 overflow-hidden bg-[#212121] px-4 pb-6 pt-5 lg:w-[540px] lg:shrink-0 lg:gap-8 lg:px-12 lg:pb-10 lg:pt-8">
         {/* The panel carries the watermark at 405 × 395, bled off its lower
             right. Same artwork as the hero mark — the pattern is declared in
             user space, so drawing it larger scales the hatch with it. */}
@@ -79,8 +79,8 @@ export function CaseRow({
           <HexWatermark className="h-full w-full" />
         </div>
 
-        <div className="relative flex flex-col gap-6">
-          <div className="flex flex-col gap-3">
+        <div className="relative flex flex-col gap-4 lg:gap-6">
+          <div className="flex flex-col gap-2 lg:gap-3">
             <h3 className="font-display text-[1.75rem] font-medium leading-[1.2] tracking-[0.32px] text-white">
               {displayName}
             </h3>
@@ -94,7 +94,7 @@ export function CaseRow({
           {study.scope && study.scope.length > 0 && (
             <ul className="flex flex-col">
               {study.scope.slice(0, SCOPE_SHOWN).map((item) => (
-                <li key={item} className="flex items-center gap-3 py-2">
+                <li key={item} className="flex items-center gap-3 py-1 lg:py-2">
                   <HexBullet
                     className={flipped ? "text-accent-warm" : "text-accent-hi"}
                   />
@@ -109,7 +109,9 @@ export function CaseRow({
           href={`/work/${study.slug}`}
           className={cn(
             "relative inline-flex w-fit items-center gap-2.5 border border-white py-3.5 pl-6 pr-5",
-            "font-display text-body font-medium leading-[1.125] text-white",
+            /* 16, not `text-body`: the mobile ramp is for prose, and the
+               design keeps every control on a 16px label. */
+            "font-display text-[1rem] font-medium leading-[1.125] text-white",
             "transition-colors duration-300 ease-in-out hover:bg-white/10",
           )}
         >

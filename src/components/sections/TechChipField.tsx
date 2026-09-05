@@ -51,7 +51,7 @@ export function TechChipField({
   intro: string;
 }) {
   return (
-    <section className="relative isolate overflow-hidden bg-base-2 px-6 py-20 lg:py-[100px]">
+    <section className="relative isolate overflow-hidden bg-base-2 px-6 pb-10 pt-8 md:py-14 lg:py-[100px]">
       {/* #E0E0E0 on the #F1F1F1 ground — the field is barely there, and is
           meant to be. */}
       <div

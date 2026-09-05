@@ -139,11 +139,14 @@ export default async function ServicePage({
       {/* ---------------------------------------------- this is probably you */}
       <section
         data-tone="dark"
-        className="bg-contrast-2 py-14 lg:pb-[100px] lg:pt-20"
+        className="bg-contrast-2 py-10 md:py-14 lg:pb-[100px] lg:pt-20"
       >
         <Container>
-          <div className="grid gap-10 lg:grid-cols-[648px_1fr] lg:gap-0">
-            <h2 className="text-section uppercase text-white">
+          <div className="grid gap-8 sm:gap-10 lg:grid-cols-[648px_1fr] lg:gap-0">
+            {/* Centred on the 390 frames, left in the desktop grid. The design
+                centres every section heading on a phone except the
+                related-work band's, which stays left under its label. */}
+            <h2 className="text-center text-section uppercase text-white lg:text-left">
               This is probably you if
             </h2>
             {/* Two columns of 300 on a 32px gutter, with a rule between rows —
@@ -159,7 +162,7 @@ export default async function ServicePage({
           </div>
 
           {service.cost && (
-            <div className="mt-12">
+            <div className="mt-8 sm:mt-12">
               <AccentBand heading={service.cost.heading} body={service.cost.body} />
             </div>
           )}
@@ -167,10 +170,10 @@ export default async function ServicePage({
       </section>
 
       {/* ------------------------------------------------------ what's included */}
-      <section className="bg-base py-14 lg:pb-[100px] lg:pt-20">
+      <section className="bg-base py-10 md:py-14 lg:pb-[100px] lg:pt-20">
         <Container>
-          <div className="grid gap-10 lg:grid-cols-[316px_1fr] lg:gap-0">
-            <h2 className="text-section uppercase text-contrast-2">
+          <div className="grid gap-8 sm:gap-10 lg:grid-cols-[316px_1fr] lg:gap-0">
+            <h2 className="text-center text-section uppercase text-contrast-2 lg:text-left">
               What&rsquo;s included
             </h2>
             <ol className="grid gap-x-8 gap-y-0 sm:grid-cols-2 lg:grid-cols-3">
@@ -196,11 +199,14 @@ export default async function ServicePage({
       />
 
       {/* ---------------------------------------------------------- related work */}
+      {/* The one band on the page the design gives no vertical padding of its
+          own at 390: the cover bleeds to the left, right and bottom edges, and
+          the copy above it carries the 32/32. */}
       {study && (
-        <section className="bg-base-2 py-14 lg:pb-16 lg:pt-10">
+        <section className="bg-base-2 md:py-14 lg:pb-16 lg:pt-10">
           <Container>
-            <div className="grid items-center gap-10 lg:grid-cols-[576px_1fr] lg:gap-[64px]">
-              <div className="min-w-0">
+            <div className="grid items-center gap-8 lg:grid-cols-[576px_1fr] lg:gap-[64px]">
+              <div className="min-w-0 pt-8 md:pt-0">
                 <div className="flex items-center gap-8">
                   <p className="text-caption uppercase text-accent">Related work</p>
                   {/* Ornament only, and an expensive one on a narrow screen: an
@@ -213,16 +219,25 @@ export default async function ServicePage({
                     className="hidden h-[38px] min-w-0 flex-1 text-white lg:block"
                   />
                 </div>
-                <h2 className="mt-6 text-section text-contrast-2">{study.title}</h2>
-                <p className="mt-6 text-body text-grey-600">{study.summary}</p>
-                <Button href={`/work/${study.slug}`} variant="outline" className="mt-8">
+                <h2 className="mt-4 text-section text-contrast-2 sm:mt-6">
+                  {study.title}
+                </h2>
+                <p className="mt-4 text-body text-grey-600 sm:mt-6">{study.summary}</p>
+                <Button
+                  href={`/work/${study.slug}`}
+                  variant="outline"
+                  className="mt-8 max-sm:w-full max-sm:justify-center"
+                >
                   Read Case Study
                 </Button>
               </div>
+              {/* `-mx-5` is exactly the container gutter, so the cover reaches
+                  both edges without a `w-screen` that would overflow the page. */}
               <CaseCover
                 cover={study.cover}
                 title={study.title}
-                className="rounded-2xl"
+                aspect="aspect-[1.95] md:aspect-[1.6]"
+                className="max-md:-mx-5 max-md:rounded-none md:rounded-2xl"
                 sizes="(min-width: 1024px) 640px, 100vw"
               />
             </div>
@@ -236,10 +251,12 @@ export default async function ServicePage({
       />
 
       {/* ------------------------------------------------------------------ faq */}
-      <section className="bg-base py-14 lg:pb-[100px] lg:pt-20">
+      <section className="bg-base py-10 md:py-14 lg:pb-[100px] lg:pt-20">
         <Container>
           <div className="grid gap-8 lg:grid-cols-[542px_738px] lg:gap-0">
-            <h2 className="text-section uppercase text-contrast-2">FAQ</h2>
+            <h2 className="text-center text-section uppercase text-contrast-2 lg:text-left">
+              FAQ
+            </h2>
             <Accordion items={service.faqs} />
           </div>
         </Container>
@@ -248,7 +265,7 @@ export default async function ServicePage({
       {/* The illustrative scenario is deliberately unattributed — it is not a
           client, and must never be presented as one. */}
       {service.illustrativeExample && (
-        <section className="bg-base-2 py-14">
+        <section className="bg-base-2 py-10 md:py-14">
           <Container>
             <p className="mx-auto max-w-[880px] text-center text-lead text-grey-600">
               {service.illustrativeExample}
@@ -270,9 +287,26 @@ export default async function ServicePage({
  * and up, a three-column grid above items 4 and up.
  */
 function cnRow(index: number, columns: number, tone: "dark" | "light") {
-  const base = "flex gap-4 pb-4";
-  if (index < columns) return base;
-  return `${base} pt-4 border-t ${tone === "dark" ? "border-white/10" : "border-grey-200"}`;
+  /* Written out rather than composed, because Tailwind scans source text: a
+     class assembled at runtime is never generated. */
+  const dark = tone === "dark";
+  const base = "flex gap-4 pb-3 sm:pb-4";
+  /* Below `sm` the list is one column whatever `columns` says, so the rule and
+     the top padding belong on every row but the first — and the design pads
+     these rows 12, not 16. */
+  const stacked =
+    index > 0
+      ? dark
+        ? "max-sm:border-t max-sm:border-white/10 max-sm:pt-3"
+        : "max-sm:border-t max-sm:border-grey-200 max-sm:pt-3"
+      : "";
+  const columned =
+    index < columns
+      ? ""
+      : dark
+        ? "sm:border-t sm:border-white/10 sm:pt-4"
+        : "sm:border-t sm:border-grey-200 sm:pt-4";
+  return [base, stacked, columned].filter(Boolean).join(" ");
 }
 
 /**
@@ -282,10 +316,13 @@ function cnRow(index: number, columns: number, tone: "dark" | "light") {
 function AccentBand({ heading, body }: { heading: string; body: string }) {
   return (
     <div className="bg-accent-band overflow-hidden rounded-sm">
-      <div className="grid gap-6 p-8 lg:grid-cols-[580px_1fr] lg:gap-0 lg:px-12 lg:py-8">
+      {/* 16 of padding on the 390 frames, not 32 — which also puts the body on
+          the design's own 318px measure instead of 286, where it sets in seven
+          lines rather than nine. */}
+      <div className="grid gap-[18px] p-4 sm:gap-6 sm:p-8 lg:grid-cols-[580px_1fr] lg:gap-0 lg:px-12 lg:py-8">
         <div>
           <p className="text-caption uppercase text-white/80">Why it matters</p>
-          <p className="mt-3 text-card text-white">{heading}</p>
+          <p className="mt-2 text-card text-white sm:mt-3">{heading}</p>
         </div>
         {/* The design sets this text 26px clear of the rule in a 578px measure,
             where it fills exactly four lines. Chrome renders Inter about 0.55%

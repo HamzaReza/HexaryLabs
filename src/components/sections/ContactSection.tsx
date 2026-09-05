@@ -18,10 +18,21 @@ import { cn } from "@/lib/cn";
  */
 export async function ContactSection({
   heading,
+  pageHeadline = false,
   className,
 }: {
   /** Defaults to the closer headline; `/contact` passes the page headline. */
   heading?: string;
+  /**
+   * `/contact` sets its headline a step smaller than the closer's.
+   *
+   * That is the design's own choice, not an inconsistency to normalise: its 390
+   * frames set "LET'S TALK" at 54 on a 69px line, one line, and "LET'S GET
+   * STARTED." at 40 on 51, over two — 38px and 28px of measured cap ink against
+   * a 0.70em cap height. Every closer on the site is the 54; the contact page
+   * alone is the 40.
+   */
+  pageHeadline?: boolean;
   className?: string;
 }) {
   const contact = await getContactCta();
@@ -29,12 +40,16 @@ export async function ContactSection({
   return (
     <Section tone="dark" className={className}>
       <Container>
-        <div className="grid gap-10 lg:grid-cols-[1fr_1.494fr] lg:gap-12">
+        {/* 32 from the copy to the form at 390, per the design's frames. */}
+        <div className="grid gap-8 md:gap-10 lg:grid-cols-[1fr_1.494fr] lg:gap-12">
           <Reveal className="flex flex-col">
             <h2
               className={cn(
-                "text-[2.125rem] uppercase leading-[1.2] tracking-[0.02em]",
-                "md:text-[3rem] lg:text-h1",
+                pageHeadline
+                  ? "text-[2.5rem] leading-[1.275]"
+                  : "text-[3.375rem] leading-[1.2778]",
+                "uppercase tracking-[0.02em]",
+                "md:text-[3rem] md:leading-[1.2] lg:text-h1",
                 /* The headline is a left-to-right light-to-mid grey ramp in the
                    design, painted through the glyphs. Falls back to a flat
                    colour where forced colours are in effect. */
@@ -44,7 +59,10 @@ export async function ContactSection({
             >
               {heading ?? contact.closerHeading}
             </h2>
-            <p className="mt-6 text-body-lg text-grey-300">
+            {/* 16/26 at mobile — the design sets the subtitle a step below the
+                lead it uses from `md` up, which is what keeps both authored
+                lines to one line each at 350 wide. */}
+            <p className="mt-6 text-[1rem] leading-[1.625] text-grey-300 md:text-body-lg md:leading-[1.4]">
               {contact.subtitle.map((line) => (
                 <span key={line} className="block">
                   {line}

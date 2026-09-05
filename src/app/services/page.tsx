@@ -56,7 +56,7 @@ export default async function ServicesPage() {
 
       {/* 40px of lead-in and 80px of run-out, with 48px between cards — the
           design's own rhythm, which is deliberately not symmetric. */}
-      <section className="bg-base-2 pb-14 pt-10 lg:pb-20">
+      <section className="bg-base-2 pb-10 pt-8 md:pb-14 md:pt-10 lg:pb-20">
         <Container>
           <h2 className="sr-only">All services</h2>
           <div className="flex flex-col gap-6 lg:gap-12">

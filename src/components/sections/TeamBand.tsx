@@ -34,7 +34,7 @@ export function TeamBand({
   return (
     <section className="bg-base">
       <Container>
-        <div className="flex flex-col gap-12 py-20">
+        <div className="flex flex-col gap-12 pb-10 pt-8 md:py-14 lg:py-20">
           <div className="flex max-w-[746px] flex-col gap-6">
             <h2 className="font-display text-section font-medium uppercase tracking-[1.04px] text-contrast-2">
               {heading}
