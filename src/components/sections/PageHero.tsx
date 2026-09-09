@@ -1,6 +1,10 @@
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
-import { HeroHexField, type HexFieldArt } from "@/components/visuals/HeroHexField";
+import {
+  HeroHexField,
+  type HexFieldArt,
+  type ServiceHexSlug,
+} from "@/components/visuals/HeroHexField";
 import { cn } from "@/lib/cn";
 
 /**
@@ -37,6 +41,7 @@ export function PageHero({
   cta,
   tone = "light",
   art,
+  hexVariant,
   aside,
   titleClassName,
 }: {
@@ -46,12 +51,14 @@ export function PageHero({
   cta?: { label: string; href: string };
   tone?: "light" | "dark";
   /**
-   * Which hexagon drawing the hero carries. The tone does not decide it: the
-   * services pages open on three regular cells and `/work` opens on the skewed
-   * cluster, both on the same white band. Defaults to the cluster on dark,
-   * because that is the only artwork the design puts on the ramp.
+   * Which hexagon drawing the hero carries. Tone still matters for `cluster`:
+   * light uses the skewed `/work` drawing; dark uses the per-service Figma
+   * cluster (`hexVariant`). Defaults to the cluster on dark (service ramp) and
+   * regular hexagons on light.
    */
   art?: HexFieldArt;
+  /** Dark service heroes: which of the four Figma hex clusters to show. */
+  hexVariant?: ServiceHexSlug;
   /**
    * Content set against the right gutter, sharing the copy block's bottom
    * edge. About puts its three figures here, in the space the other heroes
@@ -107,7 +114,11 @@ export function PageHero({
           } as React.CSSProperties
         }
       />
-      <HeroHexField tone={tone} art={art ?? (dark ? "cluster" : "hexagons")} />
+      <HeroHexField
+        tone={tone}
+        art={art ?? (dark ? "cluster" : "hexagons")}
+        hexVariant={hexVariant}
+      />
 
       <Container>
         {/* The copy and the aside share a bottom edge — in the design both

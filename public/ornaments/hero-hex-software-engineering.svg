@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="540" viewBox="0 0 1440 540" fill="none">
+<!-- Figma Group 34 (115:59297). Transformed frame-export paths in absolute 1440×540 Frame coords. Group export crop was 733px wide → translate(707 0) if using crop-local coords. -->
+<g id="Group 34" opacity="0.56">
+<g id="Mask group_2">
+<mask id="hex-mask" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="1164" y="262" width="333" height="258">
+<path id="Vector_2" d="M1177.29 346.734L1342.44 263.421L1495.35 307.867L1483.09 435.627L1317.94 518.94L1165.04 474.493L1177.29 346.734Z" fill="#D9D9D9" stroke="#8D87B2" stroke-width="1.34374"/>
+</mask>
+<g mask="url(#hex-mask)">
+<g id="Group 2">
+<line id="Line 1" y1="-0.671872" x2="507.361" y2="-0.671872" transform="matrix(0.626632 0.978806 -0.569652 0.569884 1292.5 37.6449)" stroke="white" stroke-width="1.34374"/>
+<line id="Line 2" y1="-0.671872" x2="507.361" y2="-0.671872" transform="matrix(0.626632 0.978806 -0.569652 0.569884 1284.42 46.485)" stroke="white" stroke-width="1.34374"/>
+<line id="Line 3" y1="-0.671872" x2="507.361" y2="-0.671872" transform="matrix(0.626632 0.978806 -0.569652 0.569884 1276.36 55.3188)" stroke="white" stroke-width="1.34374"/>
+<line id="Line 4" y1="-0.671872" x2="507.361" y2="-0.671872" transform="matrix(0.626632 0.978806 -0.569652 0.569884 1268.3 64.1511)" stroke="white" stroke-width="1.34374"/>
+<line id="Line 5" y1="-0.671872" x2="507.361" y2="-0.671872" transform="matrix(0.626632 0.978806 -0.569652 0.569884 1260.23 72.9844)" stroke="white" stroke-width="1.34374"/>
+<line id="Line 6" y1="-0.671872" x2="507.361" y2="-0.671872" transform="matrix(0.626632 0.978806 -0.569652 0.569884 1252.18 81.818)" stroke="white" stroke-width="1.34374"/>
+<line id="Line 7" y1="-0.671872" x2="507.361" y2="-0.671872" transform="matrix(0.626632 0.978806 -0.569652 0.569884 1244.11 90.6508)" stroke="white" stroke-width="1.34374"/>
+<line id="Line 8" y1="-0.671872" x2="507.361" y2="-0.671872" transform="matrix(0.626632 0.978806 -0.569652 0.569884 1236.06 99.4827)" stroke="white" stroke-width="1.34374"/>
+<line id="Line 9" y1="-0.671872" x2="507.361" y2="-0.671872" transform="matrix(0.626632 0.978806 -0.569652 0.569884 1227.99 108.317)" stroke="white" stroke-width="1.34374"/>
+<line id="Line 10" y1="-0.671872" x2="507.361" y2="-0.671872" transform="matrix(0.626632 0.978806 -0.569652 0.569884 1219.93 117.151)" stroke="white" stroke-width="1.34374"/>
+<line id="Line 11" y1="-0.671872" x2="507.361" y2="-0.671872" transform="matrix(0.626632 0.978806 -0.569652 0.569884 1211.87 125.986)" stroke="white" stroke-width="1.34374"/>
+<line id="Line 12" y1="-0.671872" x2="507.361" y2="-0.671872" transform="matrix(0.626632 0.978806 -0.569652 0.569884 1203.81 134.816)" stroke="white" stroke-width="1.34374"/>
+<line id="Line 13" y1="-0.671872" x2="507.361" y2="-0.671872" transform="matrix(0.626632 0.978806 -0.569652 0.569884 1195.75 143.652)" stroke="white" stroke-width="1.34374"/>
+<line id="Line 14" y1="-0.671872" x2="507.361" y2="-0.671872" transform="matrix(0.626632 0.978806 -0.569652 0.569884 1187.68 152.486)" stroke="white" stroke-width="1.34374"/>
+<line id="Line 15" y1="-0.671872" x2="507.361" y2="-0.671872" transform="matrix(0.626632 0.978806 -0.569652 0.569884 1179.63 161.316)" stroke="white" stroke-width="1.34374"/>
+<line id="Line 16" y1="-0.671872" x2="507.361" y2="-0.671872" transform="matrix(0.626632 0.978806 -0.569652 0.569884 1171.56 170.154)" stroke="white" stroke-width="1.34374"/>
+<line id="Line 17" y1="-0.671872" x2="507.361" y2="-0.671872" transform="matrix(0.626632 0.978806 -0.569652 0.569884 1163.5 178.986)" stroke="white" stroke-width="1.34374"/>
+<line id="Line 18" y1="-0.671872" x2="507.361" y2="-0.671872" transform="matrix(0.626632 0.978806 -0.569652 0.569884 1155.43 187.821)" stroke="white" stroke-width="1.34374"/>
+<line id="Line 19" y1="-0.671872" x2="507.361" y2="-0.671872" transform="matrix(0.626632 0.978806 -0.569652 0.569884 1147.38 196.653)" stroke="white" stroke-width="1.34374"/>
+<line id="Line 20" y1="-0.671872" x2="507.361" y2="-0.671872" transform="matrix(0.626632 0.978806 -0.569652 0.569884 1139.31 205.486)" stroke="white" stroke-width="1.34374"/>
+<line id="Line 21" y1="-0.671872" x2="507.361" y2="-0.671872" transform="matrix(0.626632 0.978806 -0.569652 0.569884 1131.26 214.32)" stroke="white" stroke-width="1.34374"/>
+<line id="Line 22" y1="-0.671872" x2="507.361" y2="-0.671872" transform="matrix(0.626632 0.978806 -0.569652 0.569884 1123.19 223.155)" stroke="white" stroke-width="1.34374"/>
+<line id="Line 23" y1="-0.671872" x2="507.361" y2="-0.671872" transform="matrix(0.626632 0.978806 -0.569652 0.569884 1115.14 231.985)" stroke="white" stroke-width="1.34374"/>
+<line id="Line 24" y1="-0.671872" x2="507.361" y2="-0.671872" transform="matrix(0.626632 0.978806 -0.569652 0.569884 1107.06 240.823)" stroke="white" stroke-width="1.34374"/>
+<line id="Line 25" y1="-0.671872" x2="507.361" y2="-0.671872" transform="matrix(0.626632 0.978806 -0.569652 0.569884 1099.01 249.656)" stroke="white" stroke-width="1.34374"/>
+<line id="Line 26" y1="-0.671872" x2="507.361" y2="-0.671872" transform="matrix(0.626632 0.978806 -0.569652 0.569884 1090.95 258.487)" stroke="white" stroke-width="1.34374"/>
+<line id="Line 27" y1="-0.671872" x2="507.361" y2="-0.671872" transform="matrix(0.626632 0.978806 -0.569652 0.569884 1082.89 267.32)" stroke="white" stroke-width="1.34374"/>
+<line id="Line 28" y1="-0.671872" x2="507.361" y2="-0.671872" transform="matrix(0.626632 0.978806 -0.569652 0.569884 1074.81 276.156)" stroke="white" stroke-width="1.34374"/>
+<line id="Line 29" y1="-0.671872" x2="507.361" y2="-0.671872" transform="matrix(0.626632 0.978806 -0.569652 0.569884 1066.75 284.991)" stroke="white" stroke-width="1.34374"/>
+<line id="Line 30" y1="-0.671872" x2="507.361" y2="-0.671872" transform="matrix(0.626632 0.978806 -0.569652 0.569884 1058.7 293.824)" stroke="white" stroke-width="1.34374"/>
+<line id="Line 31" y1="-0.671872" x2="507.361" y2="-0.671872" transform="matrix(0.626632 0.978806 -0.569652 0.569884 1050.64 302.656)" stroke="white" stroke-width="1.34374"/>
+</g>
+</g>
+</g>
+<path id="Vector_3" d="M849.152 390.793L1014.31 307.48L1167.21 351.927L1154.96 479.686L989.803 562.999L836.9 518.553L849.152 390.793Z" fill="white" fill-opacity="0.2"/>
+<path id="Vector_4" d="M1018 112.08L1183.15 28.7671L1336.05 73.2136L1323.8 200.973L1158.65 284.286L1005.74 239.84L1018 112.08Z" stroke="white" stroke-width="1.91964"/>
+<path id="Vector_5" d="M1029.63 159.711L1194.79 76.3981L1347.69 120.845L1335.44 248.604L1170.28 331.917L1017.38 287.471L1029.63 159.711Z" stroke="white" stroke-opacity="0.4" stroke-width="1.91964"/>
+<path id="Vector_6" d="M840.906 344.353L1006.06 261.04L1158.96 305.486L1146.71 433.246L981.556 516.559L828.654 472.113L840.906 344.353Z" stroke="white" stroke-width="1.91964"/>
+</g>
+</svg>

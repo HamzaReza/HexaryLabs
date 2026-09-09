@@ -4,50 +4,90 @@ import { cn } from "@/lib/cn";
 /**
  * The hexagon artwork in the right of every inner-page hero.
  *
- * These are the design's own vectors, exported from the hero frames and
- * embedded verbatim rather than reconstructed. An earlier pass measured one
- * hexagon off a render and then *guessed* the rest; the guesses were wrong, and
- * there was no way to tell from the geometry alone which parts were measured
- * and which were invented. Everything below is the artwork.
- *
- * All three fields are authored on the 1440 × 540 frame, so the SVG is drawn at
+ * All fields are authored on the 1440 × 540 frame, so the SVG is drawn at
  * exactly that size and pinned to the right edge instead of scaling: on a
  * narrower viewport the artwork slides out of frame the way the design's own
  * clip does. Purely decorative, and inert to pointer events.
  *
- * The design uses two different pieces of artwork, not one shape recoloured:
+ * Three drawings — they are not one shape recoloured:
  *
- * · `hexagons` — three regular flat-top cells, hairline `#939393`. The upper
- *   cell carries a hatch and *no* outline. This is the services index and the
- *   service-detail pages.
- * · `cluster` — five *skewed* cells drawn in near-isometric perspective: one
- *   filled, three stroked (one of them faint), and one masked cell carrying a
- *   hatch, all inside a group at 56%. `/work` and the dark service heroes.
- *
- * The two cluster placements are the same drawing at two scales — the dark one
- * is 1.36727× the light one, and every anchor, stroke width and hatch period
- * below reproduces both to within 0.01 units of the exported paths. That is why
- * the cluster is expressed once as a shape plus a palette rather than twice as
- * ten hard-coded paths: the equivalence is a fact about the design, and writing
- * it out twice would let the two drift apart.
+ * · `hexagons` — three regular flat-top cells, hairline gray. Services index.
+ * · `cluster` + light — five *skewed* near-isometric cells (`/work`).
+ * · `cluster` + dark — per-service Figma hex groups (skewed white art at 56%).
+ *   Each service page has its own cluster; see `SERVICE_HEX_SRC`. Paths are
+ *   transformed frame exports in absolute 1440×540 coords. Group-export crops
+ *   (for crop-local + translate) were: Strategy 730→tx 710, Design 709→731,
+ *   Software 733→707, AI 854→586.
  */
 
 /** `none` is a real value in the design: the About hero carries no artwork. */
 export type HexFieldArt = "hexagons" | "cluster" | "none";
 
+/** Service slugs that each carry a distinct dark-hero hex cluster. */
+export type ServiceHexSlug =
+  | "product-strategy"
+  | "product-design"
+  | "software-engineering"
+  | "ai-engineering";
+
+/**
+ * Figma node → ornament. Paths are absolute Frame coords (no translate).
+ * Crop-local equivalents would use translate(1440 − cropW, 0).
+ */
+const SERVICE_HEX_SRC: Record<ServiceHexSlug, string> = {
+  "product-strategy": "/ornaments/hero-hex-product-strategy.svg", // Group 3 `115:52301`
+  "product-design": "/ornaments/hero-hex-product-design.svg", // Group 33 `115:54633`
+  "software-engineering": "/ornaments/hero-hex-software-engineering.svg", // Group 34 `115:59297`
+  "ai-engineering": "/ornaments/hero-hex-ai-engineering.svg", // Group 32 `115:56965`
+};
+
+const SERVICE_HEX_SLUGS = new Set<string>(Object.keys(SERVICE_HEX_SRC));
+
+export function isServiceHexSlug(slug: string): slug is ServiceHexSlug {
+  return SERVICE_HEX_SLUGS.has(slug);
+}
+
+const HEX_FIELD_CLASS =
+  /* Authored on the 1440 frame and pinned right at fixed 1440×540.
+     Mobile frames carry no hex art — show from `lg` (1024+); slight
+     overflow at laptop widths is fine. */
+  "pointer-events-none absolute right-0 top-0 -z-10 h-[540px] w-[1440px] max-lg:hidden";
+
 export function HeroHexField({
   tone = "light",
   art = "hexagons",
+  hexVariant,
   className,
 }: {
   tone?: "light" | "dark";
   /** Which of the design's two drawings this hero carries. */
   art?: HexFieldArt;
+  /**
+   * Dark service heroes: which Figma cluster to load. Ignored unless
+   * `art === "cluster"` and `tone === "dark"`. Defaults to product-design.
+   */
+  hexVariant?: ServiceHexSlug;
   className?: string;
 }) {
   const id = useId();
 
   if (art === "none") return null;
+
+  if (art === "cluster" && tone === "dark") {
+    const src = SERVICE_HEX_SRC[hexVariant ?? "product-design"];
+    return (
+      // eslint-disable-next-line @next/next/no-img-element -- static Figma SVG ornaments
+      <img
+        src={src}
+        alt=""
+        aria-hidden
+        width={1440}
+        height={540}
+        draggable={false}
+        className={cn(HEX_FIELD_CLASS, className)}
+      />
+    );
+  }
 
   return (
     <svg
@@ -56,18 +96,10 @@ export function HeroHexField({
       height={540}
       viewBox="0 0 1440 540"
       fill="none"
-      className={cn(
-        /* Hidden below `lg`. The design's six mobile hero frames — work,
-           services, all four service pages and the case study — carry the dot
-           field, the text and nothing else: there is no hexagon artwork at 390
-           in any of them. Drawn at 1440 and pinned right, the cluster reached
-           back across the headline on a phone, which is what gave it away. */
-        "pointer-events-none absolute right-0 top-0 -z-10 h-[540px] w-[1440px] max-lg:hidden",
-        className,
-      )}
+      className={cn(HEX_FIELD_CLASS, className)}
     >
       {art === "cluster" ? (
-        <HexCluster id={id} palette={tone === "dark" ? DARK : LIGHT} />
+        <HexCluster id={id} palette={LIGHT} />
       ) : (
         <RegularHexagons id={id} />
       )}
@@ -223,18 +255,6 @@ const LIGHT: ClusterPalette = {
   fill: "#5B45F5",
   fillOpacity: 0.2,
   hatchInk: "#393939",
-};
-
-/** The four service-detail heroes: the same drawing in white on the ramp. */
-const DARK: ClusterPalette = {
-  scale: 1.36727,
-  anchor: [921.157, 169.943],
-  ink: "#FFFFFF",
-  faintInk: "#FFFFFF",
-  faintOpacity: 0.4,
-  fill: "#FFFFFF",
-  fillOpacity: 0.2,
-  hatchInk: "#FFFFFF",
 };
 
 /** The cell as an SVG path, placed at `offset` and scaled about the anchor. */

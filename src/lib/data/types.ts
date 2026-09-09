@@ -33,8 +33,8 @@ export type { ProcessPhase } from "@/content/how-we-work";
 export type { Platform, PlatformGroup } from "@/content/integrations";
 export type { TeamPrinciple, ExpertiseArea, WhyChooseUsItem } from "@/content/about";
 
-/** A single navigation destination. */
-export type NavLink = { label: string; href: string };
+/** A single navigation destination. Optional `summary` teases services in the header panel. */
+export type NavLink = { label: string; href: string; summary?: string };
 
 /** Top-level nav entry; `children` drives the header's services group. */
 export type NavItem = NavLink & { children?: NavLink[] };

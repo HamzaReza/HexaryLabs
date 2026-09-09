@@ -17,6 +17,7 @@ const nonEmpty = z.string().min(1);
 export const navLinkSchema = z.object({
   label: nonEmpty,
   href: nonEmpty,
+  summary: nonEmpty.optional(),
 });
 
 export const navItemSchema = navLinkSchema.extend({

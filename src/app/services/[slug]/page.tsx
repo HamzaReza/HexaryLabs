@@ -6,8 +6,11 @@ import { Button } from "@/components/ui/Button";
 import { CheckIcon } from "@/components/ui/CheckIcon";
 import { Accordion } from "@/components/ui/Accordion";
 import { ChevronRun } from "@/components/visuals/ChevronRun";
+import { HexWatermark } from "@/components/visuals/HexWatermark";
+import { isServiceHexSlug } from "@/components/visuals/HeroHexField";
 import { ServiceApproach } from "@/components/sections/ServiceApproach";
 import { ServiceOutcomes } from "@/components/sections/ServiceOutcomes";
+import { ServiceComparison } from "@/components/sections/ServiceComparison";
 import { ContactSection } from "@/components/sections/ContactSection";
 import { CaseCover } from "@/app/work/CaseCover";
 import {
@@ -70,11 +73,10 @@ export async function generateMetadata({
 /**
  * All four service pages render through this one composition.
  *
- * The previous route carried per-service layout branching; the approved design
- * gives every service the same seven beats, so the differences are entirely in
- * the data. Two beats are genuinely optional because only some services have
- * the content: the accent band needs `cost`, and the proof line under the
- * outcomes is Software Engineering's alone.
+ * Differences live in the data: step counts (3 vs 4), outcome counts (3 vs 4),
+ * and optional bands (`cost`, `comparison`, `illustrativeExample`,
+ * `outcomesProofLine`). Section order follows the Figma frames — comparison
+ * sits between approach and related work when present.
  *
  * Section rhythm is the design's: 80px of lead-in, 100px of run-out, and 48px
  * from a heading to the block it introduces.
@@ -129,6 +131,9 @@ export default async function ServicePage({
 
       <PageHero
         tone="dark"
+        hexVariant={
+          isServiceHexSlug(service.slug) ? service.slug : "product-design"
+        }
         eyebrow={`Services / ${service.title}`}
         title={service.heroHeadline}
         titleClassName="lg:max-w-[630px]"
@@ -139,18 +144,25 @@ export default async function ServicePage({
       {/* ---------------------------------------------- this is probably you */}
       <section
         data-tone="dark"
-        className="bg-contrast-2 py-10 md:py-14 lg:pb-[100px] lg:pt-20"
+        className="relative isolate overflow-hidden bg-contrast-2 py-10 md:py-14 lg:pb-[100px] lg:pt-20"
       >
+        {/* Hatched hex watermark — desktop frames only; the 390 frames carry
+            the list and the accent band with no ornament.
+            Must sit at z-0 (not -z-10): `isolate` makes a stacking context, so
+            a negative z-index paints *behind* the section's opaque fill and
+            the mark disappears. Content stays above via the Container. */}
+        <HexWatermark
+          className="pointer-events-none absolute left-[-52px] top-[210px] z-0 h-[441px] w-[452px] max-lg:hidden"
+        />
+        <div className="relative z-10">
         <Container>
-          <div className="grid gap-8 sm:gap-10 lg:grid-cols-[648px_1fr] lg:gap-0">
-            {/* Centred on the 390 frames, left in the desktop grid. The design
-                centres every section heading on a phone except the
-                related-work band's, which stays left under its label. */}
-            <h2 className="text-center text-section uppercase text-white lg:text-left">
+          {/* Side-by-side (648 + list) is the 1280/1440 composition. At `lg`
+              (1024) a fixed 648px column crushes the list into ~328px — stack
+              until `xl` so the two-col checklist keeps full container width. */}
+          <div className="grid gap-8 sm:gap-10 xl:grid-cols-[648px_1fr] xl:gap-0">
+            <h2 className="text-center text-section uppercase text-white xl:text-left">
               This is probably you if
             </h2>
-            {/* Two columns of 300 on a 32px gutter, with a rule between rows —
-                the design pairs the items rather than running one long list. */}
             <ul className="grid gap-x-8 gap-y-0 sm:grid-cols-2">
               {service.whoItsFor.map((item, i) => (
                 <li key={item} className={cnRow(i, 2, "dark")}>
@@ -167,6 +179,7 @@ export default async function ServicePage({
             </div>
           )}
         </Container>
+        </div>
       </section>
 
       {/* ------------------------------------------------------ what's included */}
@@ -198,31 +211,30 @@ export default async function ServicePage({
         cta={{ label: service.heroCta, href: "/contact" }}
       />
 
+      {service.comparison && service.comparison.length > 0 && (
+        <ServiceComparison rows={service.comparison} />
+      )}
+
       {/* ---------------------------------------------------------- related work */}
-      {/* The one band on the page the design gives no vertical padding of its
-          own at 390: the cover bleeds to the left, right and bottom edges, and
-          the copy above it carries the 32/32. */}
       {study && (
         <section className="bg-base-2 md:py-14 lg:pb-16 lg:pt-10">
           <Container>
             <div className="grid items-center gap-8 lg:grid-cols-[576px_1fr] lg:gap-[64px]">
               <div className="min-w-0 pt-8 md:pt-0">
-                <div className="flex items-center gap-8">
-                  <p className="text-caption uppercase text-accent">Related work</p>
-                  {/* Ornament only, and an expensive one on a narrow screen: an
-                      SVG with a fixed height and a 467-unit viewBox keeps its
-                      intrinsic width against `flex-1`, which sized the grid
-                      column to 553px inside a 390 viewport. It earns its place
-                      at `lg`, where there is room for the full run. */}
+                <div className="flex items-center gap-2">
+                  <p className="font-mono text-caption uppercase text-accent">Related work</p>
+                  {/* White chevrons on #F1F1F1 read as a groove cut into the
+                      surface — same treatment as WorkCta. Hidden below `lg`
+                      where the column is too narrow for the run. */}
                   <ChevronRun
                     count={30}
                     className="hidden h-[38px] min-w-0 flex-1 text-white lg:block"
                   />
                 </div>
-                <h2 className="mt-4 text-section text-contrast-2 sm:mt-6">
-                  {study.title}
+                <h2 className="mt-4 text-section text-contrast-2 sm:mt-5">
+                  {study.displayName ?? study.title}
                 </h2>
-                <p className="mt-4 text-body text-grey-600 sm:mt-6">{study.summary}</p>
+                <p className="mt-4 text-body text-grey-600 sm:mt-5">{study.summary}</p>
                 <Button
                   href={`/work/${study.slug}`}
                   variant="outline"
@@ -231,13 +243,15 @@ export default async function ServicePage({
                   Read Case Study
                 </Button>
               </div>
-              {/* `-mx-5` is exactly the container gutter, so the cover reaches
-                  both edges without a `w-screen` that would overflow the page. */}
+              {/* Product plate, not the study's architecture diagram — same
+                  preference as `/work` rows (`rowCover ?? cover`). Figma pairs
+                  KeepComing wallet, Eden agents, TrueCell product page, and the
+                  Medical Records diagram respectively. Aspect 640×400 = 1.6. */}
               <CaseCover
-                cover={study.cover}
-                title={study.title}
+                cover={study.rowCover ?? study.cover}
+                title={study.displayName ?? study.title}
                 aspect="aspect-[1.95] md:aspect-[1.6]"
-                className="max-md:-mx-5 max-md:rounded-none md:rounded-2xl"
+                className="max-md:-mx-5 max-md:rounded-none md:rounded-lg"
                 sizes="(min-width: 1024px) 640px, 100vw"
               />
             </div>
@@ -253,7 +267,11 @@ export default async function ServicePage({
       {/* ------------------------------------------------------------------ faq */}
       <section className="bg-base py-10 md:py-14 lg:pb-[100px] lg:pt-20">
         <Container>
-          <div className="grid gap-8 lg:grid-cols-[542px_738px] lg:gap-0">
+          {/* Fixed 542+738 matches the 1280 content column — at `lg` (1024)
+              that 1280 track overflows the page (~280px), so dark full-bleed
+              bands look inset next to the wider FAQ. Use fr tracks (same
+              ratio) so the grid stays inside Container at every width. */}
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,542fr)_minmax(0,738fr)] lg:gap-0">
             <h2 className="text-center text-section uppercase text-contrast-2 lg:text-left">
               FAQ
             </h2>
@@ -310,27 +328,32 @@ function cnRow(index: number, columns: number, tone: "dark" | "light") {
 }
 
 /**
- * "Why it matters" — the full-bleed accent band, gradient left to right, with
- * the label and heading in a 580px column and the body behind a hairline rule.
+ * "Why it matters" — full-bleed accent band.
+ *
+ * Desktop: label + heading share a horizontal row with the body (items-
+ * centered), separated by a lavender rule; the band itself is clipped on the
+ * top-right corner. Mobile: the same copy stacks, label still ink on the
+ * gradient (not white).
  */
 function AccentBand({ heading, body }: { heading: string; body: string }) {
   return (
-    <div className="bg-accent-band overflow-hidden rounded-sm">
-      {/* 16 of padding on the 390 frames, not 32 — which also puts the body on
-          the design's own 318px measure instead of 286, where it sets in seven
-          lines rather than nine. */}
-      <div className="grid gap-[18px] p-4 sm:gap-6 sm:p-8 lg:grid-cols-[580px_1fr] lg:gap-0 lg:px-12 lg:py-8">
-        <div>
-          <p className="text-caption uppercase text-white/80">Why it matters</p>
-          <p className="mt-2 text-card text-white sm:mt-3">{heading}</p>
+    <div
+      className="bg-accent-band overflow-hidden"
+      style={{
+        clipPath:
+          "polygon(0 0, calc(100% - 28px) 0, 100% 28px, 100% 100%, 0 100%)",
+      }}
+    >
+      <div className="grid gap-[18px] p-4 sm:gap-6 sm:p-8 lg:grid-cols-[1fr_604px] lg:items-center lg:gap-0 lg:px-12 lg:py-8">
+        <div className="flex flex-col gap-2 lg:gap-[13.5px]">
+          <p className="font-mono text-caption uppercase text-contrast-2 max-lg:text-[12px]">
+            Why it matters
+          </p>
+          <p className="text-card text-white max-lg:font-sans max-lg:text-body-lg max-lg:font-medium max-lg:leading-[26px] max-lg:tracking-normal">
+            {heading}
+          </p>
         </div>
-        {/* The design sets this text 26px clear of the rule in a 578px measure,
-            where it fills exactly four lines. Chrome renders Inter about 0.55%
-            wider than Figma does, which is enough to orphan a fifth line and
-            leave the band 24px too tall. Six pixels of the gap buy the measure
-            back: a text start 6px closer to the rule is far less visible than a
-            band that is a whole line too deep. */}
-        <p className="text-body text-white lg:border-l lg:border-white/25 lg:pl-5">
+        <p className="text-body text-grey-200 max-lg:text-[14px] lg:border-l-2 lg:border-accent-hi lg:pl-6">
           {body}
         </p>
       </div>

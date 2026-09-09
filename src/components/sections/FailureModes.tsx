@@ -69,14 +69,14 @@ export function FailureModes({
             <div className="flex shrink-0 flex-col items-center justify-center gap-4">
               {/* Three pieces on a 4px gap — 78.026 + 38.874 + 78.026 — so the
                   two runs converge on one hexagon rather than each carrying its
-                  own. The head is white-ringed here, not ink. */}
+                  own. The head is lavender-ringed with a white core (Figma). */}
               <div className="flex items-center justify-center gap-1">
                 <ChevronRun
                   count={5}
                   direction="left"
                   className="h-[38px] w-[78.026px] text-accent-hi"
                 />
-                <ChevronHead className="text-white" coreClassName="fill-accent-hi" />
+                <ChevronHead className="text-accent-hi" coreClassName="fill-white" />
                 <ChevronRun count={5} className="h-[38px] w-[78.026px] text-accent-hi" />
               </div>
               <p className="font-mono text-caption font-medium uppercase text-white">

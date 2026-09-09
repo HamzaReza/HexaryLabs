@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Logo } from "./Logo";
 import { MobileMenu } from "./MobileMenu";
 import { Container } from "@/components/ui/Container";
+import { ArrowIcon } from "@/components/ui/ArrowIcon";
 import type { NavItem, NavLink } from "@/lib/data/types";
 import { cn } from "@/lib/cn";
 
@@ -13,24 +14,50 @@ import { cn } from "@/lib/cn";
  * Sticky header — 84px, white, 1px rule beneath (measured on the design's
  * header frame).
  *
- * Four plain links and an outlined CTA. The previous build opened a full-width
- * mega-menu under Services; the approved design has no dropdown, so Services is
- * an ordinary link to the index and the child routes are reached from there and
- * from the footer. `NavItem.children` is still carried by the data layer and is
- * still used by the mobile menu's accordion.
+ * On `lg+`, Services opens a mid-width floating 2×2 panel under the link
+ * (hover + focus-within, Esc / route change close) — not a full-bleed mega bar
+ * and not a tiny list. Mobile / tablet keep the hamburger + `MobileMenu`
+ * accordion from `NavItem.children`.
  *
  * Nav data arrives as props from the server layout rather than being imported —
  * this is a client component, so it can't await the data layer itself.
  */
 export function Header({ nav, headerCta }: { nav: NavItem[]; headerCta: NavLink }) {
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
+  const closeTimer = useRef<number | null>(null);
+
+  const openNow = (label: string | null) => {
+    if (closeTimer.current !== null) {
+      clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+    setOpenMenu(label);
+  };
+
+  const closeSoon = () => {
+    if (closeTimer.current !== null) clearTimeout(closeTimer.current);
+    closeTimer.current = window.setTimeout(() => setOpenMenu(null), 150);
+  };
 
   const [prevPath, setPrevPath] = useState(pathname);
   if (prevPath !== pathname) {
     setPrevPath(pathname);
+    setOpenMenu(null);
     setMobileOpen(false);
   }
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpenMenu(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      if (closeTimer.current !== null) clearTimeout(closeTimer.current);
+    };
+  }, []);
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -41,24 +68,44 @@ export function Header({ nav, headerCta }: { nav: NavItem[]; headerCta: NavLink 
         <div className="flex h-[var(--header-h-sm)] items-center justify-between lg:h-[var(--header-h)]">
           <Logo />
 
-          <nav aria-label="Main" className="max-lg:hidden">
-            <ul className="flex items-center gap-13">
-              {nav.map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    aria-current={isActive(item.href) ? "page" : undefined}
-                    className={cn(
-                      "text-body font-medium transition-colors duration-300 ease-in-out",
-                      isActive(item.href)
-                        ? "text-accent"
-                        : "text-contrast hover:text-accent",
-                    )}
+          <nav aria-label="Main" className="h-full max-lg:hidden">
+            <ul className="flex h-full items-center gap-13">
+              {nav.map((item) => {
+                const menuOpen = Boolean(item.children) && openMenu === item.label;
+                return (
+                  <li
+                    key={item.href}
+                    className="relative flex h-full items-center"
+                    onMouseEnter={() => openNow(item.children ? item.label : null)}
+                    onMouseLeave={closeSoon}
+                    onFocus={() => openNow(item.children ? item.label : null)}
+                    onBlur={(e) => {
+                      if (!e.currentTarget.contains(e.relatedTarget as Node)) {
+                        closeSoon();
+                      }
+                    }}
                   >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
+                    <Link
+                      href={item.href}
+                      aria-current={isActive(item.href) ? "page" : undefined}
+                      aria-expanded={item.children ? menuOpen : undefined}
+                      aria-haspopup={item.children ? "menu" : undefined}
+                      className={cn(
+                        "text-body font-medium transition-colors duration-300 ease-in-out",
+                        isActive(item.href) || menuOpen
+                          ? "text-accent"
+                          : "text-contrast hover:text-accent",
+                      )}
+                    >
+                      {item.label}
+                    </Link>
+
+                    {item.children && menuOpen && (
+                      <ServicesDropdown items={item.children} />
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           </nav>
 
@@ -102,6 +149,67 @@ export function Header({ nav, headerCta }: { nav: NavItem[]; headerCta: NavLink 
         />
       )}
     </header>
+  );
+}
+
+/**
+ * Mid-width Services panel — floating card under the nav item on `lg+` only
+ * (parent nav is `max-lg:hidden`). ~40rem, 2×2 grid of service cells with
+ * optional one-line teasers; soft border + shadow so it reads as a card, not a
+ * full-bleed bar or a cramped list.
+ */
+function ServicesDropdown({ items }: { items: NavLink[] }) {
+  return (
+    <div
+      role="menu"
+      aria-label="Services"
+      className={cn(
+        /* Center under the Services label (wide card + left-0 reads as “to the right”). */
+        "absolute left-1/2 top-full z-50 mt-2 -translate-x-1/2",
+        "w-[min(40rem,calc(100vw-2.5rem))] border border-grey-200 bg-base p-2 shadow-lg",
+      )}
+    >
+      <ul className="grid grid-cols-2 gap-1">
+        {items.map((child) => (
+          <li key={child.href} role="none">
+            <Link
+              href={child.href}
+              role="menuitem"
+              className={cn(
+                "group flex h-full flex-col gap-1.5 px-5 py-4",
+                "transition-colors duration-300 ease-in-out",
+                "hover:bg-base-2 focus-visible:bg-base-2",
+              )}
+            >
+              <span className="flex items-center justify-between gap-3">
+                <span
+                  className={cn(
+                    "min-w-0 font-display text-body font-medium text-contrast",
+                    "transition-colors duration-300 ease-in-out",
+                    "group-hover:text-accent group-focus-visible:text-accent",
+                  )}
+                >
+                  {child.label}
+                </span>
+                <ArrowIcon
+                  tight
+                  className={cn(
+                    "size-[9.5px] shrink-0 text-grey-400",
+                    "transition-colors duration-300 ease-in-out",
+                    "group-hover:text-accent group-focus-visible:text-accent",
+                  )}
+                />
+              </span>
+              {child.summary ? (
+                <span className="text-small leading-snug text-grey-600">
+                  {child.summary}
+                </span>
+              ) : null}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 

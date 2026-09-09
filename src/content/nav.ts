@@ -3,7 +3,7 @@ import { services } from "./services";
 export type NavItem = {
   label: string;
   href: string;
-  children?: { label: string; href: string }[];
+  children?: { label: string; href: string; summary?: string }[];
 };
 
 export const nav: NavItem[] = [
@@ -13,6 +13,7 @@ export const nav: NavItem[] = [
     children: services.map((s) => ({
       label: s.title,
       href: `/services/${s.slug}`,
+      summary: s.summary,
     })),
   },
   { label: "Work", href: "/work" },

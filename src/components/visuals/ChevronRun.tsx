@@ -64,7 +64,13 @@ export function ChevronRun({
       fill="none"
       aria-hidden="true"
       focusable="false"
-      className={cn("text-grey-200", direction === "left" && "-scale-x-100", className)}
+      /* Default ink is grey-200; callers can override with any `text-*` class.
+         `cn` does not merge Tailwind conflicts, so skip the default when one is set. */
+      className={cn(
+        !className?.match(/(?:^|\s)text-/) && "text-grey-200",
+        direction === "left" && "-scale-x-100",
+        className,
+      )}
     >
       {/* (x, y) → (HEIGHT − y, x): the run's length becomes the vertical axis
           and its 38px depth the horizontal one, with the arrowheads turned to
@@ -101,7 +107,7 @@ export function ChevronRun({
  *
  * The ring takes `currentColor` and the core is a class, because the design
  * uses two different pairs: ink ring over an accent core on the homepage,
- * white ring over `accent-hi` here.
+ * lavender (`accent-hi`) ring over a white core on About's failure band.
  */
 export function ChevronHead({
   className,
